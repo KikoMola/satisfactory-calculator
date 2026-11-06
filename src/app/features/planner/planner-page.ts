@@ -28,6 +28,10 @@ import { CANVAS, clampZoom, ZOOM, type Point } from './planner.model';
 import { PlannerStore, type BeltView, type NodeView } from './planner.store';
 import { ResourceNodeCard } from './resource-node-card/resource-node-card';
 
+/** Dash + gap of the flow animations, in px; must match `belt-items` / `pipe-pulses` in styles.css. */
+const BELT_DASH_PERIOD = 16;
+const PIPE_DASH_PERIOD = 24;
+
 @Component({
   selector: 'app-planner-page',
   imports: [
@@ -249,6 +253,16 @@ export class PlannerPage {
 
   protected setBeltTier(belt: BeltView, transportId: string) {
     this.store.setBeltTier(belt.id, transportId);
+  }
+
+  /**
+   * Seconds for the flow animation to advance one dash period: from a slow crawl when the
+   * belt barely carries anything to ~120 canvas px/s when it is full.
+   */
+  protected flowDuration(belt: BeltView): number {
+    const period = belt.transport.kind === 'pipe' ? PIPE_DASH_PERIOD : BELT_DASH_PERIOD;
+    const speed = 12 + 108 * Math.min(belt.flow.utilization, 1);
+    return period / speed;
   }
 
   protected removeBelt(belt: BeltView) {

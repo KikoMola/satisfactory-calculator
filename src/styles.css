@@ -72,6 +72,36 @@
     32px 32px;
 }
 
+/*
+ * Flow animations drawn over the belt/pipe line, moving from output to input. The dash period
+ * (dash + gap) must match BELT_DASH_PERIOD / PIPE_DASH_PERIOD in planner-page.ts; the duration
+ * is set per belt from its usage.
+ */
+@utility belt-items {
+  /* Small dark blocks travelling on the orange belt, like parts. */
+  stroke: var(--color-on-accent);
+  stroke-width: 3px;
+  stroke-dasharray: 4 12;
+  --dash-period: 16px;
+  animation: flow-along linear infinite;
+}
+
+@utility pipe-pulses {
+  /* Soft light pulses flowing inside the pipe. */
+  stroke: rgb(255 255 255 / 0.6);
+  stroke-width: 2px;
+  stroke-linecap: round;
+  stroke-dasharray: 10 14;
+  --dash-period: 24px;
+  animation: flow-along linear infinite;
+}
+
+@keyframes flow-along {
+  to {
+    stroke-dashoffset: calc(-1 * var(--dash-period));
+  }
+}
+
 @keyframes select-in {
   from {
     opacity: 0;
