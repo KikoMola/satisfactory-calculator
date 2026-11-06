@@ -2,7 +2,8 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { GameDataService } from '../../core/game-data.service';
 import type { ExtractorBuilding, Item, Transport } from '../../data/game-data.model';
 import { beltCurve, beltFlow, clampPoint, extractionRate, type BeltFlow } from './planner.calc';
-import { CANVAS, type Belt, type Point, type ResourceNode } from './planner.model';
+import type { SelectOption } from '../../ui/select/select';
+import { CANVAS, PURITIES, type Belt, type Point, type ResourceNode } from './planner.model';
 
 /** Accent colour per resource, used for the card stripe and legend dots. */
 const RESOURCE_COLORS: Record<string, string> = {
@@ -60,6 +61,32 @@ export class PlannerStore {
    * CDK's free-drag position input does not change mid-drag; only the belt lines read it.
    */
   private readonly livePositions = signal<Record<string, Point>>({});
+
+  // ---- Options for the selects --------------------------------------------
+
+  readonly resourceOptions: readonly SelectOption[] = this.data.minableResources.map((r) => ({
+    value: r.id,
+    label: r.name.es,
+    color: RESOURCE_COLORS[r.id],
+  }));
+
+  readonly purityOptions: readonly SelectOption[] = PURITIES.map((p) => ({
+    value: p.id,
+    label: p.label,
+    hint: `×${p.multiplier}`,
+  }));
+
+  readonly minerOptions: readonly SelectOption[] = this.data.miners.map((m) => ({
+    value: m.id,
+    label: m.name.es.replace('Taladro ', ''),
+    hint: `${m.ratePerMinute}/min`,
+  }));
+
+  readonly beltOptions: readonly SelectOption[] = this.data.belts.map((b) => ({
+    value: b.id,
+    label: `Mk.${b.tier}`,
+    hint: `${b.ratePerMinute}/min`,
+  }));
 
   readonly nodeViews = computed<NodeView[]>(() => {
     const beltSources = new Set(this.belts().map((b) => b.fromNodeId));

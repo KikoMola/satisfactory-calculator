@@ -11,8 +11,10 @@ import {
 } from '@angular/core';
 import { NgpButton } from 'ng-primitives/button';
 import { NgpFormField, NgpLabel } from 'ng-primitives/form-field';
-import { NgpNativeSelect } from 'ng-primitives/select';
 import { GameDataService } from '../../core/game-data.service';
+import { Button } from '../../ui/button/button';
+import { IconClose } from '../../ui/icons';
+import { Select } from '../../ui/select/select';
 import { beltCurve } from './planner.calc';
 import { arrowKeyDelta } from './keyboard';
 import { CANVAS, type Point } from './planner.model';
@@ -28,12 +30,14 @@ import { ResourceNodeCard } from './resource-node-card/resource-node-card';
     NgpButton,
     NgpFormField,
     NgpLabel,
-    NgpNativeSelect,
+    Button,
+    IconClose,
+    Select,
     ResourceNodeCard,
   ],
   providers: [PlannerStore],
   templateUrl: './planner-page.html',
-  styleUrl: './planner-page.css',
+  host: { class: 'grid h-dvh grid-rows-[auto_1fr]' },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlannerPage {
@@ -53,8 +57,8 @@ export class PlannerPage {
   /** Message for the screen-reader live region. */
   protected readonly announcement = signal('');
 
-  protected selectResource(event: Event) {
-    this.selectedResource.set((event.target as HTMLSelectElement).value);
+  protected selectResource(resourceId: string) {
+    this.selectedResource.set(resourceId);
   }
 
   protected addNode() {
@@ -112,8 +116,8 @@ export class PlannerPage {
     this.store.nudgeBeltEnd(belt.id, delta);
   }
 
-  protected setBeltTier(belt: BeltView, event: Event) {
-    this.store.setBeltTier(belt.id, (event.target as HTMLSelectElement).value);
+  protected setBeltTier(belt: BeltView, transportId: string) {
+    this.store.setBeltTier(belt.id, transportId);
   }
 
   protected removeBelt(belt: BeltView) {

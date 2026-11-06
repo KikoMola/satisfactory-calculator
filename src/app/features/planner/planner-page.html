@@ -1,44 +1,49 @@
-<header class="toolbar">
-  <h1 class="toolbar__title">Planificador</h1>
+<header class="flex flex-wrap items-center gap-x-6 gap-y-4 border-b border-line bg-panel px-5 py-3">
+  <h1 class="m-0 text-xl font-semibold">Planificador</h1>
 
-  <form class="toolbar__add" (submit)="$event.preventDefault(); addNode()">
-    <div class="field field--inline" ngpFormField>
-      <label class="field__label" ngpLabel>Recurso</label>
-      <select class="field__control" ngpNativeSelect (change)="selectResource($event)">
-        @for (resource of data.minableResources; track resource.id) {
-          <option [value]="resource.id" [selected]="resource.id === selectedResource()">
-            {{ resource.name.es }}
-          </option>
-        }
-      </select>
+  <form class="flex items-end gap-2" (submit)="$event.preventDefault(); addNode()">
+    <div ngpFormField class="grid gap-1">
+      <span ngpLabel class="text-xs text-muted">Recurso</span>
+      <app-select
+        class="w-56"
+        [options]="store.resourceOptions"
+        [value]="selectedResource()"
+        (valueChange)="selectResource($event)"
+      />
     </div>
-    <button type="submit" class="button button--primary" ngpButton>Añadir nodo</button>
+    <button type="submit" appButton>Añadir nodo</button>
   </form>
 </header>
 
-<div class="planner">
-  <main class="planner-canvas" aria-label="Lienzo de la fábrica">
+<div class="grid min-h-0 grid-cols-1 grid-rows-[1fr_auto] md:grid-cols-[1fr_300px] md:grid-rows-1">
+  <main class="overflow-auto bg-canvas" aria-label="Lienzo de la fábrica">
     <div
       #surface
-      class="planner-surface"
+      class="planner-surface relative canvas-grid bg-canvas select-none"
       [style.width.px]="canvas.width"
       [style.height.px]="canvas.height"
     >
       <svg
-        class="planner-belts"
+        class="pointer-events-none absolute inset-0"
         [attr.width]="canvas.width"
         [attr.height]="canvas.height"
         aria-hidden="true"
       >
         @for (belt of store.beltViews(); track belt.id) {
           <path
-            class="belt-line"
-            [class.belt-line--bottleneck]="belt.flow.bottleneck"
+            class="fill-none stroke-6 [stroke-linecap:round]"
+            [class.stroke-accent]="!belt.flow.bottleneck"
+            [class.stroke-danger]="belt.flow.bottleneck"
+            [attr.stroke-dasharray]="belt.flow.bottleneck ? '14 8' : null"
             [attr.d]="belt.path"
           />
         }
         @if (pendingBelt(); as pending) {
-          <path class="belt-line belt-line--pending" [attr.d]="pending.path" />
+          <path
+            class="fill-none stroke-muted stroke-6 [stroke-linecap:round]"
+            stroke-dasharray="8 8"
+            [attr.d]="pending.path"
+          />
         }
       </svg>
 
@@ -56,66 +61,60 @@
         />
       }
 
+      <!-- Belt labels sit just below the curve midpoint so they never cover the line or its end. -->
       @for (belt of store.beltViews(); track belt.id) {
         <div
-          class="belt-label"
-          [class.belt-label--bottleneck]="belt.flow.bottleneck"
+          class="absolute z-[5] flex w-max max-w-80 -translate-x-1/2 translate-y-3 flex-wrap items-center gap-x-2 gap-y-1 rounded-md border bg-panel px-2 py-1.5 text-[13px] whitespace-nowrap shadow-lg shadow-black/35"
+          [class.border-accent]="!belt.flow.bottleneck"
+          [class.border-danger]="belt.flow.bottleneck"
           [style.left.px]="belt.mid.x"
           [style.top.px]="belt.mid.y"
           role="group"
           [attr.aria-label]="'Cinta de ' + belt.resource.name.es"
         >
           <div ngpFormField>
-            <label class="sr-only" ngpLabel>Tipo de cinta</label>
-            <select
-              class="field__control field__control--compact"
-              ngpNativeSelect
-              (change)="setBeltTier(belt, $event)"
-            >
-              @for (tier of data.belts; track tier.id) {
-                <option [value]="tier.id" [selected]="tier.id === belt.transportId">
-                  Mk.{{ tier.tier }} · {{ tier.ratePerMinute }}/min
-                </option>
-              }
-            </select>
+            <span ngpLabel class="sr-only">Tipo de cinta</span>
+            <app-select
+              class="w-36"
+              size="sm"
+              [showHint]="true"
+              [options]="store.beltOptions"
+              [value]="belt.transportId"
+              (valueChange)="setBeltTier(belt, $event)"
+            />
           </div>
-          <span class="belt-label__flow">
+          <span class="font-semibold tabular-nums">
             {{ belt.flow.flow | number: '1.0-2' }} / {{ belt.flow.capacity }} /min
             <span class="sr-only">, uso {{ belt.flow.utilization | percent: '1.0-0' }}</span>
           </span>
+          <button
+            type="button"
+            appButton
+            variant="icon-sm"
+            class="ml-auto"
+            [attr.aria-label]="'Eliminar cinta de ' + belt.resource.name.es"
+            (click)="removeBelt(belt)"
+          >
+            <app-icon-close />
+          </button>
           @if (belt.flow.bottleneck) {
-            <span class="belt-label__warning">
+            <span class="basis-full font-semibold whitespace-normal text-danger">
               Cuello de botella: se pierden
               {{ belt.flow.input - belt.flow.flow | number: '1.0-2' }}/min
             </span>
           }
-          <button
-            type="button"
-            class="belt-label__remove"
-            ngpButton
-            [attr.aria-label]="'Eliminar cinta de ' + belt.resource.name.es"
-            (click)="removeBelt(belt)"
-          >
-            <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
-              <path
-                d="M6 6l12 12M18 6L6 18"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-              />
-            </svg>
-          </button>
         </div>
       }
 
-      <!-- Iterates the model (not the live views) so the CDK free-drag input stays stable mid-drag. -->
+      <!-- Iterates the model (not the live views) so the CDK free-drag input stays stable mid-drag.
+           cdkDragFreeDragPosition is the handle's centre, hence the negative margins. -->
       @for (belt of store.belts(); track belt.id) {
         <button
           type="button"
-          class="belt-end"
           ngpButton
           cdkDrag
           cdkDragBoundary=".planner-surface"
+          class="absolute top-0 left-0 z-[6] -mt-3 -ml-3 size-6 cursor-grab touch-none rounded border-3 border-accent bg-panel p-0 data-hover:bg-hover [&.cdk-drag-dragging]:cursor-grabbing"
           [cdkDragFreeDragPosition]="belt.end"
           [attr.aria-label]="
             'Extremo de la cinta de ' +
@@ -129,49 +128,54 @@
       }
 
       @if (store.nodes().length === 0) {
-        <p class="planner-empty">
-          Elige un recurso arriba y pulsa <strong>Añadir nodo</strong>. Después arrastra el punto
-          naranja del nodo para sacar una cinta transportadora.
+        <p
+          class="absolute top-12 left-12 m-0 max-w-md rounded-lg border border-dashed border-line bg-panel px-5 py-4 leading-relaxed text-muted"
+        >
+          Elige un recurso arriba y pulsa <strong class="text-fg">Añadir nodo</strong>. Después
+          arrastra el punto naranja del nodo para sacar una cinta transportadora.
         </p>
       }
     </div>
   </main>
 
-  <aside class="summary" aria-labelledby="summary-title">
-    <h2 id="summary-title" class="summary__title">Resumen</h2>
+  <aside
+    class="max-h-[40dvh] overflow-auto border-t border-line bg-panel px-5 py-4 md:max-h-none md:border-t-0 md:border-l"
+    aria-labelledby="summary-title"
+  >
+    <h2 id="summary-title" class="m-0 mb-3 text-base font-semibold">Resumen</h2>
     @if (store.totals().length === 0) {
-      <p class="summary__empty">Todavía no hay nodos.</p>
+      <p class="m-0 text-muted">Todavía no hay nodos.</p>
     } @else {
-      <table class="summary__table">
+      <table class="w-full border-collapse text-sm tabular-nums">
         <caption class="sr-only">
           Producción por recurso
         </caption>
         <thead>
-          <tr>
-            <th scope="col">Recurso</th>
-            <th scope="col">Extraído</th>
-            <th scope="col">En cintas</th>
+          <tr class="border-b border-line text-muted">
+            <th scope="col" class="px-1 py-1.5 text-left font-medium">Recurso</th>
+            <th scope="col" class="px-1 py-1.5 text-right font-medium">Extraído</th>
+            <th scope="col" class="px-1 py-1.5 text-right font-medium">En cintas</th>
           </tr>
         </thead>
         <tbody>
           @for (total of store.totals(); track total.resource.id) {
-            <tr>
-              <th scope="row">
+            <tr class="border-b border-line">
+              <th scope="row" class="px-1 py-1.5 text-left font-medium">
                 <span
-                  class="summary__dot"
+                  class="mr-1 inline-block size-2.5 rounded-full"
                   [style.background]="total.color"
                   aria-hidden="true"
                 ></span>
                 {{ total.resource.name.es }}
-                <span class="summary__nodes">({{ total.nodes }})</span>
+                <span class="text-muted">({{ total.nodes }})</span>
               </th>
-              <td>{{ total.extracted | number: '1.0-2' }}/min</td>
-              <td>{{ total.transported | number: '1.0-2' }}/min</td>
+              <td class="px-1 py-1.5 text-right">{{ total.extracted | number: '1.0-2' }}/min</td>
+              <td class="px-1 py-1.5 text-right">{{ total.transported | number: '1.0-2' }}/min</td>
             </tr>
           }
         </tbody>
       </table>
-      <p class="summary__power">
+      <p class="mt-4 mb-0">
         Consumo total: <strong>{{ store.totalPowerMW() | number: '1.0-2' }} MW</strong>
       </p>
     }

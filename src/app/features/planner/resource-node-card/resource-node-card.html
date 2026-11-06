@@ -1,94 +1,84 @@
 @let n = node();
-<header class="node-card__header">
+<header class="flex h-13 items-center gap-1 border-b border-line pr-2 pl-1">
   <button
     type="button"
-    class="node-card__handle"
     ngpButton
     cdkDragHandle
+    class="flex h-10 min-w-0 flex-1 cursor-grab items-center gap-2 rounded-md px-2 text-left font-semibold data-hover:bg-hover group-[.cdk-drag-dragging]/card:cursor-grabbing"
     [attr.aria-describedby]="n.id + '-move-help'"
     (keydown)="onHandleKeydown($event)"
   >
-    <span class="node-card__dot" aria-hidden="true"></span>
-    <span class="node-card__title"
-      ><span class="sr-only">Nodo de </span>{{ n.resource.name.es }}</span
-    >
+    <span class="size-3 shrink-0 rounded-full bg-(--resource-color)" aria-hidden="true"></span>
+    <span class="truncate"><span class="sr-only">Nodo de </span>{{ n.resource.name.es }}</span>
   </button>
   <button
     type="button"
-    class="node-card__icon-button"
-    ngpButton
+    appButton
+    variant="icon"
     [attr.aria-label]="'Eliminar nodo de ' + n.resource.name.es"
     (click)="remove()"
   >
-    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
-      <path
-        d="M6 6l12 12M18 6L6 18"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-      />
-    </svg>
+    <app-icon-close />
   </button>
   <span [id]="n.id + '-move-help'" class="sr-only">
     Arrastra para mover. Con el foco aquí, usa las flechas (Mayús para pasos grandes).
   </span>
 </header>
 
-<div class="node-card__body">
-  <div class="field" ngpFormField>
-    <label class="field__label" ngpLabel>Recurso</label>
-    <select class="field__control" ngpNativeSelect (change)="setResource($event)">
-      @for (resource of data.minableResources; track resource.id) {
-        <option [value]="resource.id" [selected]="resource.id === n.resourceId">
-          {{ resource.name.es }}
-        </option>
-      }
-    </select>
+<div class="grid gap-3 p-3">
+  <div ngpFormField class="grid gap-1">
+    <span ngpLabel class="text-xs text-muted">Recurso</span>
+    <app-select
+      class="w-full"
+      [options]="store.resourceOptions"
+      [value]="n.resourceId"
+      (valueChange)="setResource($event)"
+    />
   </div>
 
-  <div class="node-card__row">
-    <div class="field" ngpFormField>
-      <label class="field__label" ngpLabel>Pureza</label>
-      <select class="field__control" ngpNativeSelect (change)="setPurity($event)">
-        @for (purity of purities; track purity.id) {
-          <option [value]="purity.id" [selected]="purity.id === n.purity">
-            {{ purity.label }} ×{{ purity.multiplier }}
-          </option>
-        }
-      </select>
+  <div class="grid grid-cols-2 gap-2">
+    <div ngpFormField class="grid min-w-0 gap-1">
+      <span ngpLabel class="text-xs text-muted">Pureza</span>
+      <app-select
+        class="w-full"
+        [options]="store.purityOptions"
+        [value]="n.purity"
+        [showHint]="true"
+        (valueChange)="setPurity($event)"
+      />
     </div>
 
-    <div class="field" ngpFormField>
-      <label class="field__label" ngpLabel>Taladro</label>
-      <select class="field__control" ngpNativeSelect (change)="setMiner($event)">
-        @for (miner of data.miners; track miner.id) {
-          <option [value]="miner.id" [selected]="miner.id === n.minerId">
-            {{ miner.name.es }}
-          </option>
-        }
-      </select>
+    <div ngpFormField class="grid min-w-0 gap-1">
+      <span ngpLabel class="text-xs text-muted">Taladro</span>
+      <app-select
+        class="w-full"
+        [options]="store.minerOptions"
+        [value]="n.minerId"
+        (valueChange)="setMiner($event)"
+      />
     </div>
   </div>
 
-  <dl class="node-card__stats">
+  <dl class="m-0 grid grid-cols-2 gap-2">
     <div>
-      <dt>Producción</dt>
-      <dd>{{ n.rate | number: '1.0-2' }} /min</dd>
+      <dt class="text-xs text-muted">Producción</dt>
+      <dd class="m-0 text-lg font-bold tabular-nums">{{ n.rate | number: '1.0-2' }} /min</dd>
     </div>
     <div>
-      <dt>Consumo</dt>
-      <dd>{{ n.powerMW | number: '1.0-2' }} MW</dd>
+      <dt class="text-xs text-muted">Consumo</dt>
+      <dd class="m-0 text-lg font-bold tabular-nums">{{ n.powerMW | number: '1.0-2' }} MW</dd>
     </div>
   </dl>
 </div>
 
+<!-- Output port, centred on CANVAS.portOffset = (288, 28) from the card's outer corner. -->
 @if (!n.hasBelt) {
   <button
     type="button"
-    class="node-card__port"
     ngpButton
     cdkDrag
     cdkDragBoundary=".planner-surface"
+    class="absolute top-3 -right-[13px] size-6 cursor-crosshair touch-none rounded-full border-3 border-panel bg-accent p-0 transition-[scale] data-hover:scale-115 [&.cdk-drag-dragging]:ring-4 [&.cdk-drag-dragging]:ring-accent/35"
     [attr.aria-label]="'Sacar cinta transportadora del nodo de ' + n.resource.name.es"
     title="Arrastra para sacar una cinta transportadora"
     (pointerdown)="onPortPointerDown()"
@@ -98,5 +88,8 @@
     (click)="onPortClick()"
   ></button>
 } @else {
-  <span class="node-card__port node-card__port--connected" aria-hidden="true"></span>
+  <span
+    class="absolute top-3 -right-[13px] size-6 rounded-full border-3 border-panel bg-muted"
+    aria-hidden="true"
+  ></span>
 }

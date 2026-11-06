@@ -3,10 +3,11 @@ import { DecimalPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 import { NgpButton } from 'ng-primitives/button';
 import { NgpFormField, NgpLabel } from 'ng-primitives/form-field';
-import { NgpNativeSelect } from 'ng-primitives/select';
-import { GameDataService } from '../../../core/game-data.service';
+import { Button } from '../../../ui/button/button';
+import { IconClose } from '../../../ui/icons';
+import { Select } from '../../../ui/select/select';
 import { arrowKeyDelta } from '../keyboard';
-import { PURITIES, type Point, type Purity } from '../planner.model';
+import type { Point, Purity } from '../planner.model';
 import { PlannerStore, type NodeView } from '../planner.store';
 
 /**
@@ -23,20 +24,23 @@ import { PlannerStore, type NodeView } from '../planner.store';
     NgpButton,
     NgpFormField,
     NgpLabel,
-    NgpNativeSelect,
+    Button,
+    IconClose,
+    Select,
   ],
   templateUrl: './resource-node-card.html',
-  styleUrl: './resource-node-card.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'node-card',
+    // Width must match CANVAS.nodeWidth (288px = w-72) in planner.model.ts.
+    class:
+      'group/card absolute top-0 left-0 box-border w-72 rounded-lg border border-t-4 border-line ' +
+      'border-t-(--resource-color) bg-panel text-fg shadow-lg shadow-black/35 ' +
+      '[&.cdk-drag-dragging]:z-10 [&.cdk-drag-dragging]:shadow-2xl [&.cdk-drag-dragging]:shadow-black/50',
     '[style.--resource-color]': 'node().color',
   },
 })
 export class ResourceNodeCard {
-  protected readonly data = inject(GameDataService);
-  private readonly store = inject(PlannerStore);
-  protected readonly purities = PURITIES;
+  protected readonly store = inject(PlannerStore);
 
   readonly node = input.required<NodeView>();
 
@@ -50,16 +54,16 @@ export class ResourceNodeCard {
   /** Set while dragging the port so the click fired on release doesn't create a 2nd belt. */
   private portWasDragged = false;
 
-  protected setResource(event: Event) {
-    this.store.updateNode(this.node().id, { resourceId: this.valueOf(event) });
+  protected setResource(resourceId: string) {
+    this.store.updateNode(this.node().id, { resourceId });
   }
 
-  protected setPurity(event: Event) {
-    this.store.updateNode(this.node().id, { purity: this.valueOf(event) as Purity });
+  protected setPurity(purity: string) {
+    this.store.updateNode(this.node().id, { purity: purity as Purity });
   }
 
-  protected setMiner(event: Event) {
-    this.store.updateNode(this.node().id, { minerId: this.valueOf(event) });
+  protected setMiner(minerId: string) {
+    this.store.updateNode(this.node().id, { minerId });
   }
 
   protected remove() {
@@ -97,9 +101,5 @@ export class ResourceNodeCard {
       return;
     }
     this.beltRequested.emit();
-  }
-
-  private valueOf(event: Event): string {
-    return (event.target as HTMLSelectElement).value;
   }
 }
