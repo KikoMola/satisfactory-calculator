@@ -154,6 +154,29 @@ export function somersloopBoost(filled: number, multiplierPerSlot: number): numb
   return 1 + filled * multiplierPerSlot;
 }
 
+// ---- Power generation ----------------------------------------------------------
+
+/** Items (or m³) per minute a generator burns to produce `powerMW` from a fuel with `energyMJ`. */
+export function fuelRate(powerMW: number, energyMJ: number): number {
+  return energyMJ > 0 ? (powerMW * 60) / energyMJ : 0;
+}
+
+/**
+ * Water (m³/min) a coal or nuclear generator needs alongside its fuel. The game's ratio is in
+ * litres per MJ: m³/min = MW × ratio × 60 / 1000.
+ */
+export function supplementalRate(powerMW: number, ratio: number): number {
+  return (powerMW * ratio * 60) / 1000;
+}
+
+/**
+ * Average power of a geothermal generator: it oscillates during a cycle around
+ * `constant + factor × purity` (100 / 200 / 400 MW on impure / normal / pure geysers).
+ */
+export function geothermalPower(constant: number, factor: number, purityMultiplier: number) {
+  return constant + factor * purityMultiplier;
+}
+
 /**
  * In-game power formula: base × clock^exponent × boost^boostExponent
  * (exponent ≈ 1.321929 for production buildings, boostExponent = 2 for Somersloops).

@@ -3,6 +3,7 @@ import { CANVAS, type PortRef } from './planner.model';
 import {
   PlannerStore,
   type BuildingNodeView,
+  type GeneratorNodeView,
   type LogisticNodeView,
   type ResourceNodeView,
 } from './planner.store';
@@ -12,6 +13,9 @@ const CONSTRUCTOR = 'Build_ConstructorMk1_C';
 const MERGER = 'Build_ConveyorAttachmentMerger_C';
 const SPLITTER = 'Build_ConveyorAttachmentSplitter_C';
 const IRON_INGOT = 'Recipe_IngotIron_C';
+const COAL_GENERATOR = 'Build_GeneratorCoal_C';
+const NUCLEAR = 'Build_GeneratorNuclear_C';
+const GEOTHERMAL = 'Build_GeneratorGeoThermal_C';
 
 const out = (nodeId: string, index = 0): PortRef => ({ nodeId, index });
 const inp = (nodeId: string, index = 0): PortRef => ({ nodeId, index });
@@ -35,6 +39,8 @@ describe('PlannerStore', () => {
     return node.id;
   };
   const building = (id: string) => store.nodeViews().find((n) => n.id === id) as BuildingNodeView;
+  const generator = (id: string) => store.nodeViews().find((n) => n.id === id) as GeneratorNodeView;
+  const resource = (id: string) => store.nodeViews().find((n) => n.id === id) as ResourceNodeView;
   const logistic = (id: string) => store.nodeViews().find((n) => n.id === id) as LogisticNodeView;
   const flowInto = (id: string, index = 0) =>
     store.beltViews().find((b) => b.to.nodeId === id && b.to.index === index)!.flow.flow;
@@ -218,6 +224,99 @@ describe('PlannerStore', () => {
       const smelter = ironSmelter();
       store.setSomersloops(smelter, 1);
       expect(building(smelter).somersloops).toBe(0);
+    });
+  });
+
+  describe('fluid nodes', () => {
+    it('uses the dedicated extractor by default and m³/min', () => {
+      const oil = store.addResourceNode('Desc_LiquidOil_C').id;
+      expect(resource(oil).minerId).toBe('Build_OilPump_C');
+      expect(resource(oil).outputs[0].rate).toBe(120);
+      expect(resource(oil).unit).toBe('m³/min');
+      expect(resource(oil).hasPurity).toBe(true);
+    });
+
+    it('ignores purity on the Water Extractor', () => {
+      const water = store.addResourceNode('Desc_Water_C').id;
+      store.setPurity(water, 'pure');
+      expect(resource(water).hasPurity).toBe(false);
+      expect(resource(water).outputs[0].rate).toBe(120);
+    });
+
+    it('extracts nitrogen only from resource wells', () => {
+      const nitrogen = store.addResourceNode('Desc_NitrogenGas_C').id;
+      expect(resource(nitrogen).minerId).toBe('Build_FrackingExtractor_C');
+      expect(resource(nitrogen).wellExtractor).toBe(true);
+      expect(resource(nitrogen).extractorOptions.map((o) => o.value)).toEqual([
+        'Build_FrackingExtractor_C',
+      ]);
+      store.setPurity(nitrogen, 'pure');
+      expect(resource(nitrogen).outputs[0].rate).toBe(120);
+    });
+
+    it('switches to a valid extractor when the resource changes', () => {
+      const node = ironNode();
+      store.updateResourceNode(node, { resourceId: 'Desc_Water_C' });
+      expect(resource(node).minerId).toBe('Build_WaterPump_C');
+    });
+
+    it('connects with a pipe', () => {
+      const water = store.addResourceNode('Desc_Water_C').id;
+      const coal = store.addBuilding(COAL_GENERATOR).id;
+      expect(store.connect(out(water), inp(coal, 1))).toBe('ok');
+      expect(store.beltViews()[0].transport.kind).toBe('pipe');
+    });
+  });
+
+  describe('generators', () => {
+    it('burns 15 coal and 45 m³ water per minute for 75 MW', () => {
+      const coal = store.addBuilding(COAL_GENERATOR).id;
+      expect(generator(coal).fuelId).toBe('Desc_Coal_C');
+      expect(generator(coal).inputs.map((i) => i.rate)).toEqual([15, 45]);
+
+      store.connect(out(store.addResourceNode('Desc_Coal_C').id), inp(coal, 0));
+      expect(generator(coal).productivity).toBe(0); // no water yet
+      expect(store.totalGeneratedMW()).toBe(0);
+
+      store.connect(out(store.addResourceNode('Desc_Water_C').id), inp(coal, 1));
+      expect(generator(coal).productivity).toBe(1);
+      expect(generator(coal).generatedMW).toBe(75);
+      expect(store.totalGeneratedMW()).toBe(75);
+    });
+
+    it('runs partially on too little fuel and scales linearly with clock speed', () => {
+      const coal = store.addBuilding(COAL_GENERATOR).id;
+      store.setShards(coal, 1); // 150%: 22.5 coal/min, 112.5 MW
+      expect(generator(coal).nominalMW).toBeCloseTo(112.5);
+      expect(generator(coal).inputs[0].rate).toBeCloseTo(22.5);
+    });
+
+    it('produces nuclear waste as an output', () => {
+      const plant = store.addBuilding(NUCLEAR).id;
+      expect(generator(plant).inputs[0].rate).toBeCloseTo(0.2);
+      expect(generator(plant).inputs[1].rate).toBeCloseTo(240);
+      expect(generator(plant).outputs[0].item?.id).toBe('Desc_NuclearWaste_C');
+      expect(generator(plant).outputs[0].rate).toBeCloseTo(10);
+    });
+
+    it('switches fuel and drops belts that no longer fit', () => {
+      const coal = store.addBuilding(COAL_GENERATOR).id;
+      store.connect(out(store.addResourceNode('Desc_Coal_C').id), inp(coal, 0));
+      store.setFuel(coal, 'Desc_PetroleumCoke_C');
+      expect(generator(coal).fuel?.id).toBe('Desc_PetroleumCoke_C');
+      expect(store.belts()).toHaveLength(0);
+      store.setFuel(coal, 'Desc_Wood_C'); // not a coal generator fuel
+      expect(generator(coal).fuelId).toBe('Desc_PetroleumCoke_C');
+    });
+
+    it('powers geothermal generators by geyser purity, without fuel or overclocking', () => {
+      const geo = store.addBuilding(GEOTHERMAL).id;
+      expect(generator(geo).inputs).toEqual([]);
+      expect(generator(geo).generatedMW).toBe(200);
+      store.setPurity(geo, 'pure');
+      expect(generator(geo).generatedMW).toBe(400);
+      store.setShards(geo, 3);
+      expect(generator(geo).shards).toBe(0);
     });
   });
 });

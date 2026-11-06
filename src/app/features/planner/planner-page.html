@@ -1,7 +1,7 @@
 <h1 class="sr-only">Planificador de fábrica</h1>
 <p id="canvas-help" class="sr-only">
   Haz clic derecho, o pulsa Mayúsculas+F10 con el lienzo enfocado, para añadir nodos de recurso,
-  edificios, divisores y unificadores.
+  edificios, generadores, divisores y unificadores.
 </p>
 
 <div
@@ -61,6 +61,15 @@
           />
         } @else if (node.kind === 'building') {
           <app-building-card
+            cdkDrag
+            cdkDragBoundary=".planner-surface"
+            [cdkDragFreeDragPosition]="node.position"
+            [node]="node"
+            (cdkDragMoved)="onNodeMoved(node, $event)"
+            (cdkDragEnded)="onNodeEnded(node, $event)"
+          />
+        } @else if (node.kind === 'generator') {
+          <app-generator-card
             cdkDrag
             cdkDragBoundary=".planner-surface"
             [cdkDragFreeDragPosition]="node.position"
@@ -138,7 +147,7 @@
         >
           <p class="m-0">
             Haz <strong class="text-fg">clic derecho</strong> en el lienzo para añadir nodos de
-            recurso, edificios, divisores y unificadores.
+            recurso, edificios, generadores, divisores y unificadores.
           </p>
           <p class="mt-2 mb-0">
             Luego arrastra el punto naranja de una salida hasta una entrada (se engancha sola), o
@@ -173,17 +182,21 @@
             @for (total of store.resourceTotals(); track total.resource.id) {
               <tr class="border-b border-line">
                 <th scope="row" class="px-1 py-1.5 text-left font-medium">
-                  <span
-                    class="mr-1 inline-block size-2.5 rounded-full"
-                    [style.background]="total.color"
-                    aria-hidden="true"
-                  ></span>
-                  {{ total.resource.name.es }}
-                  <span class="text-muted">({{ total.nodes }})</span>
+                  <span class="flex items-center gap-1.5">
+                    <app-item-icon [src]="total.icon" [color]="total.color" />
+                    <span>
+                      {{ total.resource.name.es }}
+                      <span class="text-muted">({{ total.nodes }})</span>
+                    </span>
+                  </span>
                 </th>
-                <td class="px-1 py-1.5 text-right">{{ total.extracted | number: '1.0-2' }}/min</td>
                 <td class="px-1 py-1.5 text-right">
-                  {{ total.transported | number: '1.0-2' }}/min
+                  {{ total.extracted | number: '1.0-2'
+                  }}<span class="text-xs text-muted">{{ total.unit }}</span>
+                </td>
+                <td class="px-1 py-1.5 text-right">
+                  {{ total.transported | number: '1.0-2'
+                  }}<span class="text-xs text-muted">{{ total.unit }}</span>
                 </td>
               </tr>
             }
@@ -199,16 +212,14 @@
           @for (product of store.productTotals(); track product.item.id) {
             <tr class="border-b border-line">
               <th scope="row" class="px-1 py-1.5 text-left font-medium">
-                <span
-                  class="mr-1 inline-block size-2.5 rounded-full"
-                  [style.background]="product.color"
-                  aria-hidden="true"
-                ></span>
-                {{ product.item.name.es }}
+                <span class="flex items-center gap-1.5">
+                  <app-item-icon [src]="product.icon" [color]="product.color" />
+                  {{ product.item.name.es }}
+                </span>
               </th>
               <td class="px-1 py-1.5 text-right">
                 {{ product.rate | number: '1.0-2'
-                }}{{ product.item.form === 'solid' ? '/min' : ' m³/min' }}
+                }}<span class="text-xs text-muted">{{ product.unit }}</span>
               </td>
             </tr>
           } @empty {
@@ -221,9 +232,29 @@
         </tbody>
       </table>
 
-      <p class="m-0">
-        Consumo total: <strong>{{ store.totalPowerMW() | number: '1.0-2' }} MW</strong>
-      </p>
+      <dl class="m-0 grid grid-cols-[1fr_auto] gap-x-3 gap-y-1 text-sm tabular-nums">
+        <dt class="text-muted">Generación</dt>
+        <dd class="m-0 text-right font-semibold">
+          {{ store.totalGeneratedMW() | number: '1.0-2' }} MW
+        </dd>
+        <dt class="text-muted">Consumo</dt>
+        <dd class="m-0 text-right font-semibold">
+          {{ store.totalPowerMW() | number: '1.0-2' }} MW
+        </dd>
+        @let balance = store.totalGeneratedMW() - store.totalPowerMW();
+        <dt class="border-t border-line pt-1 text-muted">Balance</dt>
+        <dd
+          class="m-0 border-t border-line pt-1 text-right font-bold"
+          [class.text-danger]="balance < -1e-9"
+        >
+          {{ balance > 0 ? '+' : '' }}{{ balance | number: '1.0-2' }} MW
+        </dd>
+      </dl>
+      @if (store.totalGeneratedMW() - store.totalPowerMW() < -1e-9) {
+        <p class="mt-2 mb-0 text-xs text-danger">
+          Falta energía: la fábrica consume más de lo que generan sus generadores.
+        </p>
+      }
     }
   </aside>
 </div>

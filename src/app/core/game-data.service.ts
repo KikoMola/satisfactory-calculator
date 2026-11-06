@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BUILDINGS, ITEMS, RECIPES, TRANSPORT } from '../data/game-data';
+import { BUILDINGS, ICON_IDS, ITEMS, RECIPES, TRANSPORT } from '../data/game-data';
 import type {
   Building,
   ExtractorBuilding,
+  GeneratorBuilding,
   Item,
   LogisticBuilding,
   ManufacturerBuilding,
@@ -25,6 +26,15 @@ const MANUFACTURER_ORDER = [
   'Build_QuantumEncoder_C',
 ];
 
+/** Power generators in the order players unlock them. */
+const GENERATOR_ORDER = [
+  'Build_GeneratorBiomass_Automated_C',
+  'Build_GeneratorCoal_C',
+  'Build_GeneratorFuel_C',
+  'Build_GeneratorGeoThermal_C',
+  'Build_GeneratorNuclear_C',
+];
+
 const byName = (a: { name: { es: string } }, b: { name: { es: string } }) =>
   a.name.es.localeCompare(b.name.es, 'es');
 
@@ -42,20 +52,28 @@ export class GameDataService {
     return map;
   }, new Map<string, Recipe[]>());
 
-  /** Solid raw resources that can be mined from a node (iron, copper, limestone...). */
-  readonly minableResources: Item[] = ITEMS.filter(
-    (item) => item.isRawResource && item.form === 'solid',
-  ).sort(byName);
+  /** Miners, Oil/Water Extractors and Resource Well Extractors. */
+  private readonly extractors = BUILDINGS.filter(
+    (b): b is ExtractorBuilding => b.kind === 'extractor',
+  );
 
-  /** Miners Mk.1 → Mk.3, slowest first. */
-  readonly miners: ExtractorBuilding[] = BUILDINGS.filter(
-    (b): b is ExtractorBuilding => b.kind === 'extractor' && b.allowedForms.includes('solid'),
-  ).sort((a, b) => a.ratePerMinute - b.ratePerMinute);
+  /**
+   * Raw resources a node can produce: ores first (iron, copper, limestone...), then liquids
+   * and gases (water, crude oil, nitrogen).
+   */
+  readonly extractableResources: Item[] = ITEMS.filter(
+    (item) => item.isRawResource && this.extractorsFor(item.id).length > 0,
+  ).sort((a, b) => Number(a.form !== 'solid') - Number(b.form !== 'solid') || byName(a, b));
 
   /** Production buildings that can run recipes (smelter, constructor...). */
   readonly manufacturers: ManufacturerBuilding[] = BUILDINGS.filter(
     (b): b is ManufacturerBuilding => b.kind === 'manufacturer',
   ).sort((a, b) => MANUFACTURER_ORDER.indexOf(a.id) - MANUFACTURER_ORDER.indexOf(b.id));
+
+  /** Power generators (biomass, coal, fuel, geothermal, nuclear). */
+  readonly generators: GeneratorBuilding[] = BUILDINGS.filter(
+    (b): b is GeneratorBuilding => b.kind === 'generator',
+  ).sort((a, b) => GENERATOR_ORDER.indexOf(a.id) - GENERATOR_ORDER.indexOf(b.id));
 
   /** Conveyor merger and splitter. */
   readonly logistics: LogisticBuilding[] = BUILDINGS.filter(
@@ -90,6 +108,27 @@ export class GameDataService {
     return [...(this.recipesByBuilding.get(buildingId) ?? [])].sort(
       (a, b) => rank(a) - rank(b) || byName(a, b),
     );
+  }
+
+  /**
+   * Extractors that can work a resource, slowest first: Miner Mk.1 → Mk.3 for ores; the
+   * Resource Well Extractor (60 m³/min) before the Oil/Water Extractor (120 m³/min).
+   */
+  extractorsFor(resourceId: string): ExtractorBuilding[] {
+    const item = this.itemsById.get(resourceId);
+    if (!item) return [];
+    return this.extractors
+      .filter((e) =>
+        e.allowedResources.length > 0
+          ? e.allowedResources.includes(resourceId)
+          : e.allowedForms.includes(item.form),
+      )
+      .sort((a, b) => a.ratePerMinute - b.ratePerMinute);
+  }
+
+  /** URL of the icon extracted from the game (`npm run icons:extract`), if there is one. */
+  icon(id: string | null | undefined): string | null {
+    return id && ICON_IDS.has(id) ? `icons/${id}.png` : null;
   }
 
   transport(id: string): Transport {
