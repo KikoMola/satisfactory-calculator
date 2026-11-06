@@ -709,12 +709,18 @@ export class PlannerStore {
     });
   }
 
-  /** Installs 0–3 power shards; removing shards lowers the clock if it no longer fits. */
+  /**
+   * Installs 0–3 power shards. If the building was running at its old limit (e.g. 100% with
+   * no shards), the clock follows the new limit so adding a shard overclocks right away;
+   * a clock set lower by hand is kept. Removing shards lowers the clock if it no longer fits.
+   */
   setShards(id: string, shards: number) {
     this.patchNode(id, (n) => {
       if (n.kind === 'logistic') return n;
       const count = Math.min(Math.max(Math.round(shards), 0), MAX_POWER_SHARDS);
-      return { ...n, shards: count, clock: Math.min(n.clock, maxClock(count)) };
+      const wasAtLimit = n.clock >= maxClock(n.shards) - 1e-9;
+      const clock = wasAtLimit ? maxClock(count) : Math.min(n.clock, maxClock(count));
+      return { ...n, shards: count, clock };
     });
   }
 

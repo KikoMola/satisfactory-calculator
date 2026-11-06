@@ -1,6 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { CANVAS, type PortRef } from './planner.model';
-import { PlannerStore, type BuildingNodeView, type LogisticNodeView } from './planner.store';
+import {
+  PlannerStore,
+  type BuildingNodeView,
+  type LogisticNodeView,
+  type ResourceNodeView,
+} from './planner.store';
 
 const SMELTER = 'Build_SmelterMk1_C';
 const CONSTRUCTOR = 'Build_ConstructorMk1_C';
@@ -161,6 +166,24 @@ describe('PlannerStore', () => {
       expect(building(smelter).clock).toBe(2);
       expect(building(smelter).inputs[0].rate).toBe(60);
       expect(building(smelter).outputs[0].rate).toBe(60);
+    });
+
+    it('overclocks right away when shards are added at full speed', () => {
+      const node = ironNode('pure'); // Mk.1 on a pure node: 120/min
+      store.setShards(node, 1);
+      const view = () => store.nodeViews().find((n) => n.id === node) as ResourceNodeView;
+      expect(view().clock).toBe(1.5);
+      expect(view().outputs[0].rate).toBe(180);
+      store.setShards(node, 3);
+      expect(view().clock).toBe(2.5);
+      expect(view().outputs[0].rate).toBe(300);
+    });
+
+    it('keeps a clock set lower by hand when adding shards', () => {
+      const smelter = ironSmelter();
+      store.setClock(smelter, 0.5);
+      store.setShards(smelter, 2);
+      expect(building(smelter).clock).toBe(0.5);
     });
 
     it('lowers the clock when shards are removed', () => {
