@@ -1,4 +1,12 @@
-import { beltCurve, beltFlow, clampPoint, extractionRate } from './planner.calc';
+import {
+  beltFlow,
+  beltRoute,
+  clampPoint,
+  extractionRate,
+  orthogonalPoints,
+  recipeRate,
+  roundedPath,
+} from './planner.calc';
 
 describe('extractionRate', () => {
   it('applies the in-game purity multipliers', () => {
@@ -11,35 +19,71 @@ describe('extractionRate', () => {
   });
 });
 
+describe('recipeRate', () => {
+  it('converts amount per cycle into per minute', () => {
+    // Iron Ingot: 1 ore → 1 ingot every 2 s = 30/min.
+    expect(recipeRate(1, 2)).toBe(30);
+    // Iron Plate: 3 ingots → 2 plates every 6 s.
+    expect(recipeRate(3, 6)).toBe(30);
+    expect(recipeRate(2, 6)).toBe(20);
+  });
+});
+
 describe('beltFlow', () => {
-  it('passes everything through when the belt is big enough', () => {
-    expect(beltFlow(60, 120)).toEqual({
-      input: 60,
-      capacity: 120,
-      flow: 60,
-      utilization: 0.5,
-      bottleneck: false,
-    });
+  it('is limited by demand when the belt and source have room', () => {
+    // Mk.1 miner (60) into a smelter (30/min) over a Mk.1 belt (60).
+    const result = beltFlow(60, 60, 30);
+    expect(result.flow).toBe(30);
+    expect(result.bottleneck).toBe(false);
   });
 
-  it('caps the flow and flags a bottleneck when the belt is too small', () => {
-    const result = beltFlow(480, 270);
+  it('flags the belt as bottleneck when it is slower than supply and demand', () => {
+    const result = beltFlow(480, 270, 480);
     expect(result.flow).toBe(270);
     expect(result.utilization).toBe(1);
     expect(result.bottleneck).toBe(true);
   });
 
-  it('is not a bottleneck when input equals capacity', () => {
-    expect(beltFlow(60, 60).bottleneck).toBe(false);
+  it('is not a bottleneck when the source is what limits', () => {
+    expect(beltFlow(30, 60, 45).bottleneck).toBe(false);
+  });
+
+  it('uses actual consumption when the target runs below 100%', () => {
+    expect(beltFlow(60, 60, 30, 15).flow).toBe(15);
   });
 });
 
-describe('beltCurve', () => {
-  it('starts and ends at the given points', () => {
-    const { path, mid } = beltCurve({ x: 0, y: 0 }, { x: 200, y: 100 });
+describe('orthogonalPoints', () => {
+  const isOrthogonal = (points: { x: number; y: number }[]) =>
+    points.slice(1).every((p, i) => p.x === points[i].x || p.y === points[i].y);
+
+  it('routes forward connections with a single vertical segment in the middle', () => {
+    const points = orthogonalPoints({ x: 0, y: 0 }, { x: 200, y: 100 });
+    expect(points).toEqual([
+      { x: 0, y: 0 },
+      { x: 100, y: 0 },
+      { x: 100, y: 100 },
+      { x: 200, y: 100 },
+    ]);
+  });
+
+  it('routes backward connections around, always with straight segments', () => {
+    const points = orthogonalPoints({ x: 300, y: 0 }, { x: 100, y: 20 });
+    expect(points.length).toBe(6);
+    expect(isOrthogonal(points)).toBe(true);
+    expect(points.at(-1)).toEqual({ x: 100, y: 20 });
+  });
+});
+
+describe('roundedPath / beltRoute', () => {
+  it('starts and ends at the ports', () => {
+    const path = roundedPath(orthogonalPoints({ x: 0, y: 0 }, { x: 200, y: 100 }));
     expect(path.startsWith('M 0 0')).toBe(true);
-    expect(path.endsWith('200 100')).toBe(true);
-    expect(mid).toEqual({ x: 100, y: 50 });
+    expect(path.endsWith('L 200 100')).toBe(true);
+  });
+
+  it('puts the label on the middle segment', () => {
+    expect(beltRoute({ x: 0, y: 0 }, { x: 200, y: 100 }).mid).toEqual({ x: 100, y: 50 });
   });
 });
 

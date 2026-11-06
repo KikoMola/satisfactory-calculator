@@ -23,6 +23,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -46,6 +47,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -85,6 +87,7 @@
       }
     ],
     "duration": 24,
+    "event": null,
     "producedIn": "Build_QuantumEncoder_C",
     "variablePower": {
       "min": 0,
@@ -115,6 +118,7 @@
       }
     ],
     "duration": 16,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -142,6 +146,7 @@
       }
     ],
     "duration": 15,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -169,6 +174,7 @@
       }
     ],
     "duration": 8,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -192,6 +198,7 @@
       }
     ],
     "duration": 8,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -219,6 +226,7 @@
       }
     ],
     "duration": 60,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -246,6 +254,7 @@
       }
     ],
     "duration": 24,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -273,6 +282,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -300,6 +310,7 @@
       }
     ],
     "duration": 24,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -327,6 +338,7 @@
       }
     ],
     "duration": 10,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -354,6 +366,7 @@
       }
     ],
     "duration": 8,
+    "event": null,
     "producedIn": "Build_FoundryMk1_C",
     "variablePower": null
   },
@@ -381,6 +394,7 @@
       }
     ],
     "duration": 24,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -408,6 +422,7 @@
       }
     ],
     "duration": 48,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -443,6 +458,7 @@
       }
     ],
     "duration": 8,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -466,6 +482,7 @@
       }
     ],
     "duration": 4,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -489,6 +506,7 @@
       }
     ],
     "duration": 8,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -516,6 +534,7 @@
       }
     ],
     "duration": 8,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -543,6 +562,7 @@
       }
     ],
     "duration": 4,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -570,6 +590,7 @@
       }
     ],
     "duration": 8,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -597,6 +618,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_FoundryMk1_C",
     "variablePower": null
   },
@@ -628,6 +650,7 @@
       }
     ],
     "duration": 16,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -655,6 +678,7 @@
       }
     ],
     "duration": 36,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -682,6 +706,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -713,6 +738,7 @@
       }
     ],
     "duration": 24,
+    "event": null,
     "producedIn": "Build_Blender_C",
     "variablePower": null
   },
@@ -740,6 +766,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_FoundryMk1_C",
     "variablePower": null
   },
@@ -767,6 +794,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -794,6 +822,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_FoundryMk1_C",
     "variablePower": null
   },
@@ -821,6 +850,7 @@
       }
     ],
     "duration": 16,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -852,6 +882,7 @@
       }
     ],
     "duration": 32,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -875,6 +906,7 @@
       }
     ],
     "duration": 3,
+    "event": null,
     "producedIn": "Build_HadronCollider_C",
     "variablePower": {
       "min": 500,
@@ -905,6 +937,7 @@
       }
     ],
     "duration": 2,
+    "event": null,
     "producedIn": "Build_HadronCollider_C",
     "variablePower": {
       "min": 500,
@@ -935,6 +968,7 @@
       }
     ],
     "duration": 3,
+    "event": null,
     "producedIn": "Build_HadronCollider_C",
     "variablePower": {
       "min": 250,
@@ -961,6 +995,7 @@
       }
     ],
     "duration": 3,
+    "event": null,
     "producedIn": "Build_HadronCollider_C",
     "variablePower": {
       "min": 250,
@@ -987,6 +1022,7 @@
       }
     ],
     "duration": 2,
+    "event": null,
     "producedIn": "Build_HadronCollider_C",
     "variablePower": {
       "min": 250,
@@ -1017,6 +1053,7 @@
       }
     ],
     "duration": 4,
+    "event": null,
     "producedIn": "Build_Converter_C",
     "variablePower": {
       "min": 100,
@@ -1047,6 +1084,7 @@
       }
     ],
     "duration": 3,
+    "event": null,
     "producedIn": "Build_HadronCollider_C",
     "variablePower": {
       "min": 250,
@@ -1077,6 +1115,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_Blender_C",
     "variablePower": null
   },
@@ -1104,6 +1143,7 @@
       }
     ],
     "duration": 2,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -1131,6 +1171,7 @@
       }
     ],
     "duration": 16,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -1162,6 +1203,7 @@
       }
     ],
     "duration": 4,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -1189,6 +1231,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -1216,6 +1259,7 @@
       }
     ],
     "duration": 15,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -1243,6 +1287,7 @@
       }
     ],
     "duration": 15,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -1270,6 +1315,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -1309,6 +1355,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_Blender_C",
     "variablePower": null
   },
@@ -1340,6 +1387,7 @@
       }
     ],
     "duration": 16,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -1367,6 +1415,7 @@
       }
     ],
     "duration": 20,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -1394,6 +1443,7 @@
       }
     ],
     "duration": 8,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -1429,6 +1479,7 @@
       }
     ],
     "duration": 20,
+    "event": null,
     "producedIn": "Build_Blender_C",
     "variablePower": null
   },
@@ -1456,6 +1507,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -1491,6 +1543,7 @@
       }
     ],
     "duration": 16,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -1518,6 +1571,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -1549,6 +1603,7 @@
       }
     ],
     "duration": 40,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -1580,6 +1635,7 @@
       }
     ],
     "duration": 32,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -1607,6 +1663,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_FoundryMk1_C",
     "variablePower": null
   },
@@ -1634,6 +1691,7 @@
       }
     ],
     "duration": 3,
+    "event": null,
     "producedIn": "Build_FoundryMk1_C",
     "variablePower": null
   },
@@ -1661,6 +1719,7 @@
       }
     ],
     "duration": 24,
+    "event": null,
     "producedIn": "Build_FoundryMk1_C",
     "variablePower": null
   },
@@ -1688,6 +1747,7 @@
       }
     ],
     "duration": 120,
+    "event": null,
     "producedIn": "Build_HadronCollider_C",
     "variablePower": {
       "min": 250,
@@ -1730,6 +1790,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_Blender_C",
     "variablePower": null
   },
@@ -1761,6 +1822,7 @@
       }
     ],
     "duration": 3,
+    "event": null,
     "producedIn": "Build_Converter_C",
     "variablePower": {
       "min": 100,
@@ -1791,6 +1853,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_FoundryMk1_C",
     "variablePower": null
   },
@@ -1818,6 +1881,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -1845,6 +1909,7 @@
       }
     ],
     "duration": 60,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -1880,6 +1945,7 @@
       }
     ],
     "duration": 64,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -1911,6 +1977,7 @@
       }
     ],
     "duration": 48,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -1946,6 +2013,7 @@
       }
     ],
     "duration": 300,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -1973,6 +2041,7 @@
       }
     ],
     "duration": 20,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -2000,6 +2069,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -2031,6 +2101,7 @@
       }
     ],
     "duration": 24,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -2058,6 +2129,7 @@
       }
     ],
     "duration": 120,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -2085,6 +2157,7 @@
       }
     ],
     "duration": 2,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -2112,6 +2185,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -2139,6 +2213,7 @@
       }
     ],
     "duration": 5,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -2166,6 +2241,7 @@
       }
     ],
     "duration": 24,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -2193,6 +2269,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -2220,6 +2297,7 @@
       }
     ],
     "duration": 8,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -2247,6 +2325,7 @@
       }
     ],
     "duration": 20,
+    "event": null,
     "producedIn": "Build_FoundryMk1_C",
     "variablePower": null
   },
@@ -2278,6 +2357,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -2305,6 +2385,7 @@
       }
     ],
     "duration": 8,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -2340,6 +2421,7 @@
       }
     ],
     "duration": 40,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -2371,6 +2453,7 @@
       }
     ],
     "duration": 16,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -2398,6 +2481,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -2425,6 +2509,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -2452,6 +2537,7 @@
       }
     ],
     "duration": 32,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -2491,6 +2577,7 @@
       }
     ],
     "duration": 2.4,
+    "event": null,
     "producedIn": "Build_Blender_C",
     "variablePower": null
   },
@@ -2518,6 +2605,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -2545,6 +2633,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -2568,6 +2657,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -2591,6 +2681,7 @@
       }
     ],
     "duration": 24,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -2618,6 +2709,7 @@
       }
     ],
     "duration": 8,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -2653,6 +2745,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_Blender_C",
     "variablePower": null
   },
@@ -2680,6 +2773,7 @@
       }
     ],
     "duration": 3,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -2707,6 +2801,7 @@
       }
     ],
     "duration": 15,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -2734,6 +2829,7 @@
       }
     ],
     "duration": 8,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -2757,6 +2853,7 @@
       }
     ],
     "duration": 8,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -2784,6 +2881,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_FoundryMk1_C",
     "variablePower": null
   },
@@ -2807,6 +2905,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -2834,6 +2933,7 @@
       }
     ],
     "duration": 4,
+    "event": null,
     "producedIn": "Build_FoundryMk1_C",
     "variablePower": null
   },
@@ -2857,6 +2957,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -2884,6 +2985,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_FoundryMk1_C",
     "variablePower": null
   },
@@ -2907,6 +3009,7 @@
       }
     ],
     "duration": 5,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -2942,6 +3045,7 @@
       }
     ],
     "duration": 25,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -2977,6 +3081,7 @@
       }
     ],
     "duration": 8,
+    "event": null,
     "producedIn": "Build_Blender_C",
     "variablePower": null
   },
@@ -3004,6 +3109,7 @@
       }
     ],
     "duration": 16,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -3031,6 +3137,7 @@
       }
     ],
     "duration": 8,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -3066,6 +3173,7 @@
       }
     ],
     "duration": 64,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -3101,6 +3209,7 @@
       }
     ],
     "duration": 32,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -3136,6 +3245,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -3163,6 +3273,7 @@
       }
     ],
     "duration": 3,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -3186,6 +3297,7 @@
       }
     ],
     "duration": 24,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -3209,6 +3321,7 @@
       }
     ],
     "duration": 4,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -3240,6 +3353,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -3263,6 +3377,7 @@
       }
     ],
     "duration": 2,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -3294,6 +3409,7 @@
       }
     ],
     "duration": 1,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -3321,6 +3437,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -3356,6 +3473,7 @@
       }
     ],
     "duration": 3,
+    "event": null,
     "producedIn": "Build_Blender_C",
     "variablePower": null
   },
@@ -3383,6 +3501,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_Converter_C",
     "variablePower": {
       "min": 100,
@@ -3413,6 +3532,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_Converter_C",
     "variablePower": {
       "min": 100,
@@ -3439,6 +3559,7 @@
       }
     ],
     "duration": 4,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -3462,6 +3583,7 @@
       }
     ],
     "duration": 4,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -3485,6 +3607,7 @@
       }
     ],
     "duration": 5,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -3508,6 +3631,7 @@
       }
     ],
     "duration": 4,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -3531,6 +3655,7 @@
       }
     ],
     "duration": 4,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -3554,6 +3679,7 @@
       }
     ],
     "duration": 2,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -3577,6 +3703,7 @@
       }
     ],
     "duration": 12,
+    "event": "christmas",
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -3604,6 +3731,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -3635,6 +3763,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_Blender_C",
     "variablePower": null
   },
@@ -3666,6 +3795,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -3693,6 +3823,7 @@
       }
     ],
     "duration": 24,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -3720,6 +3851,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_Converter_C",
     "variablePower": {
       "min": 100,
@@ -3750,6 +3882,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_Converter_C",
     "variablePower": {
       "min": 100,
@@ -3780,6 +3913,7 @@
       }
     ],
     "duration": 8,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -3807,6 +3941,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_Converter_C",
     "variablePower": {
       "min": 100,
@@ -3837,6 +3972,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_Converter_C",
     "variablePower": {
       "min": 100,
@@ -3871,6 +4007,7 @@
       }
     ],
     "duration": 24,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -3906,6 +4043,7 @@
       }
     ],
     "duration": 32,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -3929,6 +4067,7 @@
       }
     ],
     "duration": 4,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -3964,6 +4103,7 @@
       }
     ],
     "duration": 10,
+    "event": null,
     "producedIn": "Build_Blender_C",
     "variablePower": null
   },
@@ -3991,6 +4131,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_Converter_C",
     "variablePower": {
       "min": 100,
@@ -4021,6 +4162,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_Converter_C",
     "variablePower": {
       "min": 100,
@@ -4047,6 +4189,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -4070,6 +4213,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -4101,6 +4245,7 @@
       }
     ],
     "duration": 120,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -4124,6 +4269,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_Converter_C",
     "variablePower": {
       "min": 100,
@@ -4154,6 +4300,7 @@
       }
     ],
     "duration": 2,
+    "event": null,
     "producedIn": "Build_HadronCollider_C",
     "variablePower": {
       "min": 500,
@@ -4180,6 +4327,7 @@
       }
     ],
     "duration": 2,
+    "event": null,
     "producedIn": "Build_HadronCollider_C",
     "variablePower": {
       "min": 250,
@@ -4210,6 +4358,7 @@
       }
     ],
     "duration": 30,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -4237,6 +4386,7 @@
       }
     ],
     "duration": 10,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -4264,6 +4414,7 @@
       }
     ],
     "duration": 4,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -4291,6 +4442,7 @@
       }
     ],
     "duration": 2,
+    "event": null,
     "producedIn": "Build_Converter_C",
     "variablePower": {
       "min": 100,
@@ -4321,6 +4473,7 @@
       }
     ],
     "duration": 4,
+    "event": null,
     "producedIn": "Build_Converter_C",
     "variablePower": {
       "min": 100,
@@ -4351,6 +4504,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_Converter_C",
     "variablePower": {
       "min": 100,
@@ -4377,6 +4531,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -4408,6 +4563,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_HadronCollider_C",
     "variablePower": {
       "min": 500,
@@ -4450,6 +4606,7 @@
       }
     ],
     "duration": 24,
+    "event": null,
     "producedIn": "Build_QuantumEncoder_C",
     "variablePower": {
       "min": 0,
@@ -4484,6 +4641,7 @@
       }
     ],
     "duration": 8,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -4515,6 +4673,7 @@
       }
     ],
     "duration": 16,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -4542,6 +4701,7 @@
       }
     ],
     "duration": 24,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -4569,6 +4729,7 @@
       }
     ],
     "duration": 24,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -4596,6 +4757,7 @@
       }
     ],
     "duration": 24,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -4619,6 +4781,7 @@
       }
     ],
     "duration": 4,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -4646,6 +4809,7 @@
       }
     ],
     "duration": 3,
+    "event": null,
     "producedIn": "Build_Packager_C",
     "variablePower": null
   },
@@ -4677,6 +4841,7 @@
       }
     ],
     "duration": 40,
+    "event": null,
     "producedIn": "Build_Blender_C",
     "variablePower": null
   },
@@ -4700,6 +4865,7 @@
       }
     ],
     "duration": 1,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -4727,6 +4893,7 @@
       }
     ],
     "duration": 4,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -4754,6 +4921,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -4781,6 +4949,7 @@
       }
     ],
     "duration": 8,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -4812,6 +4981,7 @@
       }
     ],
     "duration": 16,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -4839,6 +5009,7 @@
       }
     ],
     "duration": 4,
+    "event": null,
     "producedIn": "Build_FoundryMk1_C",
     "variablePower": null
   },
@@ -4862,6 +5033,7 @@
       }
     ],
     "duration": 4,
+    "event": null,
     "producedIn": "Build_SmelterMk1_C",
     "variablePower": null
   },
@@ -4885,6 +5057,7 @@
       }
     ],
     "duration": 2,
+    "event": null,
     "producedIn": "Build_SmelterMk1_C",
     "variablePower": null
   },
@@ -4908,6 +5081,7 @@
       }
     ],
     "duration": 2,
+    "event": null,
     "producedIn": "Build_SmelterMk1_C",
     "variablePower": null
   },
@@ -4931,6 +5105,7 @@
       }
     ],
     "duration": 2,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -4958,6 +5133,7 @@
       }
     ],
     "duration": 4,
+    "event": null,
     "producedIn": "Build_FoundryMk1_C",
     "variablePower": null
   },
@@ -4989,6 +5165,7 @@
       }
     ],
     "duration": 24,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -5016,6 +5193,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_Converter_C",
     "variablePower": {
       "min": 100,
@@ -5042,6 +5220,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -5069,6 +5248,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -5092,6 +5272,7 @@
       }
     ],
     "duration": 4,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -5119,6 +5300,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_Converter_C",
     "variablePower": {
       "min": 100,
@@ -5149,6 +5331,7 @@
       }
     ],
     "duration": 4,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -5176,6 +5359,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -5203,6 +5387,7 @@
       }
     ],
     "duration": 60,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -5238,6 +5423,7 @@
       }
     ],
     "duration": 30,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -5265,6 +5451,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -5300,6 +5487,7 @@
       }
     ],
     "duration": 32,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -5331,6 +5519,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_Blender_C",
     "variablePower": null
   },
@@ -5358,6 +5547,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_Converter_C",
     "variablePower": {
       "min": 100,
@@ -5388,6 +5578,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_Converter_C",
     "variablePower": {
       "min": 100,
@@ -5418,6 +5609,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -5445,6 +5637,7 @@
       }
     ],
     "duration": 24,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -5472,6 +5665,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -5507,6 +5701,7 @@
       }
     ],
     "duration": 120,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -5534,6 +5729,7 @@
       }
     ],
     "duration": 60,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -5573,6 +5769,7 @@
       }
     ],
     "duration": 24,
+    "event": null,
     "producedIn": "Build_Blender_C",
     "variablePower": null
   },
@@ -5604,6 +5801,7 @@
       }
     ],
     "duration": 150,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -5631,6 +5829,7 @@
       }
     ],
     "duration": 1,
+    "event": null,
     "producedIn": "Build_Packager_C",
     "variablePower": null
   },
@@ -5658,6 +5857,7 @@
       }
     ],
     "duration": 3,
+    "event": null,
     "producedIn": "Build_Packager_C",
     "variablePower": null
   },
@@ -5685,6 +5885,7 @@
       }
     ],
     "duration": 4,
+    "event": null,
     "producedIn": "Build_Packager_C",
     "variablePower": null
   },
@@ -5712,6 +5913,7 @@
       }
     ],
     "duration": 3,
+    "event": null,
     "producedIn": "Build_Packager_C",
     "variablePower": null
   },
@@ -5739,6 +5941,7 @@
       }
     ],
     "duration": 2,
+    "event": null,
     "producedIn": "Build_Packager_C",
     "variablePower": null
   },
@@ -5766,6 +5969,7 @@
       }
     ],
     "duration": 1,
+    "event": null,
     "producedIn": "Build_Packager_C",
     "variablePower": null
   },
@@ -5793,6 +5997,7 @@
       }
     ],
     "duration": 4,
+    "event": null,
     "producedIn": "Build_Packager_C",
     "variablePower": null
   },
@@ -5820,6 +6025,7 @@
       }
     ],
     "duration": 1,
+    "event": null,
     "producedIn": "Build_Packager_C",
     "variablePower": null
   },
@@ -5847,6 +6053,7 @@
       }
     ],
     "duration": 3,
+    "event": null,
     "producedIn": "Build_Packager_C",
     "variablePower": null
   },
@@ -5874,6 +6081,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_Packager_C",
     "variablePower": null
   },
@@ -5901,6 +6109,7 @@
       }
     ],
     "duration": 2,
+    "event": null,
     "producedIn": "Build_Packager_C",
     "variablePower": null
   },
@@ -5924,6 +6133,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -5951,6 +6161,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -5978,6 +6189,7 @@
       }
     ],
     "duration": 60,
+    "event": null,
     "producedIn": "Build_HadronCollider_C",
     "variablePower": {
       "min": 250,
@@ -6008,6 +6220,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -6043,6 +6256,7 @@
       }
     ],
     "duration": 240,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -6066,6 +6280,7 @@
       }
     ],
     "duration": 8,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -6089,6 +6304,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -6112,6 +6328,7 @@
       }
     ],
     "duration": 24,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -6139,6 +6356,7 @@
       }
     ],
     "duration": 60,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -6162,6 +6380,7 @@
       }
     ],
     "duration": 3,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -6185,6 +6404,7 @@
       }
     ],
     "duration": 3,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -6208,6 +6428,7 @@
       }
     ],
     "duration": 3,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -6231,6 +6452,7 @@
       }
     ],
     "duration": 3,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -6254,6 +6476,7 @@
       }
     ],
     "duration": 2,
+    "event": null,
     "producedIn": "Build_SmelterMk1_C",
     "variablePower": null
   },
@@ -6272,6 +6495,7 @@
       }
     ],
     "duration": 3,
+    "event": null,
     "producedIn": "Build_Converter_C",
     "variablePower": {
       "min": 100,
@@ -6302,6 +6526,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_Converter_C",
     "variablePower": {
       "min": 100,
@@ -6332,6 +6557,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_Converter_C",
     "variablePower": {
       "min": 100,
@@ -6358,6 +6584,7 @@
       }
     ],
     "duration": 8,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -6381,6 +6608,7 @@
       }
     ],
     "duration": 5,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -6412,6 +6640,7 @@
       }
     ],
     "duration": 48,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -6443,6 +6672,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -6470,6 +6700,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -6497,6 +6728,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -6520,6 +6752,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -6547,6 +6780,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -6574,6 +6808,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -6605,6 +6840,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_Blender_C",
     "variablePower": null
   },
@@ -6632,6 +6868,7 @@
       }
     ],
     "duration": 15,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -6659,6 +6896,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -6690,6 +6928,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -6713,6 +6952,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -6736,6 +6976,7 @@
       }
     ],
     "duration": 8,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -6771,6 +7012,7 @@
       }
     ],
     "duration": 60,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -6794,6 +7036,7 @@
       }
     ],
     "duration": 12,
+    "event": "christmas",
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -6817,6 +7060,7 @@
       }
     ],
     "duration": 12,
+    "event": "christmas",
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -6844,6 +7088,7 @@
       }
     ],
     "duration": 30,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -6875,6 +7120,7 @@
       }
     ],
     "duration": 120,
+    "event": null,
     "producedIn": "Build_Blender_C",
     "variablePower": null
   },
@@ -6910,6 +7156,7 @@
       }
     ],
     "duration": 60,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -6949,6 +7196,7 @@
       }
     ],
     "duration": 15,
+    "event": null,
     "producedIn": "Build_QuantumEncoder_C",
     "variablePower": {
       "min": 0,
@@ -6979,6 +7227,7 @@
       }
     ],
     "duration": 24,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -7006,6 +7255,7 @@
       }
     ],
     "duration": 24,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -7037,6 +7287,7 @@
       }
     ],
     "duration": 60,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -7072,6 +7323,7 @@
       }
     ],
     "duration": 60,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -7099,6 +7351,7 @@
       }
     ],
     "duration": 120,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -7126,6 +7379,7 @@
       }
     ],
     "duration": 80,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -7161,6 +7415,7 @@
       }
     ],
     "duration": 120,
+    "event": null,
     "producedIn": "Build_ManufacturerMk1_C",
     "variablePower": null
   },
@@ -7188,6 +7443,7 @@
       }
     ],
     "duration": 120,
+    "event": null,
     "producedIn": "Build_HadronCollider_C",
     "variablePower": {
       "min": 500,
@@ -7214,6 +7470,7 @@
       }
     ],
     "duration": 4,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -7241,6 +7498,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -7264,6 +7522,7 @@
       }
     ],
     "duration": 4,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -7287,6 +7546,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -7314,6 +7574,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_Converter_C",
     "variablePower": {
       "min": 100,
@@ -7344,6 +7605,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_Converter_C",
     "variablePower": {
       "min": 100,
@@ -7374,6 +7636,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_OilRefinery_C",
     "variablePower": null
   },
@@ -7413,6 +7676,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_QuantumEncoder_C",
     "variablePower": {
       "min": 0,
@@ -7455,6 +7719,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_QuantumEncoder_C",
     "variablePower": {
       "min": 0,
@@ -7497,6 +7762,7 @@
       }
     ],
     "duration": 20,
+    "event": null,
     "producedIn": "Build_QuantumEncoder_C",
     "variablePower": {
       "min": 0,
@@ -7523,6 +7789,7 @@
       }
     ],
     "duration": 10,
+    "event": null,
     "producedIn": "Build_Converter_C",
     "variablePower": {
       "min": 100,
@@ -7553,6 +7820,7 @@
       }
     ],
     "duration": 1,
+    "event": null,
     "producedIn": "Build_Packager_C",
     "variablePower": null
   },
@@ -7580,6 +7848,7 @@
       }
     ],
     "duration": 2,
+    "event": null,
     "producedIn": "Build_Packager_C",
     "variablePower": null
   },
@@ -7607,6 +7876,7 @@
       }
     ],
     "duration": 2,
+    "event": null,
     "producedIn": "Build_Packager_C",
     "variablePower": null
   },
@@ -7634,6 +7904,7 @@
       }
     ],
     "duration": 3,
+    "event": null,
     "producedIn": "Build_Packager_C",
     "variablePower": null
   },
@@ -7661,6 +7932,7 @@
       }
     ],
     "duration": 3,
+    "event": null,
     "producedIn": "Build_Packager_C",
     "variablePower": null
   },
@@ -7688,6 +7960,7 @@
       }
     ],
     "duration": 1,
+    "event": null,
     "producedIn": "Build_Packager_C",
     "variablePower": null
   },
@@ -7715,6 +7988,7 @@
       }
     ],
     "duration": 2,
+    "event": null,
     "producedIn": "Build_Packager_C",
     "variablePower": null
   },
@@ -7742,6 +8016,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_Packager_C",
     "variablePower": null
   },
@@ -7769,6 +8044,7 @@
       }
     ],
     "duration": 1,
+    "event": null,
     "producedIn": "Build_Packager_C",
     "variablePower": null
   },
@@ -7796,6 +8072,7 @@
       }
     ],
     "duration": 1,
+    "event": null,
     "producedIn": "Build_Packager_C",
     "variablePower": null
   },
@@ -7823,6 +8100,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_Packager_C",
     "variablePower": null
   },
@@ -7850,6 +8128,7 @@
       }
     ],
     "duration": 1,
+    "event": null,
     "producedIn": "Build_Packager_C",
     "variablePower": null
   },
@@ -7877,6 +8156,7 @@
       }
     ],
     "duration": 6,
+    "event": null,
     "producedIn": "Build_Converter_C",
     "variablePower": {
       "min": 100,
@@ -7915,6 +8195,7 @@
       }
     ],
     "duration": 12,
+    "event": null,
     "producedIn": "Build_Blender_C",
     "variablePower": null
   },
@@ -7938,6 +8219,7 @@
       }
     ],
     "duration": 4,
+    "event": null,
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -7961,6 +8243,7 @@
       }
     ],
     "duration": 12,
+    "event": "christmas",
     "producedIn": "Build_SmelterMk1_C",
     "variablePower": null
   },
@@ -7984,6 +8267,7 @@
       }
     ],
     "duration": 12,
+    "event": "christmas",
     "producedIn": "Build_SmelterMk1_C",
     "variablePower": null
   },
@@ -8011,6 +8295,7 @@
       }
     ],
     "duration": 12,
+    "event": "christmas",
     "producedIn": "Build_FoundryMk1_C",
     "variablePower": null
   },
@@ -8038,6 +8323,7 @@
       }
     ],
     "duration": 12,
+    "event": "christmas",
     "producedIn": "Build_FoundryMk1_C",
     "variablePower": null
   },
@@ -8065,6 +8351,7 @@
       }
     ],
     "duration": 12,
+    "event": "christmas",
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -8088,6 +8375,7 @@
       }
     ],
     "duration": 12,
+    "event": "christmas",
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -8111,6 +8399,7 @@
       }
     ],
     "duration": 6,
+    "event": "christmas",
     "producedIn": "Build_ConstructorMk1_C",
     "variablePower": null
   },
@@ -8138,6 +8427,7 @@
       }
     ],
     "duration": 60,
+    "event": "christmas",
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   },
@@ -8165,6 +8455,7 @@
       }
     ],
     "duration": 60,
+    "event": "christmas",
     "producedIn": "Build_AssemblerMk1_C",
     "variablePower": null
   }

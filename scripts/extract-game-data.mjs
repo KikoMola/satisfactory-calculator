@@ -287,6 +287,8 @@ for (const cls of es.values()) {
     ingredients,
     products,
     duration: num(cls.mManufactoringDuration),
+    // Seasonal recipes (e.g. "(EV_Christmas)" for FICSMAS) → 'christmas'; null otherwise.
+    event: cls.mRelevantEvents?.match(/EV_(\w+)/)?.[1]?.toLowerCase() ?? null,
     producedIn,
     variablePower: hasVariablePower
       ? { min: variableConstant, max: round(variableConstant + variableFactor) }

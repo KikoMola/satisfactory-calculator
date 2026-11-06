@@ -1,0 +1,140 @@
+@let n = node();
+<header class="flex h-13 items-center gap-1 border-b border-line pr-2 pl-1">
+  <button
+    type="button"
+    ngpButton
+    cdkDragHandle
+    class="flex h-10 min-w-0 flex-1 cursor-grab items-center gap-2 rounded-md px-2 text-left font-semibold data-hover:bg-hover group-[.cdk-drag-dragging]/card:cursor-grabbing"
+    [attr.aria-describedby]="n.id + '-move-help'"
+    (keydown)="onHandleKeydown($event)"
+  >
+    <span class="truncate">{{ n.building.name.es }}</span>
+    <span class="truncate text-xs font-normal text-muted">· {{ n.recipe.name.es }}</span>
+  </button>
+  <button
+    type="button"
+    appButton
+    variant="icon"
+    [attr.aria-label]="'Eliminar ' + n.building.name.es"
+    (click)="remove()"
+  >
+    <app-icon-close />
+  </button>
+  <span [id]="n.id + '-move-help'" class="sr-only">
+    Arrastra para mover. Con el foco aquí, usa las flechas (Mayús para pasos grandes).
+  </span>
+</header>
+
+<!-- Port rows: 32px each starting 64px from the card's outer top (CANVAS.building). -->
+<ul class="m-0 list-none border-b border-line p-0 pt-2 pb-2" aria-label="Entradas y salidas">
+  @for (input of n.inputs; track $index) {
+    <li class="relative flex h-8 items-center gap-2 pr-3 pl-5 text-sm">
+      @if (input.connected) {
+        <span
+          class="absolute top-1 -left-[13px] size-6 rounded-full border-3 border-panel"
+          [style.background]="input.color"
+          aria-hidden="true"
+        ></span>
+      } @else {
+        <button
+          type="button"
+          ngpButton
+          class="absolute top-1 -left-[13px] size-6 rounded-full border-3 border-panel bg-line p-0 data-disabled:cursor-default"
+          [class]="isValidTarget($index) ? 'cursor-pointer bg-focus ring-4 ring-focus/40' : ''"
+          [disabled]="!isValidTarget($index)"
+          [attr.aria-label]="'Conectar a la entrada de ' + input.item.name.es"
+          (click)="pickInput($index)"
+        ></button>
+      }
+      <span class="text-xs text-muted" aria-hidden="true">→</span>
+      <span
+        class="size-2.5 shrink-0 rounded-full"
+        [style.background]="input.color"
+        aria-hidden="true"
+      ></span>
+      <span class="min-w-0 flex-1 truncate">
+        <span class="sr-only">Entrada: </span>{{ input.item.name.es }}
+      </span>
+      <span class="shrink-0 tabular-nums" [class.text-danger]="input.actual < input.rate - 1e-9">
+        {{ input.actual | number: '1.0-2' }}/{{ input.rate | number: '1.0-2' }}
+        <span class="text-xs text-muted">{{
+          input.item.form === 'solid' ? '/min' : 'm³/min'
+        }}</span>
+      </span>
+    </li>
+  }
+  @for (output of n.outputs; track $index) {
+    <li class="relative flex h-8 items-center gap-2 pr-5 pl-3 text-sm">
+      <span
+        class="size-2.5 shrink-0 rounded-full"
+        [style.background]="output.color"
+        aria-hidden="true"
+      ></span>
+      <span class="min-w-0 flex-1 truncate">
+        <span class="sr-only">Salida: </span>{{ output.item.name.es }}
+      </span>
+      <span class="shrink-0 font-semibold tabular-nums">
+        {{ output.actual | number: '1.0-2' }}
+        <span class="text-xs font-normal text-muted">{{
+          output.item.form === 'solid' ? '/min' : 'm³/min'
+        }}</span>
+      </span>
+      <span class="text-xs text-muted" aria-hidden="true">→</span>
+      <app-output-port
+        class="top-1 -right-[13px]"
+        [label]="'Salida de ' + output.item.name.es + ' de ' + n.building.name.es"
+        [connected]="output.connected"
+        [color]="output.color"
+        [active]="connectingIndex() === $index"
+        (dragStarted)="interactions.portDragStarted(outputRef($index))"
+        (dragMoved)="interactions.portDragMoved(outputRef($index), $event)"
+        (dragEnded)="interactions.portDragEnded(outputRef($index), $event)"
+        (activated)="interactions.portActivated(outputRef($index))"
+      />
+    </li>
+  }
+</ul>
+
+<div class="grid gap-3 p-3">
+  <div ngpFormField class="grid gap-1">
+    <span ngpLabel class="text-xs text-muted">Edificio</span>
+    <app-select
+      class="w-full"
+      [options]="store.buildingOptions"
+      [value]="n.buildingId"
+      (valueChange)="setBuilding($event)"
+    />
+  </div>
+
+  <div ngpFormField class="grid gap-1">
+    <span ngpLabel class="text-xs text-muted">Receta</span>
+    <app-select
+      class="w-full"
+      [options]="recipeOptions()"
+      [value]="n.recipeId"
+      [showHint]="true"
+      (valueChange)="setRecipe($event)"
+    />
+  </div>
+
+  <dl class="m-0 grid grid-cols-2 gap-2">
+    <div>
+      <dt class="text-xs text-muted">Eficiencia</dt>
+      <dd
+        class="m-0 text-lg font-bold tabular-nums"
+        [class.text-danger]="n.productivity < 1 - 1e-9"
+      >
+        {{ n.productivity | percent: '1.0-1' }}
+      </dd>
+    </div>
+    <div>
+      <dt class="text-xs text-muted">Consumo</dt>
+      <dd class="m-0 text-lg font-bold tabular-nums">{{ n.powerMW | number: '1.0-2' }} MW</dd>
+    </div>
+  </dl>
+  @if (n.productivity < 1 - 1e-9) {
+    <p class="m-0 text-xs text-danger">
+      Le falta material: conecta todas las entradas con suficiente caudal.
+    </p>
+  }
+</div>

@@ -1,17 +1,30 @@
-<header class="flex flex-wrap items-center gap-x-6 gap-y-4 border-b border-line bg-panel px-5 py-3">
-  <h1 class="m-0 text-xl font-semibold">Planificador</h1>
+<header class="flex flex-wrap items-end gap-x-6 gap-y-3 border-b border-line bg-panel px-5 py-3">
+  <h1 class="m-0 self-center text-xl font-semibold">Planificador</h1>
 
-  <form class="flex items-end gap-2" (submit)="$event.preventDefault(); addNode()">
+  <form class="flex items-end gap-2" (submit)="$event.preventDefault(); addResourceNode()">
     <div ngpFormField class="grid gap-1">
-      <span ngpLabel class="text-xs text-muted">Recurso</span>
+      <span ngpLabel class="text-xs text-muted">Nodo de recurso</span>
       <app-select
-        class="w-56"
+        class="w-52"
         [options]="store.resourceOptions"
         [value]="selectedResource()"
-        (valueChange)="selectResource($event)"
+        (valueChange)="selectedResource.set($event)"
       />
     </div>
     <button type="submit" appButton>Añadir nodo</button>
+  </form>
+
+  <form class="flex items-end gap-2" (submit)="$event.preventDefault(); addBuilding()">
+    <div ngpFormField class="grid gap-1">
+      <span ngpLabel class="text-xs text-muted">Edificio</span>
+      <app-select
+        class="w-52"
+        [options]="store.buildingOptions"
+        [value]="selectedBuilding()"
+        (valueChange)="selectedBuilding.set($event)"
+      />
+    </div>
+    <button type="submit" appButton>Añadir edificio</button>
   </form>
 </header>
 
@@ -31,60 +44,74 @@
       >
         @for (belt of store.beltViews(); track belt.id) {
           <path
-            class="fill-none stroke-6 [stroke-linecap:round]"
+            class="fill-none stroke-5 [stroke-linecap:round] [stroke-linejoin:round]"
             [class.stroke-accent]="!belt.flow.bottleneck"
             [class.stroke-danger]="belt.flow.bottleneck"
-            [attr.stroke-dasharray]="belt.flow.bottleneck ? '14 8' : null"
+            [attr.stroke-dasharray]="belt.flow.bottleneck ? '12 8' : null"
             [attr.d]="belt.path"
           />
         }
-        @if (pendingBelt(); as pending) {
+        @if (interactions.previewPath(); as path) {
           <path
-            class="fill-none stroke-muted stroke-6 [stroke-linecap:round]"
+            class="fill-none stroke-muted stroke-5 [stroke-linecap:round]"
             stroke-dasharray="8 8"
-            [attr.d]="pending.path"
+            [attr.d]="path"
           />
         }
       </svg>
 
       @for (node of store.nodeViews(); track node.id) {
-        <app-resource-node-card
-          cdkDrag
-          cdkDragBoundary=".planner-surface"
-          [cdkDragFreeDragPosition]="node.position"
-          [node]="node"
-          (cdkDragMoved)="onNodeMoved(node, $event)"
-          (cdkDragEnded)="onNodeEnded(node, $event)"
-          (beltDragMoved)="onBeltDragMoved(node, $event)"
-          (beltDragEnded)="onBeltDragEnded(node, $event)"
-          (beltRequested)="onBeltRequested(node)"
-        />
+        @if (node.kind === 'resource') {
+          <app-resource-node-card
+            cdkDrag
+            cdkDragBoundary=".planner-surface"
+            [cdkDragFreeDragPosition]="node.position"
+            [node]="node"
+            (cdkDragMoved)="onNodeMoved(node, $event)"
+            (cdkDragEnded)="onNodeEnded(node, $event)"
+          />
+        } @else {
+          <app-building-card
+            cdkDrag
+            cdkDragBoundary=".planner-surface"
+            [cdkDragFreeDragPosition]="node.position"
+            [node]="node"
+            (cdkDragMoved)="onNodeMoved(node, $event)"
+            (cdkDragEnded)="onNodeEnded(node, $event)"
+          />
+        }
       }
 
-      <!-- Belt labels sit just below the curve midpoint so they never cover the line or its end. -->
+      <!-- Belt labels sit just above the middle of the route so the line stays visible. -->
       @for (belt of store.beltViews(); track belt.id) {
         <div
-          class="absolute z-[5] flex w-max max-w-80 -translate-x-1/2 translate-y-3 flex-wrap items-center gap-x-2 gap-y-1 rounded-md border bg-panel px-2 py-1.5 text-[13px] whitespace-nowrap shadow-lg shadow-black/35"
+          class="absolute z-[5] flex w-max max-w-72 -translate-x-1/2 -translate-y-[calc(100%+8px)] flex-wrap items-center gap-x-1.5 gap-y-1 rounded-md border bg-panel py-1 pr-1 pl-1 text-xs whitespace-nowrap shadow-lg shadow-black/35"
           [class.border-accent]="!belt.flow.bottleneck"
           [class.border-danger]="belt.flow.bottleneck"
           [style.left.px]="belt.mid.x"
           [style.top.px]="belt.mid.y"
           role="group"
-          [attr.aria-label]="'Cinta de ' + belt.resource.name.es"
+          [attr.aria-label]="
+            (belt.transport.kind === 'pipe' ? 'Tubería de ' : 'Cinta de ') + belt.item.name.es
+          "
         >
           <div ngpFormField>
-            <span ngpLabel class="sr-only">Tipo de cinta</span>
+            <span ngpLabel class="sr-only">
+              {{ belt.transport.kind === 'pipe' ? 'Tipo de tubería' : 'Tipo de cinta' }}
+            </span>
             <app-select
-              class="w-36"
+              class="w-20"
               size="sm"
-              [showHint]="true"
-              [options]="store.beltOptions"
+              [options]="belt.options"
               [value]="belt.transportId"
               (valueChange)="setBeltTier(belt, $event)"
             />
           </div>
           <span class="font-semibold tabular-nums">
-            {{ belt.flow.flow | number: '1.0-2' }} / {{ belt.flow.capacity }} /min
+            {{ belt.flow.flow | number: '1.0-2' }} / {{ belt.flow.capacity }}
+            <span class="text-xs font-normal text-muted">
+              {{ belt.item.form === 'solid' ? '/min' : 'm³/min' }}
+            </span>
             <span class="sr-only">, uso {{ belt.flow.utilization | percent: '1.0-0' }}</span>
           </span>
           <button
@@ -92,48 +119,33 @@
             appButton
             variant="icon-sm"
             class="ml-auto"
-            [attr.aria-label]="'Eliminar cinta de ' + belt.resource.name.es"
+            [attr.aria-label]="'Eliminar conexión de ' + belt.item.name.es"
             (click)="removeBelt(belt)"
           >
             <app-icon-close />
           </button>
           @if (belt.flow.bottleneck) {
             <span class="basis-full font-semibold whitespace-normal text-danger">
-              Cuello de botella: se pierden
-              {{ belt.flow.input - belt.flow.flow | number: '1.0-2' }}/min
+              Cuello de botella: sube el tier, el edificio necesita
+              {{ belt.flow.demand | number: '1.0-2' }}/min
             </span>
           }
         </div>
       }
 
-      <!-- Iterates the model (not the live views) so the CDK free-drag input stays stable mid-drag.
-           cdkDragFreeDragPosition is the handle's centre, hence the negative margins. -->
-      @for (belt of store.belts(); track belt.id) {
-        <button
-          type="button"
-          ngpButton
-          cdkDrag
-          cdkDragBoundary=".planner-surface"
-          class="absolute top-0 left-0 z-[6] -mt-3 -ml-3 size-6 cursor-grab touch-none rounded border-3 border-accent bg-panel p-0 data-hover:bg-hover [&.cdk-drag-dragging]:cursor-grabbing"
-          [cdkDragFreeDragPosition]="belt.end"
-          [attr.aria-label]="
-            'Extremo de la cinta de ' +
-            beltResourceNames().get(belt.id) +
-            '. Arrastra o usa las flechas para moverlo.'
-          "
-          (cdkDragMoved)="onBeltEndMoved(belt, $event)"
-          (cdkDragEnded)="onBeltEndEnded(belt, $event)"
-          (keydown)="onBeltEndKeydown(belt, $event)"
-        ></button>
-      }
-
       @if (store.nodes().length === 0) {
-        <p
+        <div
           class="absolute top-12 left-12 m-0 max-w-md rounded-lg border border-dashed border-line bg-panel px-5 py-4 leading-relaxed text-muted"
         >
-          Elige un recurso arriba y pulsa <strong class="text-fg">Añadir nodo</strong>. Después
-          arrastra el punto naranja del nodo para sacar una cinta transportadora.
-        </p>
+          <p class="m-0">
+            Añade un <strong class="text-fg">nodo de recurso</strong> y un
+            <strong class="text-fg">edificio</strong> desde la barra superior.
+          </p>
+          <p class="mt-2 mb-0">
+            Arrastra el punto naranja de una salida hasta la entrada del edificio, o haz clic en la
+            salida y luego en la entrada que se ilumina.
+          </p>
+        </div>
       }
     </div>
   </main>
@@ -143,43 +155,78 @@
     aria-labelledby="summary-title"
   >
     <h2 id="summary-title" class="m-0 mb-3 text-base font-semibold">Resumen</h2>
-    @if (store.totals().length === 0) {
-      <p class="m-0 text-muted">Todavía no hay nodos.</p>
+    @if (store.nodes().length === 0) {
+      <p class="m-0 text-muted">Todavía no hay nada en el lienzo.</p>
     } @else {
-      <table class="w-full border-collapse text-sm tabular-nums">
-        <caption class="sr-only">
-          Producción por recurso
+      @if (store.resourceTotals().length > 0) {
+        <table class="mb-5 w-full border-collapse text-sm tabular-nums">
+          <caption class="mb-1 text-left text-xs font-semibold tracking-wide text-muted uppercase">
+            Extracción
+          </caption>
+          <thead>
+            <tr class="border-b border-line text-muted">
+              <th scope="col" class="px-1 py-1.5 text-left font-medium">Recurso</th>
+              <th scope="col" class="px-1 py-1.5 text-right font-medium">Extraído</th>
+              <th scope="col" class="px-1 py-1.5 text-right font-medium">Usado</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (total of store.resourceTotals(); track total.resource.id) {
+              <tr class="border-b border-line">
+                <th scope="row" class="px-1 py-1.5 text-left font-medium">
+                  <span
+                    class="mr-1 inline-block size-2.5 rounded-full"
+                    [style.background]="total.color"
+                    aria-hidden="true"
+                  ></span>
+                  {{ total.resource.name.es }}
+                  <span class="text-muted">({{ total.nodes }})</span>
+                </th>
+                <td class="px-1 py-1.5 text-right">{{ total.extracted | number: '1.0-2' }}/min</td>
+                <td class="px-1 py-1.5 text-right">
+                  {{ total.transported | number: '1.0-2' }}/min
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+
+      <table class="mb-5 w-full border-collapse text-sm tabular-nums">
+        <caption class="mb-1 text-left text-xs font-semibold tracking-wide text-muted uppercase">
+          Productos finales
         </caption>
-        <thead>
-          <tr class="border-b border-line text-muted">
-            <th scope="col" class="px-1 py-1.5 text-left font-medium">Recurso</th>
-            <th scope="col" class="px-1 py-1.5 text-right font-medium">Extraído</th>
-            <th scope="col" class="px-1 py-1.5 text-right font-medium">En cintas</th>
-          </tr>
-        </thead>
         <tbody>
-          @for (total of store.totals(); track total.resource.id) {
+          @for (product of store.productTotals(); track product.item.id) {
             <tr class="border-b border-line">
               <th scope="row" class="px-1 py-1.5 text-left font-medium">
                 <span
                   class="mr-1 inline-block size-2.5 rounded-full"
-                  [style.background]="total.color"
+                  [style.background]="product.color"
                   aria-hidden="true"
                 ></span>
-                {{ total.resource.name.es }}
-                <span class="text-muted">({{ total.nodes }})</span>
+                {{ product.item.name.es }}
               </th>
-              <td class="px-1 py-1.5 text-right">{{ total.extracted | number: '1.0-2' }}/min</td>
-              <td class="px-1 py-1.5 text-right">{{ total.transported | number: '1.0-2' }}/min</td>
+              <td class="px-1 py-1.5 text-right">
+                {{ product.rate | number: '1.0-2'
+                }}{{ product.item.form === 'solid' ? '/min' : ' m³/min' }}
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td class="px-1 py-1.5 text-muted">
+                Las salidas de edificios sin conectar aparecerán aquí.
+              </td>
             </tr>
           }
         </tbody>
       </table>
-      <p class="mt-4 mb-0">
+
+      <p class="m-0">
         Consumo total: <strong>{{ store.totalPowerMW() | number: '1.0-2' }} MW</strong>
       </p>
     }
   </aside>
 </div>
 
-<p class="sr-only" aria-live="polite">{{ announcement() }}</p>
+<p class="sr-only" aria-live="polite">{{ interactions.announcement() }}</p>

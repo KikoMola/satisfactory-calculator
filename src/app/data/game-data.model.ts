@@ -58,6 +58,8 @@ export interface Recipe {
    * power oscillates between `min` and `max` MW during the cycle.
    */
   variablePower: { min: number; max: number } | null;
+  /** Seasonal event the recipe belongs to (e.g. `christmas` for FICSMAS), `null` if always available. */
+  event: string | null;
 }
 
 interface BuildingBase {

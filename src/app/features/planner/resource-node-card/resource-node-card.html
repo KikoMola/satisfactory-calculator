@@ -62,7 +62,9 @@
   <dl class="m-0 grid grid-cols-2 gap-2">
     <div>
       <dt class="text-xs text-muted">Producción</dt>
-      <dd class="m-0 text-lg font-bold tabular-nums">{{ n.rate | number: '1.0-2' }} /min</dd>
+      <dd class="m-0 text-lg font-bold tabular-nums">
+        {{ n.outputs[0].rate | number: '1.0-2' }} /min
+      </dd>
     </div>
     <div>
       <dt class="text-xs text-muted">Consumo</dt>
@@ -71,25 +73,15 @@
   </dl>
 </div>
 
-<!-- Output port, centred on CANVAS.portOffset = (288, 28) from the card's outer corner. -->
-@if (!n.hasBelt) {
-  <button
-    type="button"
-    ngpButton
-    cdkDrag
-    cdkDragBoundary=".planner-surface"
-    class="absolute top-3 -right-[13px] size-6 cursor-crosshair touch-none rounded-full border-3 border-panel bg-accent p-0 transition-[scale] data-hover:scale-115 [&.cdk-drag-dragging]:ring-4 [&.cdk-drag-dragging]:ring-accent/35"
-    [attr.aria-label]="'Sacar cinta transportadora del nodo de ' + n.resource.name.es"
-    title="Arrastra para sacar una cinta transportadora"
-    (pointerdown)="onPortPointerDown()"
-    (cdkDragStarted)="onPortDragStarted()"
-    (cdkDragMoved)="onPortDragMoved($event)"
-    (cdkDragEnded)="onPortDragEnded($event)"
-    (click)="onPortClick()"
-  ></button>
-} @else {
-  <span
-    class="absolute top-3 -right-[13px] size-6 rounded-full border-3 border-panel bg-muted"
-    aria-hidden="true"
-  ></span>
-}
+<!-- Output port, centred on (CANVAS.resource.width, outputY) = (288, 28) from the outer corner. -->
+<app-output-port
+  class="top-3 -right-[13px]"
+  [label]="'Salida de ' + n.resource.name.es"
+  [connected]="n.outputs[0].connected"
+  [color]="n.color"
+  [active]="connecting()"
+  (dragStarted)="interactions.portDragStarted(output())"
+  (dragMoved)="interactions.portDragMoved(output(), $event)"
+  (dragEnded)="interactions.portDragEnded(output(), $event)"
+  (activated)="interactions.portActivated(output())"
+/>
