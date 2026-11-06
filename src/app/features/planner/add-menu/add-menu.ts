@@ -1,17 +1,17 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { NgpContextMenuSubmenuTrigger } from 'ng-primitives/context-menu';
 import { GameDataService } from '../../../core/game-data.service';
-import { ContextMenu, MenuItem, MenuLabel } from '../../../ui/menu/menu';
+import { ContextMenu, MenuItem } from '../../../ui/menu/menu';
 import { PlannerInteractions } from '../planner-interactions';
 import { PlannerStore } from '../planner.store';
 
 /**
- * Right-click menu of the canvas: add a resource node, a production building (choosing its
- * recipe) or a merger/splitter at the point where the menu was opened.
+ * Right-click menu of the canvas: add a resource node, a production building (its recipe is
+ * picked on the card) or a merger/splitter at the point where the menu was opened.
  */
 @Component({
   selector: 'app-add-menu',
-  imports: [ContextMenu, MenuItem, MenuLabel, NgpContextMenuSubmenuTrigger],
+  imports: [ContextMenu, MenuItem, NgpContextMenuSubmenuTrigger],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <app-context-menu aria-label="Añadir al lienzo">
@@ -51,23 +51,7 @@ import { PlannerStore } from '../planner.store';
     <ng-template #buildingsMenu>
       <app-context-menu aria-label="Edificios">
         @for (building of data.manufacturers; track building.id) {
-          <button appMenuItem [ngpContextMenuSubmenuTrigger]="recipesMenu">
-            <span class="flex-1">{{ building.name.es }}</span>
-            <span class="text-muted" aria-hidden="true">›</span>
-          </button>
-          <ng-template #recipesMenu>
-            <app-context-menu [attr.aria-label]="'Recetas de ' + building.name.es">
-              <app-menu-label>{{ building.name.es }}</app-menu-label>
-              @for (recipe of store.recipeOptions(building.id); track recipe.value) {
-                <button appMenuItem (click)="add(building.id, recipe.value)">
-                  <span class="flex-1">{{ recipe.label }}</span>
-                  @if (recipe.hint) {
-                    <span class="text-xs text-muted">{{ recipe.hint }}</span>
-                  }
-                </button>
-              }
-            </app-context-menu>
-          </ng-template>
+          <button appMenuItem (click)="add(building.id)">{{ building.name.es }}</button>
         }
       </app-context-menu>
     </ng-template>
@@ -83,11 +67,8 @@ export class AddMenu {
     this.interactions.announce(`Nodo de ${this.data.item(node.resourceId).name.es} añadido.`);
   }
 
-  protected add(buildingId: string, recipeId?: string) {
-    this.store.addBuilding(buildingId, this.interactions.menuPosition(), recipeId);
-    const name = recipeId ? this.data.recipe(recipeId).name.es : '';
-    this.interactions.announce(
-      `${this.data.building(buildingId).name.es}${name ? ` (${name})` : ''} añadido.`,
-    );
+  protected add(buildingId: string) {
+    this.store.addBuilding(buildingId, this.interactions.menuPosition());
+    this.interactions.announce(`${this.data.building(buildingId).name.es} añadido.`);
   }
 }

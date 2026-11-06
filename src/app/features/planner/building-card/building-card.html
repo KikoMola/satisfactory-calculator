@@ -8,15 +8,7 @@
     [attr.aria-describedby]="n.id + '-move-help'"
     (keydown)="onHandleKeydown($event)"
   >
-    <span class="flex min-w-0 flex-col leading-tight">
-      <span class="truncate">{{ n.building.name.es }}</span>
-      <span class="truncate text-xs font-normal text-muted">
-        {{ n.recipe.name.es.replace('Alternativa: ', '') }}
-        @if (n.recipe.alternate) {
-          <span class="ml-1 rounded bg-hover px-1 text-[10px] text-fg">ALT</span>
-        }
-      </span>
-    </span>
+    <span class="truncate">{{ n.building.name.es }}</span>
   </button>
   <button
     type="button"
@@ -89,6 +81,17 @@
     </li>
   }
 </ul>
+
+<div ngpFormField class="grid gap-1 px-3 pt-3">
+  <span ngpLabel class="text-xs text-muted">Receta</span>
+  <app-select
+    class="w-full"
+    [options]="recipeOptions()"
+    [value]="n.recipeId"
+    [showHint]="true"
+    (valueChange)="setRecipe($event)"
+  />
+</div>
 
 <div class="flex items-center justify-between gap-3 px-3 py-2 text-sm tabular-nums">
   <span>

@@ -2,8 +2,10 @@ import { CdkDragHandle } from '@angular/cdk/drag-drop';
 import { DecimalPipe, PercentPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { NgpButton } from 'ng-primitives/button';
+import { NgpFormField, NgpLabel } from 'ng-primitives/form-field';
 import { Button } from '../../../ui/button/button';
 import { IconClose } from '../../../ui/icons';
+import { Select } from '../../../ui/select/select';
 import { arrowKeyDelta } from '../keyboard';
 import { PlannerInteractions } from '../planner-interactions';
 import type { PortRef } from '../planner.model';
@@ -23,6 +25,9 @@ import { OutputPort } from '../ports/output-port';
     DecimalPipe,
     PercentPipe,
     NgpButton,
+    NgpFormField,
+    NgpLabel,
+    Select,
     Button,
     IconClose,
     InputPort,
@@ -43,6 +48,10 @@ export class BuildingCard {
   protected readonly interactions = inject(PlannerInteractions);
 
   readonly node = input.required<BuildingNodeView>();
+
+  protected readonly recipeOptions = computed(() =>
+    this.store.recipeOptions(this.node().buildingId),
+  );
 
   /** Output index currently being connected from this card, if any. */
   protected readonly connectingIndex = computed(() => {
@@ -65,6 +74,10 @@ export class BuildingCard {
 
   protected pickInput(index: number) {
     this.interactions.inputPicked({ nodeId: this.node().id, index });
+  }
+
+  protected setRecipe(recipeId: string) {
+    this.store.setRecipe(this.node().id, recipeId);
   }
 
   protected remove() {
