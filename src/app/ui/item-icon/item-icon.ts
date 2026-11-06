@@ -1,5 +1,5 @@
 import { NgOptimizedImage } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
 /**
  * Icon of an item or building extracted from the game, or a colour dot when there is none.
@@ -27,8 +27,8 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
     } @else {
       <span
         class="block rounded-full"
-        [style.width.px]="size() / 2"
-        [style.height.px]="size() / 2"
+        [style.width.px]="dotSize()"
+        [style.height.px]="dotSize()"
         [style.background]="color()"
         aria-hidden="true"
       ></span>
@@ -42,4 +42,7 @@ export class ItemIcon {
   readonly color = input('#c8c8c8');
   /** Size in px. */
   readonly size = input(20);
+
+  /** The fallback dot stays small even in a large slot (card headers). */
+  protected readonly dotSize = computed(() => Math.min(this.size() / 2, 14));
 }

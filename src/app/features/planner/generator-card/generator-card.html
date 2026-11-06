@@ -1,14 +1,14 @@
 @let n = node();
-<header class="flex h-13 items-center gap-1 border-b border-line pr-2 pl-1">
+<header class="flex h-16 items-center gap-1 border-b border-line pr-2 pl-1">
   <button
     type="button"
     ngpButton
     cdkDragHandle
-    class="flex h-10 min-w-0 flex-1 cursor-grab items-center gap-2 rounded-md px-2 text-left font-semibold data-hover:bg-hover group-[.cdk-drag-dragging]/card:cursor-grabbing"
+    class="flex h-14 min-w-0 flex-1 cursor-grab items-center gap-2 rounded-md px-2 text-left font-semibold data-hover:bg-hover group-[.cdk-drag-dragging]/card:cursor-grabbing"
     [attr.aria-describedby]="n.id + '-move-help'"
     (keydown)="onHandleKeydown($event)"
   >
-    <app-item-icon [src]="n.icon" color="var(--color-shard)" [size]="28" />
+    <app-item-icon [src]="n.icon" color="var(--color-shard)" [size]="44" />
     <span class="truncate">{{ n.building.name.es }}</span>
   </button>
   <button
@@ -26,7 +26,7 @@
 </header>
 
 @if (n.inputs.length + n.outputs.length > 0) {
-  <!-- Port rows: 32px each starting 64px from the card's outer top (CANVAS.rows). -->
+  <!-- Port rows: 32px each starting 76px from the card's outer top (CANVAS.rows). -->
   <ul class="m-0 list-none border-b border-line p-0 pt-2 pb-2" aria-label="Entradas y salidas">
     @for (input of n.inputs; track $index) {
       <li class="relative flex h-8 items-center gap-2 pr-3 pl-5 text-sm">

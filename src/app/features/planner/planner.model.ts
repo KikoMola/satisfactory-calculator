@@ -111,18 +111,18 @@ export const CANVAS = {
   width: 3000,
   height: 2000,
   /** Resource card: w-72. Its single output port sits in the header. */
-  resource: { width: 288, height: 220, outputY: 28 },
+  resource: { width: 288, height: 232, outputY: 36 },
   /** Building card: w-80. */
-  building: { width: 320, height: 320 },
+  building: { width: 320, height: 332 },
   /** Generator card: w-80, same port rows as buildings. */
-  generator: { width: 320, height: 300 },
+  generator: { width: 320, height: 312 },
   /** Merger / splitter card: w-56, three port rows. */
-  logistic: { width: 224, height: 180 },
+  logistic: { width: 224, height: 192 },
   /**
    * Port rows (buildings and logistics) start right below the header
-   * (4px top border + 52px header + 8px padding) and are 32px tall; ports sit at row centre.
+   * (4px top border + 64px header + 8px padding) and are 32px tall; ports sit at row centre.
    */
-  rows: { top: 64, height: 32 },
+  rows: { top: 76, height: 32 },
   /** Distance in px within which a dragged belt snaps to a compatible input. */
   snapRadius: 48,
   /** Keyboard nudge step in px (Shift multiplies by 4). */
