@@ -149,4 +149,52 @@ describe('PlannerStore', () => {
       expect(belt.path.endsWith(`L ${end.x} ${end.y}`)).toBe(true);
     });
   });
+
+  describe('overclocking and Somersloops', () => {
+    it('needs shards to go above 100% and scales input and output with the clock', () => {
+      const smelter = ironSmelter();
+      store.setClock(smelter, 2);
+      expect(building(smelter).clock).toBe(1); // no shards yet → stays at 100%
+
+      store.setShards(smelter, 2);
+      store.setClock(smelter, 2);
+      expect(building(smelter).clock).toBe(2);
+      expect(building(smelter).inputs[0].rate).toBe(60);
+      expect(building(smelter).outputs[0].rate).toBe(60);
+    });
+
+    it('lowers the clock when shards are removed', () => {
+      const smelter = ironSmelter();
+      store.setShards(smelter, 3);
+      store.setClock(smelter, 2.5);
+      store.setShards(smelter, 1);
+      expect(building(smelter).clock).toBe(1.5);
+    });
+
+    it('overclocks miners too', () => {
+      const node = ironNode();
+      const resource = store.nodeViews().find((n) => n.id === node)!;
+      expect(resource.outputs[0].rate).toBe(60);
+      store.setShards(node, 3);
+      store.setClock(node, 2.5);
+      expect(store.nodeViews().find((n) => n.id === node)!.outputs[0].rate).toBe(150);
+    });
+
+    it('doubles output, not input, with a full set of Somersloops and costs 4× power', () => {
+      const constructor = store.addBuilding(CONSTRUCTOR).id;
+      store.setRecipe(constructor, 'Recipe_IronPlate_C');
+      const before = building(constructor).powerMW;
+      store.setSomersloops(constructor, 5); // clamped to the 1 slot
+      expect(building(constructor).somersloops).toBe(1);
+      expect(building(constructor).inputs[0].rate).toBe(30);
+      expect(building(constructor).outputs[0].rate).toBe(40);
+      expect(building(constructor).powerMW).toBeCloseTo(before * 4);
+    });
+
+    it('ignores Somersloops on buildings without slots (smelter)', () => {
+      const smelter = ironSmelter();
+      store.setSomersloops(smelter, 1);
+      expect(building(smelter).somersloops).toBe(0);
+    });
+  });
 });

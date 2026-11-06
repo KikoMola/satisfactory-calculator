@@ -3,6 +3,10 @@ import {
   beltRoute,
   clampPoint,
   extractionRate,
+  maxClock,
+  powerUsage,
+  shardsNeeded,
+  somersloopBoost,
   orthogonalPoints,
   recipeRate,
   roundedPath,
@@ -110,5 +114,35 @@ describe('roundedPath / beltRoute', () => {
 describe('clampPoint', () => {
   it('keeps points inside the bounds', () => {
     expect(clampPoint({ x: -5, y: 50 }, { x: 100, y: 40 })).toEqual({ x: 0, y: 40 });
+  });
+});
+
+describe('overclocking', () => {
+  it('unlocks 50 points of clock per power shard, up to 250%', () => {
+    expect(maxClock(0)).toBe(1);
+    expect(maxClock(1)).toBe(1.5);
+    expect(maxClock(3)).toBe(2.5);
+    expect(maxClock(5)).toBe(2.5);
+  });
+
+  it('knows how many shards a clock speed needs', () => {
+    expect(shardsNeeded(0.5)).toBe(0);
+    expect(shardsNeeded(1)).toBe(0);
+    expect(shardsNeeded(1.01)).toBe(1);
+    expect(shardsNeeded(1.5)).toBe(1);
+    expect(shardsNeeded(2.5)).toBe(3);
+  });
+
+  it('follows the in-game power curve', () => {
+    // Constructor: 4 MW at 100%, exponent 1.321929 → 250% ≈ 13.43 MW, 50% ≈ 1.6 MW.
+    expect(powerUsage(4, 2.5, 1.321929)).toBeCloseTo(13.43, 2);
+    expect(powerUsage(4, 0.5, 1.321929)).toBeCloseTo(1.6, 1);
+  });
+
+  it('doubles output and quadruples power with a full Somersloop set', () => {
+    expect(somersloopBoost(1, 1)).toBe(2); // Constructor: 1 slot × 1
+    expect(somersloopBoost(4, 0.25)).toBe(2); // Manufacturer: 4 slots × 0.25
+    expect(somersloopBoost(1, 0.5)).toBe(1.5); // Assembler with 1 of 2
+    expect(powerUsage(4, 1, 1.321929, 2)).toBe(16);
   });
 });

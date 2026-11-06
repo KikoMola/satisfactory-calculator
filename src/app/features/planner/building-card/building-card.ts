@@ -11,6 +11,7 @@ import { PlannerInteractions } from '../planner-interactions';
 import type { PortRef } from '../planner.model';
 import { PlannerStore, type BuildingNodeView } from '../planner.store';
 import { InputPort } from '../ports/input-port';
+import { OverclockPanel } from '../overclock-panel/overclock-panel';
 import { OutputPort } from '../ports/output-port';
 
 /**
@@ -32,6 +33,7 @@ import { OutputPort } from '../ports/output-port';
     IconClose,
     InputPort,
     OutputPort,
+    OverclockPanel,
   ],
   templateUrl: './building-card.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

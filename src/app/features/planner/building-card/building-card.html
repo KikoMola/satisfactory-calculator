@@ -93,6 +93,20 @@
   />
 </div>
 
+<app-overclock-panel
+  class="px-3 pt-3"
+  [id]="n.id"
+  [clock]="n.clock"
+  [maxClock]="n.maxClock"
+  [shards]="n.shards"
+  [somersloops]="n.somersloops"
+  [somersloopSlots]="n.somersloopSlots"
+  [boost]="n.boost"
+  (clockChange)="store.setClock(n.id, $event)"
+  (shardsChange)="store.setShards(n.id, $event)"
+  (somersloopsChange)="store.setSomersloops(n.id, $event)"
+/>
+
 <div class="flex items-center justify-between gap-3 px-3 py-2 text-sm tabular-nums">
   <span>
     <span class="text-muted">Eficiencia</span>

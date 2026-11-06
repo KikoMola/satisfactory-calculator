@@ -10,6 +10,7 @@ import { arrowKeyDelta } from '../keyboard';
 import { PlannerInteractions } from '../planner-interactions';
 import type { PortRef, Purity } from '../planner.model';
 import { PlannerStore, type ResourceNodeView } from '../planner.store';
+import { OverclockPanel } from '../overclock-panel/overclock-panel';
 import { OutputPort } from '../ports/output-port';
 
 /**
@@ -28,6 +29,7 @@ import { OutputPort } from '../ports/output-port';
     IconClose,
     Select,
     OutputPort,
+    OverclockPanel,
   ],
   templateUrl: './resource-node-card.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

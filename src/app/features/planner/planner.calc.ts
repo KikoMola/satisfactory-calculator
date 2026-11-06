@@ -133,3 +133,37 @@ function towards(from: Point, to: Point, length: number): Point {
   if (d === 0) return from;
   return { x: from.x + ((to.x - from.x) / d) * length, y: from.y + ((to.y - from.y) / d) * length };
 }
+
+// ---- Overclocking & production amplification ---------------------------------
+
+/** Power shards a building can hold; each one raises the clock limit by 50 points. */
+export const MAX_POWER_SHARDS = 3;
+
+/** Highest clock speed (1 = 100%) allowed with the given number of power shards. */
+export function maxClock(shards: number): number {
+  return 1 + 0.5 * Math.max(0, Math.min(shards, MAX_POWER_SHARDS));
+}
+
+/** Minimum power shards needed to run at `clock` (1 = 100%). */
+export function shardsNeeded(clock: number): number {
+  return clock <= 1 ? 0 : Math.ceil((clock - 1) / 0.5 - 1e-9);
+}
+
+/** Output multiplier from Somersloops: 1 + filled slots × bonus per slot (2 when full). */
+export function somersloopBoost(filled: number, multiplierPerSlot: number): number {
+  return 1 + filled * multiplierPerSlot;
+}
+
+/**
+ * In-game power formula: base × clock^exponent × boost^boostExponent
+ * (exponent ≈ 1.321929 for production buildings, boostExponent = 2 for Somersloops).
+ */
+export function powerUsage(
+  baseMW: number,
+  clock: number,
+  exponent: number,
+  boost = 1,
+  boostExponent = 2,
+): number {
+  return baseMW * Math.pow(clock, exponent) * Math.pow(boost, boostExponent);
+}

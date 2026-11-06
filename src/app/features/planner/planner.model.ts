@@ -22,6 +22,10 @@ export interface ResourceNode {
   resourceId: string;
   purity: Purity;
   minerId: string;
+  /** Clock speed, 1 = 100% (0.01–2.5). */
+  clock: number;
+  /** Power shards installed (0–3); each one allows +50% clock. */
+  shards: number;
   /** Top-left corner of the card inside the canvas. */
   position: Point;
 }
@@ -32,6 +36,12 @@ export interface BuildingNode {
   id: string;
   buildingId: string;
   recipeId: string;
+  /** Clock speed, 1 = 100% (0.01–2.5). */
+  clock: number;
+  /** Power shards installed (0–3); each one allows +50% clock. */
+  shards: number;
+  /** Somersloops installed (0 – building's slots); boost output only. */
+  somersloops: number;
   position: Point;
 }
 

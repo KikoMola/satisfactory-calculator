@@ -14,7 +14,11 @@ import {
   beltRoute,
   clampPoint,
   extractionRate,
+  MAX_POWER_SHARDS,
+  maxClock,
+  powerUsage,
   recipeRate,
+  somersloopBoost,
   waterfill,
   type BeltFlow,
 } from './planner.calc';
@@ -60,17 +64,27 @@ export interface PortView {
 interface NodeViewBase {
   inputs: PortView[];
   outputs: PortView[];
-  /** Nominal power at 100% clock speed (MW). */
+  /** Power at the current clock speed and Somersloops (MW). */
   powerMW: number;
 }
 
-export interface ResourceNodeView extends ResourceNode, NodeViewBase {
+/** Overclocking state shown on resource and building cards. */
+export interface ClockView {
+  /** Highest clock allowed by the installed shards (1 = 100%). */
+  maxClock: number;
+  /** Somersloop slots of the building (0 when it can't be amplified). */
+  somersloopSlots: number;
+  /** Output multiplier from Somersloops (1 = none, 2 = full). */
+  boost: number;
+}
+
+export interface ResourceNodeView extends ResourceNode, NodeViewBase, ClockView {
   resource: Item;
   miner: ExtractorBuilding;
   color: string;
 }
 
-export interface BuildingNodeView extends BuildingNode, NodeViewBase {
+export interface BuildingNodeView extends BuildingNode, NodeViewBase, ClockView {
   building: ManufacturerBuilding;
   recipe: Recipe;
   /** 0–1: how fast the building runs given what reaches its inputs. */
@@ -212,7 +226,7 @@ export class PlannerStore {
           outputs: [
             {
               item: this.data.item(node.resourceId),
-              rate: extractionRate(miner.ratePerMinute, node.purity),
+              rate: extractionRate(miner.ratePerMinute, node.purity) * node.clock,
               row: 0,
             },
           ],
@@ -220,18 +234,21 @@ export class PlannerStore {
       }
       case 'building': {
         const recipe = this.data.recipe(node.recipeId);
-        const ports = (list: Recipe['ingredients'], firstRow: number) =>
+        const building = this.data.building(node.buildingId) as ManufacturerBuilding;
+        const boost = somersloopBoost(node.somersloops, building.somersloopMultiplier);
+        // Clock speed scales both sides; Somersloops only multiply the products.
+        const ports = (list: Recipe['ingredients'], firstRow: number, factor: number) =>
           list.map(({ item, amount }, i) => ({
             item: this.data.item(item),
-            rate: recipeRate(amount, recipe.duration),
+            rate: recipeRate(amount, recipe.duration) * factor,
             row: firstRow + i,
           }));
-        const inputs = ports(recipe.ingredients, 0);
+        const inputs = ports(recipe.ingredients, 0, node.clock);
         return {
           node,
           width: CANVAS.building.width,
           inputs,
-          outputs: ports(recipe.products, inputs.length),
+          outputs: ports(recipe.products, inputs.length, node.clock * boost),
         };
       }
       case 'logistic': {
@@ -490,13 +507,19 @@ export class PlannerStore {
             color: this.colorOf(resource),
             inputs,
             outputs,
-            powerMW: miner.powerMW,
+            maxClock: maxClock(node.shards),
+            somersloopSlots: 0,
+            boost: 1,
+            powerMW: powerUsage(miner.powerMW, node.clock, miner.powerExponent),
           };
         }
         case 'building': {
           const building = this.data.building(node.buildingId) as ManufacturerBuilding;
           const recipe = this.data.recipe(node.recipeId);
           const variable = recipe.variablePower ?? building.variablePower;
+          // Variable power buildings oscillate between min and max: use the average.
+          const baseMW = variable ? (variable.min + variable.max) / 2 : building.powerMW;
+          const boost = somersloopBoost(node.somersloops, building.somersloopMultiplier);
           return {
             ...node,
             building,
@@ -504,8 +527,16 @@ export class PlannerStore {
             productivity: productivity.get(node.id) ?? 0,
             inputs,
             outputs,
-            // Variable power buildings oscillate between min and max: show the average.
-            powerMW: variable ? (variable.min + variable.max) / 2 : building.powerMW,
+            maxClock: maxClock(node.shards),
+            somersloopSlots: building.somersloopSlots,
+            boost,
+            powerMW: powerUsage(
+              baseMW,
+              node.clock,
+              building.powerExponent,
+              boost,
+              building.boostPowerExponent,
+            ),
           };
         }
         case 'logistic': {
@@ -627,6 +658,8 @@ export class PlannerStore {
       resourceId,
       purity: 'normal',
       minerId: this.data.miners[0].id,
+      clock: 1,
+      shards: 0,
       position: this.placeAt('resource', position),
     };
     this.nodes.update((nodes) => [...nodes, node]);
@@ -651,6 +684,9 @@ export class PlannerStore {
             id,
             buildingId,
             recipeId: recipeId ?? this.defaultRecipe(buildingId).id,
+            clock: 1,
+            shards: 0,
+            somersloops: 0,
             position: this.placeAt('building', position),
           };
     this.nodes.update((nodes) => [...nodes, node]);
@@ -662,6 +698,33 @@ export class PlannerStore {
     patch: Partial<Pick<ResourceNode, 'resourceId' | 'purity' | 'minerId'>>,
   ) {
     this.patchNode(id, (n) => (n.kind === 'resource' ? { ...n, ...patch } : n));
+  }
+
+  /** Sets the clock speed (1 = 100%), limited by the shards installed. */
+  setClock(id: string, clock: number) {
+    this.patchNode(id, (n) => {
+      if (n.kind === 'logistic') return n;
+      const value = Math.min(Math.max(clock, 0.01), maxClock(n.shards));
+      return { ...n, clock: Math.round(value * 10000) / 10000 };
+    });
+  }
+
+  /** Installs 0–3 power shards; removing shards lowers the clock if it no longer fits. */
+  setShards(id: string, shards: number) {
+    this.patchNode(id, (n) => {
+      if (n.kind === 'logistic') return n;
+      const count = Math.min(Math.max(Math.round(shards), 0), MAX_POWER_SHARDS);
+      return { ...n, shards: count, clock: Math.min(n.clock, maxClock(count)) };
+    });
+  }
+
+  /** Installs Somersloops, up to the building's slots. */
+  setSomersloops(id: string, somersloops: number) {
+    this.patchNode(id, (n) => {
+      if (n.kind !== 'building') return n;
+      const slots = (this.data.building(n.buildingId) as ManufacturerBuilding).somersloopSlots;
+      return { ...n, somersloops: Math.min(Math.max(Math.round(somersloops), 0), slots) };
+    });
   }
 
   setRecipe(id: string, recipeId: string) {
