@@ -52,10 +52,6 @@ export class ResourceNodeCard {
     return from?.nodeId === this.node().id;
   });
 
-  protected setResource(resourceId: string) {
-    this.store.updateResourceNode(this.node().id, { resourceId });
-  }
-
   protected setPurity(purity: string) {
     this.store.updateResourceNode(this.node().id, { purity: purity as Purity });
   }

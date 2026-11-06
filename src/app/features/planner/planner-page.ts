@@ -6,14 +6,15 @@ import {
   Component,
   ElementRef,
   inject,
-  signal,
   viewChild,
 } from '@angular/core';
+import { NgpContextMenuTrigger } from 'ng-primitives/context-menu';
 import { NgpFormField, NgpLabel } from 'ng-primitives/form-field';
 import { GameDataService } from '../../core/game-data.service';
 import { Button } from '../../ui/button/button';
 import { IconClose } from '../../ui/icons';
 import { Select } from '../../ui/select/select';
+import { AddMenu } from './add-menu/add-menu';
 import { BuildingCard } from './building-card/building-card';
 import { LogisticCard } from './logistic-card/logistic-card';
 import { PlannerInteractions } from './planner-interactions';
@@ -27,6 +28,7 @@ import { ResourceNodeCard } from './resource-node-card/resource-node-card';
     CdkDrag,
     DecimalPipe,
     PercentPipe,
+    NgpContextMenuTrigger,
     NgpFormField,
     NgpLabel,
     Button,
@@ -40,7 +42,7 @@ import { ResourceNodeCard } from './resource-node-card/resource-node-card';
   templateUrl: './planner-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'grid h-dvh grid-rows-[auto_1fr]',
+    class: 'block h-dvh',
     '(document:keydown.escape)': 'interactions.cancel()',
   },
 })
@@ -51,22 +53,18 @@ export class PlannerPage {
   protected readonly canvas = CANVAS;
 
   private readonly surface = viewChild.required<ElementRef<HTMLElement>>('surface');
+  private readonly viewport = viewChild.required<ElementRef<HTMLElement>>('viewport');
 
-  protected readonly selectedResource = signal(this.data.minableResources[0]?.id ?? '');
-  protected readonly selectedBuilding = signal(this.data.manufacturers[0]?.id ?? '');
+  /** Component shown by the right-click menu of the canvas. */
+  protected readonly addMenu = AddMenu;
 
   constructor() {
     afterNextRender(() => this.interactions.registerSurface(this.surface().nativeElement));
   }
 
-  protected addResourceNode() {
-    const node = this.store.addResourceNode(this.selectedResource());
-    this.interactions.announce(`Nodo de ${this.data.item(node.resourceId).name.es} añadido.`);
-  }
-
-  protected addBuilding() {
-    const node = this.store.addBuilding(this.selectedBuilding());
-    this.interactions.announce(`${this.data.building(node.buildingId).name.es} añadido.`);
+  /** Remember where the menu opened so new cards appear there. */
+  protected onContextMenu(event: MouseEvent): void {
+    this.interactions.menuOpenedAt(event, this.viewport().nativeElement);
   }
 
   // ---- Card dragging ---------------------------------------------------------

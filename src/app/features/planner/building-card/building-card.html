@@ -8,8 +8,15 @@
     [attr.aria-describedby]="n.id + '-move-help'"
     (keydown)="onHandleKeydown($event)"
   >
-    <span class="truncate">{{ n.building.name.es }}</span>
-    <span class="truncate text-xs font-normal text-muted">· {{ n.recipe.name.es }}</span>
+    <span class="flex min-w-0 flex-col leading-tight">
+      <span class="truncate">{{ n.building.name.es }}</span>
+      <span class="truncate text-xs font-normal text-muted">
+        {{ n.recipe.name.es.replace('Alternativa: ', '') }}
+        @if (n.recipe.alternate) {
+          <span class="ml-1 rounded bg-hover px-1 text-[10px] text-fg">ALT</span>
+        }
+      </span>
+    </span>
   </button>
   <button
     type="button"
@@ -37,7 +44,6 @@
         [snapped]="isSnapped($index)"
         (picked)="pickInput($index)"
       />
-      <span class="text-xs text-muted" aria-hidden="true">→</span>
       <span
         class="size-2.5 shrink-0 rounded-full"
         [style.background]="input.color"
@@ -70,7 +76,6 @@
           output.item?.form !== 'liquid' && output.item?.form !== 'gas' ? '/min' : 'm³/min'
         }}</span>
       </span>
-      <span class="text-xs text-muted" aria-hidden="true">→</span>
       <app-output-port
         class="top-1 -right-[13px]"
         [label]="'Salida de ' + output.item?.name?.es + ' de ' + n.building.name.es"
@@ -85,46 +90,18 @@
   }
 </ul>
 
-<div class="grid gap-3 p-3">
-  <div ngpFormField class="grid gap-1">
-    <span ngpLabel class="text-xs text-muted">Edificio</span>
-    <app-select
-      class="w-full"
-      [options]="store.manufacturerOptions"
-      [value]="n.buildingId"
-      (valueChange)="setBuilding($event)"
-    />
-  </div>
-
-  <div ngpFormField class="grid gap-1">
-    <span ngpLabel class="text-xs text-muted">Receta</span>
-    <app-select
-      class="w-full"
-      [options]="recipeOptions()"
-      [value]="n.recipeId"
-      [showHint]="true"
-      (valueChange)="setRecipe($event)"
-    />
-  </div>
-
-  <dl class="m-0 grid grid-cols-2 gap-2">
-    <div>
-      <dt class="text-xs text-muted">Eficiencia</dt>
-      <dd
-        class="m-0 text-lg font-bold tabular-nums"
-        [class.text-danger]="n.productivity < 1 - 1e-9"
-      >
-        {{ n.productivity | percent: '1.0-1' }}
-      </dd>
-    </div>
-    <div>
-      <dt class="text-xs text-muted">Consumo</dt>
-      <dd class="m-0 text-lg font-bold tabular-nums">{{ n.powerMW | number: '1.0-2' }} MW</dd>
-    </div>
-  </dl>
-  @if (n.productivity < 1 - 1e-9) {
-    <p class="m-0 text-xs text-danger">
-      Le falta material: conecta todas las entradas con suficiente caudal.
-    </p>
-  }
+<div class="flex items-center justify-between gap-3 px-3 py-2 text-sm tabular-nums">
+  <span>
+    <span class="text-muted">Eficiencia</span>
+    <strong class="ml-1" [class.text-danger]="n.productivity < 1 - 1e-9">
+      {{ n.productivity | percent: '1.0-1' }}
+    </strong>
+  </span>
+  <span>
+    <span class="text-muted">Consumo</span>
+    <strong class="ml-1">{{ n.powerMW | number: '1.0-2' }} MW</strong>
+  </span>
 </div>
+@if (n.productivity < 1 - 1e-9) {
+  <p class="m-0 px-3 pb-2 text-xs text-danger">Falta material en alguna entrada.</p>
+}

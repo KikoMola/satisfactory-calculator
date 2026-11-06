@@ -24,6 +24,8 @@ export class PlannerInteractions {
   readonly previewPath = signal<string | null>(null);
   /** True when the preview is snapped onto a compatible input. */
   readonly previewSnapped = signal(false);
+  /** Canvas point where the add menu was opened; new cards are placed there. */
+  readonly menuPosition = signal<Point | null>(null);
   /** Message for the screen-reader live region. */
   readonly announcement = signal('');
 
@@ -33,6 +35,27 @@ export class PlannerInteractions {
 
   announce(message: string) {
     this.announcement.set(message);
+  }
+
+  // ---- Context menu ------------------------------------------------------------
+
+  /**
+   * Remembers where the add menu was opened. Keyboard-opened menus (Shift+F10 / Menu key)
+   * report the focused element's position, so anything outside the visible viewport falls
+   * back to its top-left corner.
+   */
+  menuOpenedAt(event: MouseEvent, viewport: HTMLElement) {
+    const visible = viewport.getBoundingClientRect();
+    const inside =
+      event.clientX >= visible.left &&
+      event.clientX <= visible.right &&
+      event.clientY >= visible.top &&
+      event.clientY <= visible.bottom &&
+      (event.clientX !== 0 || event.clientY !== 0);
+    const client = inside
+      ? { x: event.clientX, y: event.clientY }
+      : { x: visible.left + 48, y: visible.top + 48 };
+    this.menuPosition.set(this.toSurface(client));
   }
 
   // ---- Drag a belt out of an output port -------------------------------------

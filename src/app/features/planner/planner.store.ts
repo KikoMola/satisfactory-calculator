@@ -174,22 +174,6 @@ export class PlannerStore {
     hint: `${m.ratePerMinute}/min`,
   }));
 
-  /** Production buildings plus belt logistics, for the "add building" select. */
-  readonly buildingOptions: readonly SelectOption[] = [
-    ...this.data.manufacturers.map((b) => ({ value: b.id, label: b.name.es })),
-    ...this.data.logistics.map((b) => ({
-      value: b.id,
-      label: b.role === 'merger' ? 'Unificador' : 'Divisor',
-      hint: b.role === 'merger' ? '3 → 1' : '1 → 3',
-    })),
-  ];
-
-  /** Production buildings only, for changing the type of an existing building card. */
-  readonly manufacturerOptions: readonly SelectOption[] = this.data.manufacturers.map((b) => ({
-    value: b.id,
-    label: b.name.es,
-  }));
-
   private readonly beltOptions = this.transportOptions(this.data.belts);
   private readonly pipeOptions = this.transportOptions(this.data.pipes);
   private readonly recipeOptionsCache = new Map<string, readonly SelectOption[]>();
@@ -635,32 +619,39 @@ export class PlannerStore {
 
   // ---- Nodes --------------------------------------------------------------
 
-  addResourceNode(resourceId: string): ResourceNode {
+  /** Adds a resource node at `position` (top-left of the card), or on the next free slot. */
+  addResourceNode(resourceId: string, position?: Point | null): ResourceNode {
     const node: ResourceNode = {
       kind: 'resource',
       id: `node-${this.nextId++}`,
       resourceId,
       purity: 'normal',
       minerId: this.data.miners[0].id,
-      position: this.nextSlot(),
+      position: this.placeAt('resource', position),
     };
     this.nodes.update((nodes) => [...nodes, node]);
     return node;
   }
 
-  /** Adds a production building, or a merger/splitter if `buildingId` is a logistic one. */
-  addBuilding(buildingId: string): BuildingNode | LogisticNode {
+  /**
+   * Adds a production building running `recipeId` (or its default recipe), or a
+   * merger/splitter if `buildingId` is a logistic one.
+   */
+  addBuilding(
+    buildingId: string,
+    position?: Point | null,
+    recipeId?: string,
+  ): BuildingNode | LogisticNode {
     const id = `building-${this.nextId++}`;
-    const position = this.nextSlot();
     const node: BuildingNode | LogisticNode =
       this.data.building(buildingId).kind === 'logistic'
-        ? { kind: 'logistic', id, buildingId, position }
+        ? { kind: 'logistic', id, buildingId, position: this.placeAt('logistic', position) }
         : {
             kind: 'building',
             id,
             buildingId,
-            recipeId: this.defaultRecipe(buildingId).id,
-            position,
+            recipeId: recipeId ?? this.defaultRecipe(buildingId).id,
+            position: this.placeAt('building', position),
           };
     this.nodes.update((nodes) => [...nodes, node]);
     return node;
@@ -671,11 +662,6 @@ export class PlannerStore {
     patch: Partial<Pick<ResourceNode, 'resourceId' | 'purity' | 'minerId'>>,
   ) {
     this.patchNode(id, (n) => (n.kind === 'resource' ? { ...n, ...patch } : n));
-  }
-
-  setBuildingType(id: string, buildingId: string) {
-    const recipeId = this.defaultRecipe(buildingId).id;
-    this.patchNode(id, (n) => (n.kind === 'building' ? { ...n, buildingId, recipeId } : n));
   }
 
   setRecipe(id: string, recipeId: string) {
@@ -847,6 +833,13 @@ export class PlannerStore {
   private defaultRecipe(buildingId: string): Recipe {
     const recipes = this.data.recipesFor(buildingId);
     return recipes.find((r) => !r.alternate && !r.event) ?? recipes[0];
+  }
+
+  /** Requested position clamped inside the canvas, or the next free grid slot. */
+  private placeAt(kind: PlannerNode['kind'], position?: Point | null): Point {
+    if (!position) return this.nextSlot();
+    const size = CANVAS[kind];
+    return clampPoint(position, { x: CANVAS.width - size.width, y: CANVAS.height - size.height });
   }
 
   /** Lays new cards out on a grid, leaving room between columns for the belts. */

@@ -1,35 +1,21 @@
-<header class="flex flex-wrap items-end gap-x-6 gap-y-3 border-b border-line bg-panel px-5 py-3">
-  <h1 class="m-0 self-center text-xl font-semibold">Planificador</h1>
+<h1 class="sr-only">Planificador de fábrica</h1>
+<p id="canvas-help" class="sr-only">
+  Haz clic derecho, o pulsa Mayúsculas+F10 con el lienzo enfocado, para añadir nodos de recurso,
+  edificios, divisores y unificadores.
+</p>
 
-  <form class="flex items-end gap-2" (submit)="$event.preventDefault(); addResourceNode()">
-    <div ngpFormField class="grid gap-1">
-      <span ngpLabel class="text-xs text-muted">Nodo de recurso</span>
-      <app-select
-        class="w-52"
-        [options]="store.resourceOptions"
-        [value]="selectedResource()"
-        (valueChange)="selectedResource.set($event)"
-      />
-    </div>
-    <button type="submit" appButton>Añadir nodo</button>
-  </form>
-
-  <form class="flex items-end gap-2" (submit)="$event.preventDefault(); addBuilding()">
-    <div ngpFormField class="grid gap-1">
-      <span ngpLabel class="text-xs text-muted">Edificio</span>
-      <app-select
-        class="w-52"
-        [options]="store.buildingOptions"
-        [value]="selectedBuilding()"
-        (valueChange)="selectedBuilding.set($event)"
-      />
-    </div>
-    <button type="submit" appButton>Añadir edificio</button>
-  </form>
-</header>
-
-<div class="grid min-h-0 grid-cols-1 grid-rows-[1fr_auto] md:grid-cols-[1fr_300px] md:grid-rows-1">
-  <main class="overflow-auto bg-canvas" aria-label="Lienzo de la fábrica">
+<div
+  class="grid h-full min-h-0 grid-cols-1 grid-rows-[1fr_auto] md:grid-cols-[1fr_300px] md:grid-rows-1"
+>
+  <main
+    #viewport
+    class="overflow-auto bg-canvas"
+    tabindex="0"
+    aria-label="Lienzo de la fábrica"
+    aria-describedby="canvas-help"
+    [ngpContextMenuTrigger]="addMenu"
+    (contextmenu)="onContextMenu($event)"
+  >
     <div
       #surface
       class="planner-surface relative canvas-grid bg-canvas select-none"
@@ -151,12 +137,12 @@
           class="absolute top-12 left-12 m-0 max-w-md rounded-lg border border-dashed border-line bg-panel px-5 py-4 leading-relaxed text-muted"
         >
           <p class="m-0">
-            Añade un <strong class="text-fg">nodo de recurso</strong> y un
-            <strong class="text-fg">edificio</strong> desde la barra superior.
+            Haz <strong class="text-fg">clic derecho</strong> en el lienzo para añadir nodos de
+            recurso, edificios, divisores y unificadores.
           </p>
           <p class="mt-2 mb-0">
-            Arrastra el punto naranja de una salida hasta la entrada del edificio, o haz clic en la
-            salida y luego en la entrada que se ilumina.
+            Luego arrastra el punto naranja de una salida hasta una entrada (se engancha sola), o
+            haz clic en la salida y después en la entrada.
           </p>
         </div>
       }
