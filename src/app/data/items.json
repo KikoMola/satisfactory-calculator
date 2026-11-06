@@ -1,0 +1,3194 @@
+[
+  {
+    "id": "BP_ItemDescriptorPortableMiner_C",
+    "name": {
+      "es": "Taladro portátil",
+      "en": "Portable Miner"
+    },
+    "description": {
+      "es": "Extrae automáticamente un recurso cuando se coloca en un nodo de recursos.\nNota: Tiene espacio de almacenamiento limitado.",
+      "en": "Automatically extracts a resource when placed on a resource node.\r\nNote: Has limited storage space."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 56,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/IconDesc_PortableMiner_256"
+  },
+  {
+    "id": "Desc_AlienDNACapsule_C",
+    "name": {
+      "es": "Cápsula de ADN de alienígena",
+      "en": "Alien DNA Capsule"
+    },
+    "description": {
+      "es": "Transforma sustancias químicas orgánicas en información genética alienígena legible.\nSe utiliza para investigar organismos alienígenas.\n\n¡Ve más allá! Saber es poder, y el poder es solo eficiencia con menos pasos. Depositar cápsulas de ADN alienígena en el triturador FLIPANTE proporciona conocimientos a FICSIT y cupones a los pioneros.",
+      "en": "Translates organic chemicals into readable alien genetic information.\r\nUsed for researching alien organisms.\r\n\r\nGo the extra kilometer! Knowledge is power, and power is just efficiency with fewer steps. Depositing Alien DNA Capsules in the AWESOME Sink provides FICSIT with knowledge, and pioneers with Coupons."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 0,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/AlienDNACapsule/UI/IconDesc_AlienDNA_256"
+  },
+  {
+    "id": "Desc_AlienPowerFuel_C",
+    "name": {
+      "es": "Matriz de energía alienígena",
+      "en": "Alien Power Matrix"
+    },
+    "description": {
+      "es": "Esta intrincada matriz de materia condensada se utiliza para mejorar la salida del amplificador de energía alienígena. \n\nDesarrollada inicialmente con la intención de crear un Somertoc artificial, la matriz de energía alienígena no puede soportar la conexión de energía extradimensional por sí sola. Sin embargo, puede estabilizar eficazmente el flujo de energía del Somertoc.",
+      "en": "This intricate condensed-matter matrix is used to enhance the output of the Alien Power Augmenter.\r\n\r\nInitially developed in efforts to create a human-made Somersloop, the Alien Power Matrix cannot sustain the extra-dimensional energy connection on its own. However, it can effectively stabilize the energy stream of the Somersloop."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 210,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/AlienPowerMatrix/UI/IconDesc_AlienPowerMatrix_256"
+  },
+  {
+    "id": "Desc_AlienProtein_C",
+    "name": {
+      "es": "Proteína alienígena",
+      "en": "Alien Protein"
+    },
+    "description": {
+      "es": "Restos de alienígena molidos en un pequeño y práctico paquete.\nSe utiliza con fines medicinales y en la investigación de organismos alienígenas.",
+      "en": "Ground-up Alien Remains in a neat little package.\r\nUsed for medical purposes and to research alien organisms."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 0,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/AlienProtein/UI/IconDesc_AlienProtein_256"
+  },
+  {
+    "id": "Desc_AluminaSolution_C",
+    "name": {
+      "es": "Solución de alúmina",
+      "en": "Alumina Solution"
+    },
+    "description": {
+      "es": "Alúmina disuelta, extraída de la bauxita. Puede ser refinada en chatarra de aluminio para la producción de lingotes de aluminio.",
+      "en": "Dissolved Alumina, extracted from Bauxite. Can be further refined into Aluminum Scrap for Aluminum Ingot production."
+    },
+    "form": "liquid",
+    "isRawResource": false,
+    "stackSize": null,
+    "sinkPoints": 20,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": "#c1c1c1",
+    "iconPath": "/Game/FactoryGame/Resource/Parts/Alumina/UI/LiquidAlumina_Pipe_256"
+  },
+  {
+    "id": "Desc_AluminumCasing_C",
+    "name": {
+      "es": "Carcasa de aluminio",
+      "en": "Aluminum Casing"
+    },
+    "description": {
+      "es": "Un contenedor versátil creado con lingotes de aluminio.",
+      "en": "A versatile container cast from Aluminum Ingots."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 393,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/AluminumCasing/UI/IconDesc_AluminiumCasing_256"
+  },
+  {
+    "id": "Desc_AluminumIngot_C",
+    "name": {
+      "es": "Lingote de aluminio",
+      "en": "Aluminum Ingot"
+    },
+    "description": {
+      "es": "Se fabrican a partir de chatarra de aluminio, que a su vez se refina de la solución de alúmina.\nSe utilizan para fabricar piezas especializadas a base de aluminio.",
+      "en": "Smelted from Aluminum Scrap, which is refined from Alumina Solution.\r\nUsed to produce specialized aluminum-based parts."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 131,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/AluminumIngot/UI/IconDesc_AluminiumIngot_256"
+  },
+  {
+    "id": "Desc_AluminumPlate_C",
+    "name": {
+      "es": "Lámina de aluminio revestido",
+      "en": "Alclad Aluminum Sheet"
+    },
+    "description": {
+      "es": "Se utiliza para fabricar productos que requieren una alta conducción de calor o una alta fuerza específica. Delgada, ligera y muy duradera.",
+      "en": "Used to make products that require high heat conduction or a high specific strength. Thin, lightweight, and highly durable."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 266,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/AluminumPlate/UI/IconDesc_AluminiumSheet_256"
+  },
+  {
+    "id": "Desc_AluminumPlateReinforced_C",
+    "name": {
+      "es": "Disipador de calor",
+      "en": "Heat Sink"
+    },
+    "description": {
+      "es": "Se usa para disipar el calor más rápido.",
+      "en": "Used to dissipate heat faster."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 2804,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/HeatSink/UI/IconDesc_Heatsink_256"
+  },
+  {
+    "id": "Desc_AluminumScrap_C",
+    "name": {
+      "es": "Chatarra de aluminio",
+      "en": "Aluminum Scrap"
+    },
+    "description": {
+      "es": "Refinada a partir de alúmina. Puede fundirse en lingotes de aluminio para uso industrial.",
+      "en": "Refined from Alumina. Can be smelted into Aluminum Ingots for industrial usage."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 500,
+    "sinkPoints": 27,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/AluminumScrap/UI/IconDesc_AluminiumScrap_256"
+  },
+  {
+    "id": "Desc_Battery_C",
+    "name": {
+      "es": "Batería",
+      "en": "Battery"
+    },
+    "description": {
+      "es": "Se utiliza principalmente como combustible para drones y vehículos.",
+      "en": "Primarily used as fuel for Drones and vehicles."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 465,
+    "energyMJ": 6000,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/Battery/UI/IconDesc_Battery_256"
+  },
+  {
+    "id": "Desc_Biofuel_C",
+    "name": {
+      "es": "Biocombustible sólido",
+      "en": "Solid Biofuel"
+    },
+    "description": {
+      "es": "La forma más eficiente de biomasa sólida. Puede usarse como combustible para la motosierra.",
+      "en": "The most energy-efficient form of solid Biomass. Can be used as fuel for the Chainsaw."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 48,
+    "energyMJ": 450,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/SolidBiofuel/UI/IconDesc_SolidBiofuel_256"
+  },
+  {
+    "id": "Desc_Cable_C",
+    "name": {
+      "es": "Cable",
+      "en": "Cable"
+    },
+    "description": {
+      "es": "Material de fabricación.\nSe usa principalmente para construir líneas eléctricas.",
+      "en": "Used for crafting.\r\nPrimarily used to build Power Lines."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 24,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/Cable/UI/IconDesc_Cables_256"
+  },
+  {
+    "id": "Desc_CandyCane_C",
+    "name": {
+      "es": "Bastón de caramelo",
+      "en": "Candy Cane"
+    },
+    "description": {
+      "es": "Un delicioso bastón de caramelo para disfrutar durante la FICSIVIDAD. \n*Advertencia: No apto para consumo humano...",
+      "en": "A delicious Candy Cane to be enjoyed during the FICSMAS Holidays.\r\n*Disclaimer: Not for human consumption..."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 6,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Events/Christmas/Parts/UI/IconDesc_CanePart_256"
+  },
+  {
+    "id": "Desc_CartridgeChaos_C",
+    "name": {
+      "es": "Turbomunición para rifle",
+      "en": "Turbo Rifle Ammo"
+    },
+    "description": {
+      "es": "Ligeras, compactas y volátiles. Estas balas ofrecen mayor capacidad y velocidad de disparo a costa de precisión.",
+      "en": "Lightweight, compact, and volatile. These rounds provide extreme capacity and rate of fire at the cost of accuracy."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 500,
+    "sinkPoints": 120,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Equipment/Rifle/UI/IconDesc_TurboRifle_256"
+  },
+  {
+    "id": "Desc_CartridgeSmartProjectile_C",
+    "name": {
+      "es": "Munición buscadora de rifle",
+      "en": "Homing Rifle Ammo"
+    },
+    "description": {
+      "es": "El sistema de guiado de balas integrado en esta munición le permite alcanzar con precisión cualquier objetivo dentro del área de la retícula.\nÚtil para lidiar con amenazas ágiles o para pioneros que no tienen paciencia para apuntar.",
+      "en": "The bullet guidance system built into this ammunition allows it to accurately hit any target within the reticle area.\r\nEspecially useful when dealing with agile threats, or for pioneers who can't be bothered to aim properly."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 500,
+    "sinkPoints": 855,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Equipment/Rifle/UI/IconDesc_HomingRifle_256"
+  },
+  {
+    "id": "Desc_CartridgeStandard_C",
+    "name": {
+      "es": "Munición de rifle",
+      "en": "Rifle Ammo"
+    },
+    "description": {
+      "es": "Munición estándar para rifle, útil para dejar claro tu dominio.",
+      "en": "Standard issue Rifle ammunition, useful for establishing dominance."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 500,
+    "sinkPoints": 25,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Equipment/Rifle/UI/IconDesc_Rifle_256"
+  },
+  {
+    "id": "Desc_Cement_C",
+    "name": {
+      "es": "Hormigón",
+      "en": "Concrete"
+    },
+    "description": {
+      "es": "Se usa para construir.\nEs bueno para fabricar cimientos estables.",
+      "en": "Used for building.\r\nGood for stable Foundations."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 500,
+    "sinkPoints": 12,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/Cement/UI/IconDesc_Concrete_256"
+  },
+  {
+    "id": "Desc_CircuitBoard_C",
+    "name": {
+      "es": "Circuito impreso",
+      "en": "Circuit Board"
+    },
+    "description": {
+      "es": "Electrónica avanzada que tiene multitud de usos.",
+      "en": "Advanced electronics that have a plethora of different uses."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 696,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/CircuitBoard/UI/IconDesc_CircuitBoard_256"
+  },
+  {
+    "id": "Desc_CircuitBoardHighSpeed_C",
+    "name": {
+      "es": "Limitador de IA",
+      "en": "AI Limiter"
+    },
+    "description": {
+      "es": "Controla las IA y evita que evolucionen de forma maliciosa. Electrónica superavanzada.",
+      "en": "Controls AIs and keeps them from evolving in malicious ways. Super advanced electronics."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 920,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/AIlimiter/UI/IconDesc_AILimiter_256"
+  },
+  {
+    "id": "Desc_Coal_C",
+    "name": {
+      "es": "Carbón",
+      "en": "Coal"
+    },
+    "description": {
+      "es": "Se utiliza principalmente como combustible para vehículos y generadores de carbón, o en la producción de acero.",
+      "en": "Mainly used as fuel for vehicles & Coal-Powered Generators, or in Steel production."
+    },
+    "form": "solid",
+    "isRawResource": true,
+    "stackSize": 100,
+    "sinkPoints": 3,
+    "energyMJ": 300,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/RawResources/Coal/UI/IconDesc_CoalOre_256"
+  },
+  {
+    "id": "Desc_CompactedCoal_C",
+    "name": {
+      "es": "Carbón compactado",
+      "en": "Compacted Coal"
+    },
+    "description": {
+      "es": "Una alternativa mucho más eficiente al carbón. Se utiliza como combustible para vehículos y generadores de carbón.",
+      "en": "A much more efficient alternative to Coal. Used as fuel for vehicles and Coal-Powered Generators."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 28,
+    "energyMJ": 630,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/CompactedCoal/UI/IconDesc_CompactedCoal_256"
+  },
+  {
+    "id": "Desc_Computer_C",
+    "name": {
+      "es": "Ordenador",
+      "en": "Computer"
+    },
+    "description": {
+      "es": "Una compleja máquina lógica que se utiliza para controlar el comportamiento avanzado en otras máquinas.",
+      "en": "A complex logic machine that is used to control advanced behavior in other machines."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 8352,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/Computer/UI/IconDesc_Computer_256"
+  },
+  {
+    "id": "Desc_ComputerSuper_C",
+    "name": {
+      "es": "Superordenador",
+      "en": "Supercomputer"
+    },
+    "description": {
+      "es": "La versión más avanzada de un ordenador.",
+      "en": "The next-gen version of a Computer."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 97352,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/ComputerQuantum/UI/IconDesc_QuantumComputer_256"
+  },
+  {
+    "id": "Desc_CoolingSystem_C",
+    "name": {
+      "es": "Sistema de refrigeración",
+      "en": "Cooling System"
+    },
+    "description": {
+      "es": "Evita que las piezas y estructuras avanzadas excedan los niveles de temperatura eficientes.",
+      "en": "Keeps advanced parts and buildings from exceeding efficient temperature levels."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 12006,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/CoolingSystem/UI/IconDesc_CoolingSystem_256"
+  },
+  {
+    "id": "Desc_CopperDust_C",
+    "name": {
+      "es": "Cobre en polvo",
+      "en": "Copper Powder"
+    },
+    "description": {
+      "es": "Lingotes de cobre triturados.\nLa alta densidad natural del cobre, combinada con la granularidad del polvo, hace que este componente sea ideal para producir pasta nuclear en el acelerador de partículas.",
+      "en": "Ground-up Copper Ingots.\r\nThe high natural density of Copper, combined with the granularity of the powder, makes this part perfect for producing Nuclear Pasta in the Particle Accelerator."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 500,
+    "sinkPoints": 72,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/CopperDust/UI/IconDesc_CopperDust_256"
+  },
+  {
+    "id": "Desc_CopperIngot_C",
+    "name": {
+      "es": "Lingote de cobre",
+      "en": "Copper Ingot"
+    },
+    "description": {
+      "es": "Se usa para fabricar las piezas más básicas.",
+      "en": "Used for crafting the most basic parts."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 6,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/CopperIngot/UI/IconDesc_CopperIngot_256"
+  },
+  {
+    "id": "Desc_CopperSheet_C",
+    "name": {
+      "es": "Lámina de cobre",
+      "en": "Copper Sheet"
+    },
+    "description": {
+      "es": "Material de fabricación.\nSe usa principalmente para tuberías debido a su alta resistencia a la corrosión.",
+      "en": "Used for crafting.\r\nPrimarily used for Pipelines due to its high corrosion resistance."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 24,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/CopperSheet/UI/IconDesc_CopperSheet_256"
+  },
+  {
+    "id": "Desc_Crystal_C",
+    "name": {
+      "es": "Electrobabosa azul",
+      "en": "Blue Power Slug"
+    },
+    "description": {
+      "es": "Una extraña babosa que irradia un débil poder desconocido.",
+      "en": "A strange slug radiating an unknown weak power."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 0,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Environment/Crystal/UI/PowerSlugGreen_256"
+  },
+  {
+    "id": "Desc_Crystal_mk2_C",
+    "name": {
+      "es": "Electrobabosa amarilla",
+      "en": "Yellow Power Slug"
+    },
+    "description": {
+      "es": "Una extraña babosa que irradia un poder desconocido.",
+      "en": "A strange slug radiating an unknown power."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 0,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Environment/Crystal/UI/PowerSlugYellow_256"
+  },
+  {
+    "id": "Desc_Crystal_mk3_C",
+    "name": {
+      "es": "Electrobabosa morada",
+      "en": "Purple Power Slug"
+    },
+    "description": {
+      "es": "Una babosa extraña que irradia una energía potente y desconocida.",
+      "en": "A strange slug radiating a powerful unknown power."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 0,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Environment/Crystal/UI/PowerSlugPurple_256"
+  },
+  {
+    "id": "Desc_CrystalOscillator_C",
+    "name": {
+      "es": "Oscilador de cristal",
+      "en": "Crystal Oscillator"
+    },
+    "description": {
+      "es": "Un circuito oscilador electrónico que usa la resonancia mecánica de un cristal vibratorio para crear una señal eléctrica con una frecuencia precisa.",
+      "en": "An electronic oscillator circuit that uses the mechanical resonance of a vibrating crystal to create an electrical signal with a precise frequency."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 3072,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/CrystalOscillator/UI/IconDesc_CrystalOscillator_256"
+  },
+  {
+    "id": "Desc_CrystalShard_C",
+    "name": {
+      "es": "Esquirla de energía",
+      "en": "Power Shard"
+    },
+    "description": {
+      "es": "Moco de electrobabosa comprimido en un fragmento cristalino sólido. \nIrradia una energía extraña.",
+      "en": "Power Slug mucus compressed into a solid crystal-like shard. \r\nIt radiates a strange power."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 0,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Environment/Crystal/UI/PowerShard_256"
+  },
+  {
+    "id": "Desc_DarkEnergy_C",
+    "name": {
+      "es": "Residuo de materia oscura",
+      "en": "Dark Matter Residue"
+    },
+    "description": {
+      "es": "Producida como subproducto de procesos de codificación cuántica y generada alternativamente en el convertidor.\n\nVarios campos de la ciencia siguen debatiendo la naturaleza y las propiedades de la materia oscura. Mientras tanto, FICSIT le ha encontrado varias aplicaciones en la manipulación del espacio-tiempo.",
+      "en": "Produced as a by-product of Quantum Encoding processes and alternatively generated in the Converter.\r\n\r\nVarious fields of science are still debating the nature and properties of Dark Matter. Meanwhile, FICSIT has found several applications for it in space-time manipulation."
+    },
+    "form": "gas",
+    "isRawResource": false,
+    "stackSize": null,
+    "sinkPoints": 130,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": "#fdaff9",
+    "iconPath": "/Game/FactoryGame/Resource/Parts/DarkEnergy/UI/IconDesc_DarkEnergy_256"
+  },
+  {
+    "id": "Desc_DarkMatter_C",
+    "name": {
+      "es": "Cristal de materia oscura",
+      "en": "Dark Matter Crystal"
+    },
+    "description": {
+      "es": "Residuo de materia oscura concentrado que se aísla dentro de un recipiente cristalino. Esta forma de contención permite utilizar la materia oscura de forma estable en otros procesos de producción.\n\nConsumo de energía: 500-1500 MW (1000 MW de media).",
+      "en": "Concentrated Dark Matter Residue that is isolated within a crystalline vessel. This form of containment allows for utilising Dark Matter reliably in other production processes.\r\n\r\nPower Usage: 500-1500 MW (1000 MW average)."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 1780,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/TimeCrystal/UI/IconDesc_TimeCrystal_256"
+  },
+  {
+    "id": "Desc_Diamond_C",
+    "name": {
+      "es": "Diamantes",
+      "en": "Diamonds"
+    },
+    "description": {
+      "es": "Diamantes sintéticos producidos al exponer el carbón a calor y presión extremos.\n\nUtilizados en la producción de cronocristales y cristales de materia oscura.\n\nConsumo de energía: 250-750 MW (500 MW de media).",
+      "en": "Synthetic Diamonds produced by exposing Coal to extreme heat and pressure.\r\n\r\nUsed in the production of Time Crystals and Dark Matter Crystals.\r\n\r\nPower Usage: 250-750 MW (500 MW average)."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 240,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/Diamond/UI/IconDesc_Diamonds_256"
+  },
+  {
+    "id": "Desc_DissolvedSilica_C",
+    "name": {
+      "es": "Sílice disuelta",
+      "en": "Dissolved Silica"
+    },
+    "description": {
+      "es": "Sílice disuelta en agua, producida como parte del refinamiento alternativo del cuarzo bruto.\nLa sílice se puede extraer del agua para completar el proceso de refinamiento.",
+      "en": "Silica dissolved in Water, produced as part of the alternative refinement of Raw Quartz.\r\nThe Silica can be extracted from the Water to complete the refinement process."
+    },
+    "form": "liquid",
+    "isRawResource": false,
+    "stackSize": null,
+    "sinkPoints": 0,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": "#e2beee",
+    "iconPath": "/Game/FactoryGame/Resource/Parts/DissolvedSilica/UI/IconDesc_DissolvedSilica_256"
+  },
+  {
+    "id": "Desc_ElectromagneticControlRod_C",
+    "name": {
+      "es": "Barra de control electromagnética",
+      "en": "Electromagnetic Control Rod"
+    },
+    "description": {
+      "es": "Regulan la producción de energía a través del electromagnetismo.",
+      "en": "Regulates power output via electromagnetism."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 2560,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/ElectromagneticControlRod/UI/IconDesc_ElectromagneticControlRod_256"
+  },
+  {
+    "id": "Desc_Fabric_C",
+    "name": {
+      "es": "Tejido",
+      "en": "Fabric"
+    },
+    "description": {
+      "es": "Se usa para fabricar equipamiento.\nUn tejido flexible y resistente.",
+      "en": "Used to craft equipment.\r\nFlexible but durable fabric."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 140,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/GenericBiomass/UI/IconDesc_Fabric_256"
+  },
+  {
+    "id": "Desc_FicsiteIngot_C",
+    "name": {
+      "es": "Lingote de ficsita",
+      "en": "Ficsite Ingot"
+    },
+    "description": {
+      "es": "Producido mediante la reconstrucción de otros metales a nivel molecular utilizando materia alienígena rara.\n\nSintetizado por FICSIT para ser el material de construcción perfecto y utilizado en los procesos más avanzados.",
+      "en": "Produced by reconstructing other metals on a molecular level using Strange Alien Matter.\r\n\r\nSynthesized by FICSIT to be the perfect construction material, and used in the most high-end processes."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 1936,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/FicsiteIngot/UI/IconDesc_FicsiteIngot_256"
+  },
+  {
+    "id": "Desc_FicsiteMesh_C",
+    "name": {
+      "es": "Trígono de ficsita",
+      "en": "Ficsite Trigon"
+    },
+    "description": {
+      "es": "El trígono de ficsita, fabricado con lingotes de ficsita, tiene la forma perfecta para todos los desafíos de construcción. Su rendimiento es tan excepcional que prácticamente ha revolucionado la ingeniería estructural.",
+      "en": "The Ficsite Trigon, made from Ficsite Ingots, is perfectly shaped for all construction challenges. Its performance is so exceptional, it basically solved structural engineering."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 1291,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/FicsiteMesh/UI/IconDesc_FicsiteMesh_256"
+  },
+  {
+    "id": "Desc_Ficsonium_C",
+    "name": {
+      "es": "Ficsonio",
+      "en": "Ficsonium"
+    },
+    "description": {
+      "es": "El uso y producción de este material está estrictamente prohibido. En la Tierra, claro. No hay reglas en el espacio, solo eficiencia.\n\nConsumo de energía: 500-1500 MW (1000 MW de media).\nPrecaución: Moderadamente radiactivo.",
+      "en": "Usage and production of this material is strictly prohibited. On Earth, that is. There are no rules in space, only efficiency. \r\n\r\nPower Usage: 500-1500 MW (1000 MW average).\r\nCaution: Moderately Radioactive."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 0,
+    "energyMJ": 0,
+    "radioactiveDecay": 250,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/Ficsonium/UI/IconDesc_FicsoniumCell_256"
+  },
+  {
+    "id": "Desc_FicsoniumFuelRod_C",
+    "name": {
+      "es": "Barra de combustible de ficsonio",
+      "en": "Ficsonium Fuel Rod"
+    },
+    "description": {
+      "es": "Se utiliza como combustible para centrales nucleares.\nLa fuente de energía que puso a FICSIT en el mapa. Literalmente. El cráter sigue allí.\n\nPrecaución: Moderadamente radiactivo.",
+      "en": "Used as fuel for Nuclear Power Plants.\r\nThe power source that put FICSIT on the map. Literally. The crater is still there.\r\n\r\nCaution: Moderately Radioactive."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 0,
+    "energyMJ": 150000,
+    "radioactiveDecay": 1000,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/FicsoniumFuelRod/UI/IconDesc_FicsoniumFuelRod_256"
+  },
+  {
+    "id": "Desc_Filter_C",
+    "name": {
+      "es": "Filtro de gas",
+      "en": "Gas Filter"
+    },
+    "description": {
+      "es": "Filtra toxinas y contaminantes del aire cuando se usa con una máscara antigás.",
+      "en": "Filters out toxins and pollutants from the air when used with a Gas Mask."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 608,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/Filter/UI/IconDesc_GasMaskFilter_256"
+  },
+  {
+    "id": "Desc_Fireworks_Projectile_01_C",
+    "name": {
+      "es": "Fuegos artificiales dulces",
+      "en": "Sweet Fireworks"
+    },
+    "description": {
+      "es": "Cuenta con los requisitos mínimos de seguridad.",
+      "en": "Has the minimum safety requirements."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 60,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Events/Christmas/Parts/UI/IconDesc_Fireworks_01_512"
+  },
+  {
+    "id": "Desc_Fireworks_Projectile_02_C",
+    "name": {
+      "es": "Fuegos artificiales espectaculares",
+      "en": "Fancy Fireworks"
+    },
+    "description": {
+      "es": "Representa un riesgo razonable para los pioneros.",
+      "en": "Poses acceptable amount of risk to pioneers."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 40,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Events/Christmas/Parts/UI/IconDesc_Fireworks_02_512"
+  },
+  {
+    "id": "Desc_Fireworks_Projectile_03_C",
+    "name": {
+      "es": "Fuegos artificiales brillantes",
+      "en": "Sparkly Fireworks"
+    },
+    "description": {
+      "es": "Mantener alejado de los pioneros que se distraen fácilmente.",
+      "en": "Keep away from easily distracted pioneers."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 32,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Events/Christmas/Parts/UI/IconDesc_Fireworks_03_512"
+  },
+  {
+    "id": "Desc_FluidCanister_C",
+    "name": {
+      "es": "Recipiente vacío",
+      "en": "Empty Canister"
+    },
+    "description": {
+      "es": "Se utiliza para envasar fluidos para su transporte.",
+      "en": "Used to package fluids for transportation."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 60,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/FluidCanister/UI/IconDesc_EmptyCannister_256"
+  },
+  {
+    "id": "Desc_Fuel_C",
+    "name": {
+      "es": "Combustible envasado",
+      "en": "Packaged Fuel"
+    },
+    "description": {
+      "es": "Combustible, envasado para transporte alternativo. Puede usarse como combustible para vehículos y mochilas propulsoras.",
+      "en": "Fuel, packaged for alternative transport. Can be used as fuel for vehicles and the Jetpack."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 270,
+    "energyMJ": 750,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/Fuel/UI/IconDesc_Fuel_256"
+  },
+  {
+    "id": "Desc_GasTank_C",
+    "name": {
+      "es": "Bombona de fluidos vacía",
+      "en": "Empty Fluid Tank"
+    },
+    "description": {
+      "es": "Se utiliza para envasar gases y líquidos volátiles para su transporte.",
+      "en": "Used to package gases and volatile liquids for transportation."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 170,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/GasTank/UI/IconDesc_PressureTank_256"
+  },
+  {
+    "id": "Desc_GenericBiomass_C",
+    "name": {
+      "es": "Biomasa",
+      "en": "Biomass"
+    },
+    "description": {
+      "es": "Se usa principalmente como combustible.\nLos quemadores de biomasa y vehículos pueden usarla como fuente de energía.\nEn términos energéticos, la biomasa es mucho más eficiente que las materias primas biológicas.",
+      "en": "Primarily used as fuel.\r\nBiomass Burners and vehicles can use it for power.\r\nBiomass is much more energy-efficient than raw biological matter."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 12,
+    "energyMJ": 180,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/GenericBiomass/UI/IconDesc_Biomass_Final_256"
+  },
+  {
+    "id": "Desc_Gift_C",
+    "name": {
+      "es": "Regalo de FICSIVIDAD",
+      "en": "FICSMAS Gift"
+    },
+    "description": {
+      "es": "Regalos que han caído del cielo inexplicablemente o han surgido de un árbol de regalos de FICSIVIDAD. \n\nNo lo cuestiones; se utilizan para producir estructuras y piezas de FICSIVIDAD. \n\nEstos regalos son parte del evento de FICSIVIDAD, como el calendario en el HUB.",
+      "en": "Gifts that have inexplicably fallen from the sky or spawned from a FICSMAS Gift Tree.\r\n\r\nDon’t question it—they’re used to produce FICSMAS buildings and parts.\r\n\r\nThese Gifts are part of the FICSMAS Event, like the calendar in the HUB."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 1,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Events/Christmas/Parts/UI/IconDesc_Gift_256"
+  },
+  {
+    "id": "Desc_GoldIngot_C",
+    "name": {
+      "es": "Lingote de caterio",
+      "en": "Caterium Ingot"
+    },
+    "description": {
+      "es": "Fundido a partir de mineral de caterio. Se utiliza principalmente para electrónica avanzada.",
+      "en": "Smelted from Caterium Ore. Primarily used for advanced electronics."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 42,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/GoldIngot/UI/IconDesc_CateriumIngot_256"
+  },
+  {
+    "id": "Desc_Gunpowder_C",
+    "name": {
+      "es": "Pólvora",
+      "en": "Black Powder"
+    },
+    "description": {
+      "es": "Un polvo explosivo que se usa comúnmente para fabricar explosivos simples.",
+      "en": "An explosive powder that is commonly used to produce simple explosives."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 14,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/GunPowder/UI/IconDesc_Gunpowder_256"
+  },
+  {
+    "id": "Desc_GunpowderMK2_C",
+    "name": {
+      "es": "Pólvora sin humo",
+      "en": "Smokeless Powder"
+    },
+    "description": {
+      "es": "Un polvo explosivo que se suele usar para la producción de armas de fuego modernas.",
+      "en": "An explosive powder that is commonly used to produce modern firearms."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 58,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/GunPowder/UI/IconDesc_GunpowderMk2_256"
+  },
+  {
+    "id": "Desc_HatcherParts_C",
+    "name": {
+      "es": "Restos de incubador",
+      "en": "Hatcher Remains"
+    },
+    "description": {
+      "es": "Los restos parecidos a un caparazón de una cosa... alienígena.\nSe usan para investigación en la MAM.",
+      "en": "The shell-like remains of an alien... thing.\r\nUsed for MAM research."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 0,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Environment/AnimalParts/UI/IconDesc_HatcherPart_256"
+  },
+  {
+    "id": "Desc_HazmatFilter_C",
+    "name": {
+      "es": "Filtro de yodo",
+      "en": "Iodine-Infused Filter"
+    },
+    "description": {
+      "es": "Absorbe partículas radiactivas cuando se usa con el traje de protección.",
+      "en": "Absorbs radioactive particles when used with the Hazmat Suit."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 2274,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/IodineInfusedFilter/UI/IconDesc_HazmatFilter_256"
+  },
+  {
+    "id": "Desc_HeavyOilResidue_C",
+    "name": {
+      "es": "Residuo de petróleo pesado",
+      "en": "Heavy Oil Residue"
+    },
+    "description": {
+      "es": "Un subproducto de la producción de plástico y caucho. Puede refinarse en combustible y coque de petróleo.",
+      "en": "A by-product of Plastic and Rubber production. Can be further refined into Fuel and Petroleum Coke."
+    },
+    "form": "liquid",
+    "isRawResource": false,
+    "stackSize": null,
+    "sinkPoints": 30,
+    "energyMJ": 400,
+    "radioactiveDecay": 0,
+    "fluidColor": "#6d2d78",
+    "iconPath": "/Game/FactoryGame/Resource/Parts/HeavyOilResidue/UI/IconDesc_LiquidHeavyOilResidue_Pipe_256"
+  },
+  {
+    "id": "Desc_HighSpeedConnector_C",
+    "name": {
+      "es": "Conector de alta velocidad",
+      "en": "High-Speed Connector"
+    },
+    "description": {
+      "es": "Conecta múltiples cables y alambres de una manera muy eficiente. Utiliza un patrón estándar, por lo que tiene muchas aplicaciones variadas.",
+      "en": "Connects multiple cables and wires in a very efficient way. Uses a standard pattern, so it has many varied applications."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 3776,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/HighSpeedConnector/UI/IconDesc_HighSpeedConnector_256"
+  },
+  {
+    "id": "Desc_HighSpeedWire_C",
+    "name": {
+      "es": "Turboalambre",
+      "en": "Quickwire"
+    },
+    "description": {
+      "es": "La alta conductividad y la gran resistencia a la corrosión del caterio hacen que sea ideal para dispositivos electrónicos pequeños y avanzados.",
+      "en": "Caterium's high conductivity and resistance to corrosion make it ideal for small, advanced electronics."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 500,
+    "sinkPoints": 17,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/HighSpeedWire/UI/IconDesc_Quickwire_256"
+  },
+  {
+    "id": "Desc_HogParts_C",
+    "name": {
+      "es": "Restos de jabalí",
+      "en": "Hog Remains"
+    },
+    "description": {
+      "es": "El caparazón de la criatura jabalí alienígena.\nSe usa para la investigación en la MAM.",
+      "en": "The carapace of an alien Hog creature.\r\nUsed for MAM research."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 0,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/AnimalParts/UI/IconDesc_HogPart_256"
+  },
+  {
+    "id": "Desc_IonizedFuel_C",
+    "name": {
+      "es": "Combustible ionizado",
+      "en": "Ionized Fuel"
+    },
+    "description": {
+      "es": "Combustible que ha sido ionizado, lo que le confiere un rendimiento extraordinario.\nPuede usarse tal cual en generadores a combustible o envasado como combustible para vehículos o mochilas propulsoras.",
+      "en": "Fuel that has been ionized, allowing it to deliver incredible output.\r\nCan be used as-is to power Fuel-Powered Generators, or packaged to be used as fuel for vehicles or the Jetpack."
+    },
+    "form": "gas",
+    "isRawResource": false,
+    "stackSize": null,
+    "sinkPoints": 2398,
+    "energyMJ": 5000,
+    "radioactiveDecay": 0,
+    "fluidColor": "#d55f1a",
+    "iconPath": "/Game/FactoryGame/Resource/Parts/IonizedFuel/UI/IconDesc_IonizedFuel_256"
+  },
+  {
+    "id": "Desc_IronIngot_C",
+    "name": {
+      "es": "Lingote de hierro",
+      "en": "Iron Ingot"
+    },
+    "description": {
+      "es": "Se usa para fabricar las piezas más básicas.",
+      "en": "Used for crafting the most basic parts."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 2,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/IronIngot/UI/IconDesc_IronIngot_256"
+  },
+  {
+    "id": "Desc_IronPlate_C",
+    "name": {
+      "es": "Plancha de hierro",
+      "en": "Iron Plate"
+    },
+    "description": {
+      "es": "Material de fabricación.\nUna de las piezas más básicas.",
+      "en": "Used for crafting.\r\nOne of the most basic parts."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 6,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/IronPlate/UI/IconDesc_IronPlates_256"
+  },
+  {
+    "id": "Desc_IronPlateReinforced_C",
+    "name": {
+      "es": "Plancha de hierro reforzada",
+      "en": "Reinforced Iron Plate"
+    },
+    "description": {
+      "es": "Material de fabricación.\nUna plancha de hierro más resistente y duradera.",
+      "en": "Used for crafting.\r\nA sturdier and more durable Iron Plate."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 120,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/IronPlateReinforced/UI/IconDesc_ReinforcedIronPlates_256"
+  },
+  {
+    "id": "Desc_IronRod_C",
+    "name": {
+      "es": "Barra de hierro",
+      "en": "Iron Rod"
+    },
+    "description": {
+      "es": "Material de fabricación.\nUna de las piezas más básicas.",
+      "en": "Used for crafting.\r\nOne of the most basic parts."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 4,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/IronRod/UI/IconDesc_IronRods_256"
+  },
+  {
+    "id": "Desc_IronScrew_C",
+    "name": {
+      "es": "Tornillos",
+      "en": "Screws"
+    },
+    "description": {
+      "es": "Material de fabricación.\nUna de las piezas más básicas.",
+      "en": "Used for crafting.\r\nOne of the most basic parts."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 500,
+    "sinkPoints": 2,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/IronScrew/UI/IconDesc_IronScrews_256"
+  },
+  {
+    "id": "Desc_Leaves_C",
+    "name": {
+      "es": "Hojas",
+      "en": "Leaves"
+    },
+    "description": {
+      "es": "Se usan principalmente como combustible.\nLos quemadores de biomasa y los vehículos pueden usarlas como fuente de energía.",
+      "en": "Primarily used as fuel.\r\nBiomass Burners and vehicles can use Leaves for power."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 500,
+    "sinkPoints": 3,
+    "energyMJ": 15,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/GenericBiomass/IconDesc_Leaves_256"
+  },
+  {
+    "id": "Desc_LiquidBiofuel_C",
+    "name": {
+      "es": "Biocombustible líquido",
+      "en": "Liquid Biofuel"
+    },
+    "description": {
+      "es": "El biocombustible líquido puede utilizarse para generar energía o envasarse para emplearlo como combustible en vehículos.",
+      "en": "Liquid Biofuel can be used as-is to generate power, or packaged to be used as fuel for vehicles."
+    },
+    "form": "liquid",
+    "isRawResource": false,
+    "stackSize": null,
+    "sinkPoints": 261,
+    "energyMJ": 750,
+    "radioactiveDecay": 0,
+    "fluidColor": "#3b532c",
+    "iconPath": "/Game/FactoryGame/Resource/Parts/BioFuel/UI/IconDesc_LiquidBiofuel_Pipe_256"
+  },
+  {
+    "id": "Desc_LiquidFuel_C",
+    "name": {
+      "es": "Combustible",
+      "en": "Fuel"
+    },
+    "description": {
+      "es": "Puede utilizarse en este formato para generar energía o envasarse para emplearla como combustible para vehículos o la mochila propulsora.",
+      "en": "Can be used as-is to generate power, or packaged to be used as fuel for vehicles or the Jetpack."
+    },
+    "form": "liquid",
+    "isRawResource": false,
+    "stackSize": null,
+    "sinkPoints": 75,
+    "energyMJ": 750,
+    "radioactiveDecay": 0,
+    "fluidColor": "#eb7d15",
+    "iconPath": "/Game/FactoryGame/Resource/Parts/Fuel/UI/IconDesc_LiquidFuel_Pipe_256"
+  },
+  {
+    "id": "Desc_LiquidOil_C",
+    "name": {
+      "es": "Petróleo crudo",
+      "en": "Crude Oil"
+    },
+    "description": {
+      "es": "Se refina para producir todo tipo de materiales derivados del petróleo, como combustible y plástico.",
+      "en": "Refined into all kinds of Oil-based resources, like Fuel and Plastic."
+    },
+    "form": "liquid",
+    "isRawResource": true,
+    "stackSize": null,
+    "sinkPoints": 30,
+    "energyMJ": 320,
+    "radioactiveDecay": 0,
+    "fluidColor": "#190019",
+    "iconPath": "/Game/FactoryGame/Resource/RawResources/CrudeOil/UI/LiquidOil_Pipe_512"
+  },
+  {
+    "id": "Desc_LiquidTurboFuel_C",
+    "name": {
+      "es": "Turbocombustible",
+      "en": "Turbofuel"
+    },
+    "description": {
+      "es": "Una alternativa más eficaz al combustible. Puede utilizarse para generar energía o envasarse para usar en vehículos.",
+      "en": "A more efficient alternative to Fuel. Can be used as-is to generate power, or packaged to be used as fuel for vehicles."
+    },
+    "form": "liquid",
+    "isRawResource": false,
+    "stackSize": null,
+    "sinkPoints": 225,
+    "energyMJ": 2000,
+    "radioactiveDecay": 0,
+    "fluidColor": "#d4292e",
+    "iconPath": "/Game/FactoryGame/Resource/Parts/Turbofuel/UI/IconDesc_LiquidTurboFuel_Pipe_256"
+  },
+  {
+    "id": "Desc_ModularFrame_C",
+    "name": {
+      "es": "Armazón modular",
+      "en": "Modular Frame"
+    },
+    "description": {
+      "es": "Material de fabricación.\nUn bloque de construcción multiuso.",
+      "en": "Used for crafting.\r\nA multipurpose building block."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 408,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/ModularFrame/UI/IconDesc_ModularFrame_256"
+  },
+  {
+    "id": "Desc_ModularFrameFused_C",
+    "name": {
+      "es": "Armazón modular fusionado",
+      "en": "Fused Modular Frame"
+    },
+    "description": {
+      "es": "Un armazón modular resistente a la corrosión y endurecido con nitruro. Es muy resistente a la par que ligero.",
+      "en": "A corrosion-resistant, nitride-hardened, highly-robust-yet-lightweight modular frame."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 62840,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/ModularFrameFused/UI/IconDesc_FusedModularFrame_256"
+  },
+  {
+    "id": "Desc_ModularFrameHeavy_C",
+    "name": {
+      "es": "Armazón modular pesado",
+      "en": "Heavy Modular Frame"
+    },
+    "description": {
+      "es": "Un armazón multiuso más robusto.",
+      "en": "A more robust multipurpose frame."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 10800,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/ModularFrameHeavy/UI/IconDesc_ModularFrameHeavy_256"
+  },
+  {
+    "id": "Desc_ModularFrameLightweight_C",
+    "name": {
+      "es": "Unidad de control por radio",
+      "en": "Radio Control Unit"
+    },
+    "description": {
+      "es": "Mejora y dirige las señales de radio.",
+      "en": "Enhances and directs radio signals."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 32352,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/RadioControlUnit/UI/IconDesc_RadioControlUnit_256"
+  },
+  {
+    "id": "Desc_Motor_C",
+    "name": {
+      "es": "Motor",
+      "en": "Motor"
+    },
+    "description": {
+      "es": "Crea una fuerza mecánica que se usa para mover objetos de máquinas a vehículos.",
+      "en": "Creates a mechanical force that is used to move things from machines to vehicles."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 1520,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/Motor/UI/IconDesc_Engine_256"
+  },
+  {
+    "id": "Desc_MotorLightweight_C",
+    "name": {
+      "es": "Motor turbo",
+      "en": "Turbo Motor"
+    },
+    "description": {
+      "es": "Una versión más compleja y potente del motor normal.",
+      "en": "A more complex and powerful version of the regular Motor."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 240496,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/TurboMotor/UI/IconDesc_TurboMotor_256"
+  },
+  {
+    "id": "Desc_Mycelia_C",
+    "name": {
+      "es": "Micelios",
+      "en": "Mycelia"
+    },
+    "description": {
+      "es": "Se usan para fabricar.\nLos quemadores de biomasa y los vehículos también pueden usar micelios como fuente de energía.",
+      "en": "Used for crafting.\r\nBiomass Burners and vehicles can also use Mycelia for power."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 10,
+    "energyMJ": 20,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/GenericBiomass/UI/IconDesc_Mycelia_256"
+  },
+  {
+    "id": "Desc_NitricAcid_C",
+    "name": {
+      "es": "Ácido nítrico",
+      "en": "Nitric Acid"
+    },
+    "description": {
+      "es": "Se produce por reacción del gas nitrógeno con el agua. Su alta corrosividad y propiedades de oxidación lo convierten en una excelente opción para los procesos de refinado y producción de combustible.",
+      "en": "Produced when Nitrogen Gas reacts with Water. Its high corrosiveness and oxidizing properties make it an excellent choice for refinement and fuel production processes."
+    },
+    "form": "liquid",
+    "isRawResource": false,
+    "stackSize": null,
+    "sinkPoints": 94,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": "#d9d9a2",
+    "iconPath": "/Game/FactoryGame/Resource/Parts/NitricAcid/UI/IconDesc_NitricAcid_256"
+  },
+  {
+    "id": "Desc_NitrogenGas_C",
+    "name": {
+      "es": "Gas nitrógeno",
+      "en": "Nitrogen Gas"
+    },
+    "description": {
+      "es": "Posee diversas aplicaciones, como metalurgia, refrigeración y producción de ácido nítrico. En MASSAGE-2 (AB)b, puede extraerse de pozos de gas subterráneos.",
+      "en": "Has a variety of uses, including metallurgy, cooling, and Nitric Acid production. On MASSAGE-2 (AB)b, it can be extracted from underground gas wells."
+    },
+    "form": "gas",
+    "isRawResource": true,
+    "stackSize": null,
+    "sinkPoints": 10,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": "#595959",
+    "iconPath": "/Game/FactoryGame/Resource/Parts/PackagedNitrogen/UI/IconDesc_NitrogenGas_256"
+  },
+  {
+    "id": "Desc_NobeliskCluster_C",
+    "name": {
+      "es": "Nobelisco de fragmentación",
+      "en": "Cluster Nobelisk"
+    },
+    "description": {
+      "es": "Nobelisco que crea varias explosiones menores al detonar. Práctico para eliminar vegetación u otros inconvenientes en áreas extensas.",
+      "en": "Detonates into multiple smaller explosions. Practical for clearing out large areas of vegetation and other inconveniences."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 1376,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/NobeliskExplosive/UI/IconDesc_Cluster_256"
+  },
+  {
+    "id": "Desc_NobeliskExplosive_C",
+    "name": {
+      "es": "Nobelisco",
+      "en": "Nobelisk"
+    },
+    "description": {
+      "es": "Un explosivo sencillo y útil para eliminar rocas, vegetación y otros obstáculos.",
+      "en": "A simple explosive, useful for clearing boulders, vegetation, and other obstacles."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 152,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/NobeliskExplosive/UI/IconDesc_Explosive_256"
+  },
+  {
+    "id": "Desc_NobeliskGas_C",
+    "name": {
+      "es": "Nobelisco de gas",
+      "en": "Gas Nobelisk"
+    },
+    "description": {
+      "es": "Crea una nube de gas mortal en lugar de una explosión normal.",
+      "en": "Creates a deadly gas cloud instead of a regular explosion."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 544,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/NobeliskExplosive/UI/IconDesc_Gas_256"
+  },
+  {
+    "id": "Desc_NobeliskNuke_C",
+    "name": {
+      "es": "Nobelisco nuclear",
+      "en": "Nuke Nobelisk"
+    },
+    "description": {
+      "es": "Utiliza una reacción de fisión nuclear para generar una explosión masiva.\nADVERTENCIA: Comprueba que no haya propiedades de FICSIT en el radio de la explosión antes de la detonación.",
+      "en": "Uses a nuclear fission reaction to generate a massive explosion.\r\nWARNING: Ensure all FICSIT property is clear of the blast zone before detonation.\r\n"
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 19600,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/NobeliskExplosive/UI/IconDesc_Nuke_256"
+  },
+  {
+    "id": "Desc_NobeliskShockwave_C",
+    "name": {
+      "es": "Nobelisco de pulso",
+      "en": "Pulse Nobelisk"
+    },
+    "description": {
+      "es": "Genera una poderosa onda de choque en lugar de una explosión normal.",
+      "en": "Generates a powerful shockwave instead of a regular explosion."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 1533,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/NobeliskExplosive/UI/IconDesc_Shock_256"
+  },
+  {
+    "id": "Desc_NonFissibleUranium_C",
+    "name": {
+      "es": "Uranio no fisible",
+      "en": "Non-Fissile Uranium"
+    },
+    "description": {
+      "es": "El isótopo uranio-238 no es fisible, lo que significa que no puede utilizarse para la fisión nuclear. Sin embargo, puede convertirse en plutonio fisionable en el acelerador de partículas.\n\nPrecaución: Ligeramente radiactivo.",
+      "en": "The Uranium-238 isotope is non-fissile, meaning it cannot be used for nuclear fission. It can, however, be converted into fissile Plutonium in the Particle Accelerator.\r\n\r\nCaution: Mildly Radioactive."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 500,
+    "sinkPoints": 0,
+    "energyMJ": 0,
+    "radioactiveDecay": 0.75,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/Non-FissibleUranium/UI/IconDesc_NonFissileUranium_256"
+  },
+  {
+    "id": "Desc_NuclearFuelRod_C",
+    "name": {
+      "es": "Barra de combustible de uranio",
+      "en": "Uranium Fuel Rod"
+    },
+    "description": {
+      "es": "Se utiliza como combustible para centrales nucleares.\n\nPrecaución: Produce residuos de uranio radiactivo cuando se consume.\nPrecaución: Moderadamente radiactivo.",
+      "en": "Used as fuel for Nuclear Power Plants.\r\n\r\nCaution: Produces radioactive Uranium Waste when consumed.\r\nCaution: Moderately Radioactive."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 43468,
+    "energyMJ": 750000,
+    "radioactiveDecay": 50,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/NuclearFuelRod/UI/IconDesc_NuclearFuelRod_256"
+  },
+  {
+    "id": "Desc_NuclearWaste_C",
+    "name": {
+      "es": "Residuos de uranio",
+      "en": "Uranium Waste"
+    },
+    "description": {
+      "es": "Subproducto del consumo de barras de combustible de uranio en una planta de energía nuclear.\nSe puede extraer uranio no fisible. Manipular con precaución.\n\nPrecaución: ALTAMENTE radiactivo.",
+      "en": "The by-product of consuming Uranium Fuel Rods in a Nuclear Power Plant.\r\nNon-Fissile Uranium can be extracted. Handle with caution.\r\n\r\nCaution: HIGHLY Radioactive."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 500,
+    "sinkPoints": 0,
+    "energyMJ": 0,
+    "radioactiveDecay": 10,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/NuclearWaste/UI/IconDesc_NuclearWaste_256"
+  },
+  {
+    "id": "Desc_OreBauxite_C",
+    "name": {
+      "es": "Bauxita",
+      "en": "Bauxite"
+    },
+    "description": {
+      "es": "Se utiliza para producir alúmina, que puede refinarse aún más hasta obtener la chatarra de aluminio necesaria para producir lingotes de aluminio.",
+      "en": "Used to produce Alumina, which can be further refined into the Aluminum Scrap required to produce Aluminum Ingots."
+    },
+    "form": "solid",
+    "isRawResource": true,
+    "stackSize": 100,
+    "sinkPoints": 8,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/RawResources/Nodes/UI/IconDesc_Bauxite_256"
+  },
+  {
+    "id": "Desc_OreCopper_C",
+    "name": {
+      "es": "Mineral de cobre",
+      "en": "Copper Ore"
+    },
+    "description": {
+      "es": "Material de fabricación.\nRecurso básico que se usa principalmente para la electricidad.",
+      "en": "Used for crafting.\r\nA basic resource primarily used for electricity."
+    },
+    "form": "solid",
+    "isRawResource": true,
+    "stackSize": 100,
+    "sinkPoints": 3,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/RawResources/Nodes/UI/IconDesc_copper_new_256"
+  },
+  {
+    "id": "Desc_OreGold_C",
+    "name": {
+      "es": "Mineral de caterio",
+      "en": "Caterium Ore"
+    },
+    "description": {
+      "es": "Se puede fundir para crear lingotes de caterio, que se utilizan principalmente para electrónica avanzada.",
+      "en": "Smelted into Caterium Ingots, which are primarily used for advanced electronics."
+    },
+    "form": "solid",
+    "isRawResource": true,
+    "stackSize": 100,
+    "sinkPoints": 7,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/RawResources/Nodes/UI/IconDesc_CateriumOre_256"
+  },
+  {
+    "id": "Desc_OreIron_C",
+    "name": {
+      "es": "Mineral de hierro",
+      "en": "Iron Ore"
+    },
+    "description": {
+      "es": "Material de fabricación.\nEl recurso básico más esencial.",
+      "en": "Used for crafting.\r\nThe most essential basic resource."
+    },
+    "form": "solid",
+    "isRawResource": true,
+    "stackSize": 100,
+    "sinkPoints": 1,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/RawResources/Nodes/UI/IconDesc_iron_new_256"
+  },
+  {
+    "id": "Desc_OreUranium_C",
+    "name": {
+      "es": "Uranio",
+      "en": "Uranium"
+    },
+    "description": {
+      "es": "Un elemento radiactivo.\nSe utiliza para producir células de uranio encapsulado para barras de combustible de uranio.\n\nPrecaución: Moderadamente radiactivo.",
+      "en": "A radioactive element. \r\nUsed to produce Encased Uranium Cells for Uranium Fuel Rods.\r\n\r\nCaution: Moderately Radioactive."
+    },
+    "form": "solid",
+    "isRawResource": true,
+    "stackSize": 100,
+    "sinkPoints": 35,
+    "energyMJ": 0,
+    "radioactiveDecay": 15,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/RawResources/OreUranium/UI/IconDesc_UraniumOre_256"
+  },
+  {
+    "id": "Desc_PackagedAlumina_C",
+    "name": {
+      "es": "Solución de alúmina envasada",
+      "en": "Packaged Alumina Solution"
+    },
+    "description": {
+      "es": "Solución de alúmina, envasada para su transporte alternativo.",
+      "en": "Alumina Solution, packaged for alternative transport."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 160,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/Alumina/UI/IconDesc_PackagedAluminaSolution_256"
+  },
+  {
+    "id": "Desc_PackagedBiofuel_C",
+    "name": {
+      "es": "Biocombustible líquido envasado",
+      "en": "Packaged Liquid Biofuel"
+    },
+    "description": {
+      "es": "Biocombustible líquido, envasado para transporte alternativo. Puede usarse como combustible para vehículos y mochilas propulsoras.",
+      "en": "Liquid Biofuel, packaged for alternative transport. Can be used as fuel for vehicles and the Jetpack."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 370,
+    "energyMJ": 750,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/Turbofuel/UI/IconDesc_LiquidBiofuel_256"
+  },
+  {
+    "id": "Desc_PackagedIonizedFuel_C",
+    "name": {
+      "es": "Combustible ionizado envasado",
+      "en": "Packaged Ionized Fuel"
+    },
+    "description": {
+      "es": "Combustible ionizado, envasado para transporte alternativo. Puede usarse como combustible para vehículos y mochilas propulsoras.",
+      "en": "Ionized Fuel, packaged for alternative transport. Can be used as fuel for vehicles and the Jetpack."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 5246,
+    "energyMJ": 10000,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/IonizedFuel/UI/IconDesc_IonizedRocketFuel_256"
+  },
+  {
+    "id": "Desc_PackagedNitricAcid_C",
+    "name": {
+      "es": "Ácido nítrico envasado",
+      "en": "Packaged Nitric Acid"
+    },
+    "description": {
+      "es": "Ácido nítrico, envasado para transporte alternativo.",
+      "en": "Nitric Acid, packaged for alternative transport."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 412,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/NitricAcid/UI/IconDesc_PackagedNitricAcid_256"
+  },
+  {
+    "id": "Desc_PackagedNitrogenGas_C",
+    "name": {
+      "es": "Gas nitrógeno envasado",
+      "en": "Packaged Nitrogen Gas"
+    },
+    "description": {
+      "es": "Gas nitrógeno, envasado para transporte alternativo.",
+      "en": "Nitrogen Gas, packaged for alternative transport."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 312,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/PackagedNitrogen/UI/IconDesc_PackagedNitrogen_256"
+  },
+  {
+    "id": "Desc_PackagedOil_C",
+    "name": {
+      "es": "Petróleo envasado",
+      "en": "Packaged Oil"
+    },
+    "description": {
+      "es": "Petróleo crudo, envasado para transporte alternativo. Puede usarse como combustible de vehículos.",
+      "en": "Crude Oil, packaged for alternative transport. Can be used as fuel for vehicles."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 180,
+    "energyMJ": 320,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/RawResources/CrudeOil/UI/Oil_256"
+  },
+  {
+    "id": "Desc_PackagedOilResidue_C",
+    "name": {
+      "es": "Residuo de petróleo pesado envasado",
+      "en": "Packaged Heavy Oil Residue"
+    },
+    "description": {
+      "es": "Residuo de petróleo pesado, envasado para transporte alternativo. Puede utilizarse como combustible para vehículos.",
+      "en": "Heavy Oil Residue, packaged for alternative transport. Can be used as fuel for vehicles."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 180,
+    "energyMJ": 400,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/RawResources/CrudeOil/UI/OilResidue_256"
+  },
+  {
+    "id": "Desc_PackagedRocketFuel_C",
+    "name": {
+      "es": "Combustible de cohete envasado",
+      "en": "Packaged Rocket Fuel"
+    },
+    "description": {
+      "es": "Combustible para cohetes, envasado para transporte alternativo. Puede usarse como combustible para vehículos y mochilas propulsoras.",
+      "en": "Rocket Fuel, packaged for alternative transport. Can be used as fuel for vehicles and the Jetpack."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 1028,
+    "energyMJ": 7200,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/RocketFuel/UI/IconDesc_PackagedRocketFuel_256"
+  },
+  {
+    "id": "Desc_PackagedSulfuricAcid_C",
+    "name": {
+      "es": "Ácido sulfúrico envasado",
+      "en": "Packaged Sulfuric Acid"
+    },
+    "description": {
+      "es": "Ácido sulfúrico, envasado para transporte alternativo.",
+      "en": "Sulfuric Acid, packaged for alternative transport."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 152,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/SulfuricAcid/UI/IconDesc_PckagedSulphuricAcid_256"
+  },
+  {
+    "id": "Desc_PackagedWater_C",
+    "name": {
+      "es": "Agua envasada",
+      "en": "Packaged Water"
+    },
+    "description": {
+      "es": "Agua, envasada para transporte alternativo.",
+      "en": "Water, packaged for alternative transport."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 130,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/PackagedWater/UI/IconDesc_PackagedWater_256"
+  },
+  {
+    "id": "Desc_PetroleumCoke_C",
+    "name": {
+      "es": "Coque de petróleo",
+      "en": "Petroleum Coke"
+    },
+    "description": {
+      "es": "Se usa para fabricar.\nUn material rico en carbono destilado a partir de residuo de petróleo pesado.\nSe utiliza como sustituto menos eficiente del carbón.",
+      "en": "Used for crafting.\r\nA carbon-rich material distilled from Heavy Oil Residue. \r\nUsed as a less efficient Coal replacement."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 20,
+    "energyMJ": 180,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/PetroleumCoke/UI/IconDesc_PetroleumCoke_256"
+  },
+  {
+    "id": "Desc_Plastic_C",
+    "name": {
+      "es": "Plástico",
+      "en": "Plastic"
+    },
+    "description": {
+      "es": "Versátil y fácil de fabricar, este material tiene una amplia gama de usos.",
+      "en": "Versatile and easy to manufacture, this material has a wide range of uses."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 75,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/Plastic/UI/IconDesc_Plastic_256"
+  },
+  {
+    "id": "Desc_PlutoniumCell_C",
+    "name": {
+      "es": "Célula de plutonio revestida",
+      "en": "Encased Plutonium Cell"
+    },
+    "description": {
+      "es": "Gránulos de plutonio revestidos de hormigón.\nSe utilizan para producir barras de combustible de plutonio para la producción de energía nuclear.\n\nConsumo de energía: 250-750 MW (500 MW de media).\nPrecaución: Moderadamente radiactivo.",
+      "en": "Plutonium Pellets encased in concrete.\r\nUsed to produce Plutonium Fuel Rods for Nuclear Power production.\r\n\r\nPower Usage: 250-750 MW (500 MW average).\r\n﻿Caution: Moderately Radioactive."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 0,
+    "energyMJ": 0,
+    "radioactiveDecay": 120,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/PlutoniumCell/UI/IconDesc_EncasedPlutoniumCell_256"
+  },
+  {
+    "id": "Desc_PlutoniumFuelRod_C",
+    "name": {
+      "es": "Barra de combustible de plutonio",
+      "en": "Plutonium Fuel Rod"
+    },
+    "description": {
+      "es": "Se utiliza como combustible para centrales nucleares.\n\nPrecaución: Produce residuos radiactivos de plutonio cuando se consume.\nPrecaución: ALTAMENTE radiactivo.",
+      "en": "Used as fuel for Nuclear Power Plants.\r\n\r\nCaution: Produces radioactive Plutonium Waste when consumed.\r\nCaution: HIGHLY Radioactive."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 153184,
+    "energyMJ": 1500000,
+    "radioactiveDecay": 250,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/PlutoniumFuelRods/UI/IconDesc_PlutoniumFuelRod_256"
+  },
+  {
+    "id": "Desc_PlutoniumPellet_C",
+    "name": {
+      "es": "Gránulo de plutonio",
+      "en": "Plutonium Pellet"
+    },
+    "description": {
+      "es": "Producido en el acelerador de partículas a través de la conversión de uranio no fisible.\nUtilizado para producir células de plutonio revestidas para barras de combustible de plutonio.\n\nConsumo de energía: 250-750 MW (500 MW de media).\nPrecaución: Moderadamente radiactivo.",
+      "en": "Produced in the Particle Accelerator through conversion of Non-fissile Uranium.\r\nUsed to produce Encased Plutonium Cells for Plutonium Fuel Rods.\r\n\r\nPower Usage: 250-750 MW (500 MW average).\r\nCaution: Moderately Radioactive."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 0,
+    "energyMJ": 0,
+    "radioactiveDecay": 20,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/PlutoniumPellet/UI/IconDesc_PlutoniumPellet_256"
+  },
+  {
+    "id": "Desc_PlutoniumWaste_C",
+    "name": {
+      "es": "Residuos de plutonio",
+      "en": "Plutonium Waste"
+    },
+    "description": {
+      "es": "El subproducto de consumir barras de combustible de plutonio en la central nuclear.\nDebe almacenarse en un lugar seguro. Manipular con precaución.\n\nPrecaución: EXTREMADAMENTE radioactivo.",
+      "en": "The by-product of consuming Plutonium Fuel Rods in a Nuclear Power Plant.\r\nMust be stored in a safe location. Handle with caution.\r\n\r\nCaution: EXTREMELY Radioactive."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 500,
+    "sinkPoints": 0,
+    "energyMJ": 0,
+    "radioactiveDecay": 200,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/NuclearWaste/UI/IconDesc_PlutoniumWaste_256"
+  },
+  {
+    "id": "Desc_PolymerResin_C",
+    "name": {
+      "es": "Resina de polímero",
+      "en": "Polymer Resin"
+    },
+    "description": {
+      "es": "Un subproducto del refinamiento del petróleo crudo para convertirlo en combustible, comúnmente utilizado para fabricar plástico y caucho.",
+      "en": "A by-product of Crude Oil refinement into Fuel. Commonly used to manufacture Plastic and Rubber."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 12,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/PolymerResin/UI/IconDesc_PolymerResin_256"
+  },
+  {
+    "id": "Desc_PressureConversionCube_C",
+    "name": {
+      "es": "Cubo conversor de presiones",
+      "en": "Pressure Conversion Cube"
+    },
+    "description": {
+      "es": "Convierte la fuerza saliente en presión interna. Necesario para contener la materia inestable de alta densidad energética.",
+      "en": "Converts outgoing force into internal pressure. Required to contain unstable, high-energy matter."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 255088,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/PressureConversionCube/UI/IconDesc_ConversionCube_256"
+  },
+  {
+    "id": "Desc_QuantumEnergy_C",
+    "name": {
+      "es": "Materia fotónica excitada",
+      "en": "Excited Photonic Matter"
+    },
+    "description": {
+      "es": "La materia fotónica excitada es esencial para todos los procesos de producción en el codificador cuántico.\n\nSe crea en el convertidor al inducir intensas interacciones de fotones mediante la exposición a SAM en un entorno de alta energía.",
+      "en": "Excited Photonic Matter is essential for all production processes in the Quantum Encoder.\r\n\r\nFormed in the Converter by inducing intense photon interactions through exposure to SAM in a high-energy environment."
+    },
+    "form": "gas",
+    "isRawResource": false,
+    "stackSize": null,
+    "sinkPoints": 100,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": "#76f5e8",
+    "iconPath": "/Game/FactoryGame/Resource/Parts/QuantumEnergy/IconDesc_QuantumEnergy_256"
+  },
+  {
+    "id": "Desc_QuantumOscillator_C",
+    "name": {
+      "es": "Oscilador de superposición",
+      "en": "Superposition Oscillator"
+    },
+    "description": {
+      "es": "Un circuito oscilador que usa la resonancia mecánica de un cristal que vibra para crear una vibración de cuerda con una frecuencia precisa. Se suele usar en tecnologías de teletransporte y de manipulación dimensional.",
+      "en": "An oscillator circuit that uses the mechanical resonance of a vibrating crystal to create a string vibration with a precise frequency. Often used in teleportation technology and dimensional manipulation."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 37292,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/SuperpositionOscillator/UI/IconDesc_SuperPositionOscillator_256"
+  },
+  {
+    "id": "Desc_QuartzCrystal_C",
+    "name": {
+      "es": "Cristal de cuarzo",
+      "en": "Quartz Crystal"
+    },
+    "description": {
+      "es": "Derivado del cuarzo bruto. Se usa en la producción de tecnología de radar avanzada y pantallas de visualización de alta calidad.",
+      "en": "Derived from Raw Quartz. Used in the production of advanced radar technology and high-quality display screens."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 50,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/QuartzCrystal/UI/IconDesc_QuartzResource_256"
+  },
+  {
+    "id": "Desc_RawQuartz_C",
+    "name": {
+      "es": "Cuarzo bruto",
+      "en": "Raw Quartz"
+    },
+    "description": {
+      "es": "Se puede procesar en cristales de cuarzo y sílice, que ofrecen una variedad de aplicaciones.",
+      "en": "Can be processed into Quartz Crystals and Silica, which both offer a variety of applications."
+    },
+    "form": "solid",
+    "isRawResource": true,
+    "stackSize": 100,
+    "sinkPoints": 15,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/QuartzCrystal/UI/IconDesc_QuartzCrystal_256"
+  },
+  {
+    "id": "Desc_Rebar_Explosive_C",
+    "name": {
+      "es": "Varilla explosiva",
+      "en": "Explosive Rebar"
+    },
+    "description": {
+      "es": "Explota al impactar, provocando grandes daños.",
+      "en": "Explodes on impact, dealing heavy damage."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 360,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Equipment/RebarGun/UI/IconDesc_ExpRebar_256"
+  },
+  {
+    "id": "Desc_Rebar_Spreadshot_C",
+    "name": {
+      "es": "Varilla de fragmentación",
+      "en": "Shatter Rebar"
+    },
+    "description": {
+      "es": "Se fractura cuando se dispara, lanzando escombros letales en una amplia extensión pero con un alcance limitado.",
+      "en": "Fractures when shot, launching deadly debris with wide spread but limited range."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 332,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Equipment/RebarGun/UI/IconDesc_ScatterRebar_256"
+  },
+  {
+    "id": "Desc_Rebar_Stunshot_C",
+    "name": {
+      "es": "Varilla aturdidora",
+      "en": "Stun Rebar"
+    },
+    "description": {
+      "es": "Electrocuta al objetivo al impactar, aturdiéndolo durante unos instantes.\n\nDuración del aturdimiento: 5 segundos",
+      "en": "Electrocutes the target on impact, stunning it for a short time.\r\n\r\nStun Duration: 5 seconds"
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 186,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Equipment/RebarGun/UI/IconDesc_StunRebar_256"
+  },
+  {
+    "id": "Desc_RocketFuel_C",
+    "name": {
+      "es": "Combustible de cohete",
+      "en": "Rocket Fuel"
+    },
+    "description": {
+      "es": "Un combustible de gas comprimido de alto impulso.\nPuede usarse tal cual para alimentar generadores a combustible o envasado como combustible para vehículos o mochilas propulsoras.",
+      "en": "A high-impulse compressed gas fuel.\r\nCan be used as-is to power Fuel-Powered Generators, or packaged to be used as fuel for vehicles or the Jetpack."
+    },
+    "form": "gas",
+    "isRawResource": false,
+    "stackSize": null,
+    "sinkPoints": 289,
+    "energyMJ": 3600,
+    "radioactiveDecay": 0,
+    "fluidColor": "#bd251a",
+    "iconPath": "/Game/FactoryGame/Resource/Parts/RocketFuel/UI/IconDesc_RocketFuelPipe_256"
+  },
+  {
+    "id": "Desc_Rotor_C",
+    "name": {
+      "es": "Rotor",
+      "en": "Rotor"
+    },
+    "description": {
+      "es": "Material de fabricación.\nLas piezas móviles de un motor.",
+      "en": "Used for crafting.\r\nThe moving parts of a motor."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 140,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/Rotor/UI/IconDesc_Rotor_256"
+  },
+  {
+    "id": "Desc_Rubber_C",
+    "name": {
+      "es": "Caucho",
+      "en": "Rubber"
+    },
+    "description": {
+      "es": "Un material muy flexible y que tiene mucha fricción.",
+      "en": "A very flexible material that has a lot of friction."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 60,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/Rubber/UI/IconDesc_Rubber_256"
+  },
+  {
+    "id": "Desc_SAM_C",
+    "name": {
+      "es": "MAR",
+      "en": "SAM"
+    },
+    "description": {
+      "es": "Materia alienígena rara, comúnmente conocida como MAR; no parece seguir las leyes conocidas de la física. Ofrece nuevas posibilidades.",
+      "en": "Strange Alien Matter, commonly referred to as SAM, doesn't seem to follow the known laws of physics. It whispers of new possibilities."
+    },
+    "form": "solid",
+    "isRawResource": true,
+    "stackSize": 100,
+    "sinkPoints": 20,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/RawResources/SAM/UI/IconDesc_SameOre_256"
+  },
+  {
+    "id": "Desc_SAMFluctuator_C",
+    "name": {
+      "es": "Fluctuador de MAR",
+      "en": "SAM Fluctuator"
+    },
+    "description": {
+      "es": "El fluctuador de MAR es capaz de regular y dirigir el comportamiento de la MAR reanimada mediante la aplicación de cargas eléctricas con frecuencias variables.\nEste control facilita tecnologías como la conversión de materia en energía y la manipulación espaciotemporal de la materia.",
+      "en": "The SAM Fluctuator is able to regulate and direct the behavior of Reanimated SAM through the application of electric charges with varying frequencies.\r\nThis control facilitates technologies such as matter-to-energy conversion and spatiotemporal matter manipulation."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 1968,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/SAMFluctuator/UI/IconDesc_SamFluctuator_256"
+  },
+  {
+    "id": "Desc_SAMIngot_C",
+    "name": {
+      "es": "MAR reanimada",
+      "en": "Reanimated SAM"
+    },
+    "description": {
+      "es": "La forma activa y contenida de la materia alienígena rara.\n\nSe requiere un aislamiento electromagnético adecuado, ya que parece tener la capacidad de manipular los enlaces atómicos de cualquier materia con la que entre en contacto.",
+      "en": "The active and contained form of the Strange Alien Matter.\r\n\r\nProper electromagnetic containment is required, as it appears to be able to manipulate the atomic bonds of any matter it comes into contact with."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 160,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/ReanimatedSAM/UI/IconDesc_ReanimatedSam_256"
+  },
+  {
+    "id": "Desc_Silica_C",
+    "name": {
+      "es": "Sílice",
+      "en": "Silica"
+    },
+    "description": {
+      "es": "Derivado del cuarzo bruto. Comúnmente utilizado para crear estructuras de vidrio, procesos de refinado avanzados y para producción alternativa de electrónica.",
+      "en": "Derived from Raw Quartz. Commonly used to create glass structures, in advanced refinement processes, and for alternative production of electronics."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 20,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/Silica/UI/IconDesc_Silica_256"
+  },
+  {
+    "id": "Desc_SingularityCell_C",
+    "name": {
+      "es": "Célula de singularidad",
+      "en": "Singularity Cell"
+    },
+    "description": {
+      "es": "Se utiliza para descomponer el espacio y el tiempo. Se requiere para alimentar portales.",
+      "en": "Used to break down space and time. Required to power Portals."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 114675,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/SingularityCell/UI/IconDesc_SingularityCell_256"
+  },
+  {
+    "id": "Desc_Snow_C",
+    "name": {
+      "es": "Nieve de verdad de FICSIVIDAD",
+      "en": "FICSMAS Actual Snow"
+    },
+    "description": {
+      "es": "Esta nieve de verdad está compuesta de varios elementos químicos y, tras exhaustivas pruebas con usuarios, parece 100 % nieve natural.",
+      "en": "This Actual Snow is made from several chemical elements and experiences 100% like naturally occuring snow after extensive user testing."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 500,
+    "sinkPoints": 5,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Events/Christmas/Parts/UI/IconDesc_Snow_256"
+  },
+  {
+    "id": "Desc_SnowballProjectile_C",
+    "name": {
+      "es": "Bola de nieve",
+      "en": "Snowball"
+    },
+    "description": {
+      "es": "¡Cristales de monóxido de dihidrógeno comprimidos para diversión bélica!",
+      "en": "Compressed dihydrogen monoxide crystals for weaponized fun!"
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 30,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Events/Christmas/Parts/UI/IconDesc_SnowballProjectile_256"
+  },
+  {
+    "id": "Desc_SpaceElevatorPart_1_C",
+    "name": {
+      "es": "Placas inteligentes",
+      "en": "Smart Plating"
+    },
+    "description": {
+      "es": "Pieza del proyecto n.º 1. Envíala con el ascensor espacial para completar fases del Proyecto Montaje.",
+      "en": "Project Part #1. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 520,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/SmartPlate/UI/IconDesc_SpelevatorPart_1_256"
+  },
+  {
+    "id": "Desc_SpaceElevatorPart_10_C",
+    "name": {
+      "es": "Escultor bioquímico",
+      "en": "Biochemical Sculptor"
+    },
+    "description": {
+      "es": "Pieza del proyecto n.º 10. Envíala con el ascensor espacial para completar las fases del Proyecto Montaje.\n\nEsta impresora 3D extremadamente avanzada, que le lleva años a la competencia, se utiliza para la producción de recursos biológicos sintéticos.",
+      "en": "Project Part #10. Ship via the Space Elevator to complete phases of Project Assembly.\r\n\r\nYears ahead of the competition, this top-of-the-line 3D printer is used for the production of synthetic biological resources."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 301778,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/BiochemicalSculptor/UI/IconDesc_BiochemicalSculptor_256"
+  },
+  {
+    "id": "Desc_SpaceElevatorPart_11_C",
+    "name": {
+      "es": "Unidad de deformación balística",
+      "en": "Ballistic Warp Drive"
+    },
+    "description": {
+      "es": "Pieza del proyecto n. º 11. Envíala con el ascensor espacial para completar las fases del Proyecto Montaje. \n\nSe requiere una gran cantidad de fuerza para que se activen las unidades de deformación, por lo que fijarlas a cohetes era el siguiente paso lógico. Además, los resultados mejoraron enormemente con una separación mayor entre los observadores y las unidades de deformación.",
+      "en": "Project Part #11. Ship via the Space Elevator to complete phases of Project Assembly.\r\n\r\nA large amount of force is required for the Warp Drives to activate, so sticking them to rockets was the logical next step. Additionally, results improved immensely when the observers were further removed from the Warp Drives upon activation."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 2895334,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/BallisticWarpdrive/UI/IconDesc_BallisticWarpDrive_256"
+  },
+  {
+    "id": "Desc_SpaceElevatorPart_12_C",
+    "name": {
+      "es": "Servidor de expansión de IA",
+      "en": "AI Expansion Server"
+    },
+    "description": {
+      "es": "Pieza del proyecto n.º 12. Envíala con el ascensor espacial para completar las fases del Proyecto Montaje.\nConsumo de energía: 0-2000 MW (promedio de 1000 MW).\n\nEl crecimiento es el criterio con el que medimos el éxito.",
+      "en": "Project Part #12. Ship via the Space Elevator to complete phases of Project Assembly.\r\nPower Usage: 0-2000 MW (1000 MW average).\r\n\r\nGrowth is the metric by which we measure success."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 597652,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/AIExpansion/_UI/IconDesc_AIExpension_256"
+  },
+  {
+    "id": "Desc_SpaceElevatorPart_2_C",
+    "name": {
+      "es": "Estructura versátil",
+      "en": "Versatile Framework"
+    },
+    "description": {
+      "es": "Pieza del proyecto n.º 2. Envíala con el ascensor espacial para completar fases del Proyecto Montaje.",
+      "en": "Project Part #2. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 1176,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/Skeletalframework/UI/IconDesc_SpelevatorPart_2_256"
+  },
+  {
+    "id": "Desc_SpaceElevatorPart_3_C",
+    "name": {
+      "es": "Cableado automatizado",
+      "en": "Automated Wiring"
+    },
+    "description": {
+      "es": "Pieza del proyecto n.º 3. Envíala con el ascensor espacial para completar fases del Proyecto Montaje.",
+      "en": "Project Part #3. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 1440,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/AutomatedWiring/UI/SpelevatorPart_3_256"
+  },
+  {
+    "id": "Desc_SpaceElevatorPart_4_C",
+    "name": {
+      "es": "Motor modular",
+      "en": "Modular Engine"
+    },
+    "description": {
+      "es": "Pieza del proyecto n.º 4. Envíala con el ascensor espacial para completar fases del Proyecto Montaje.",
+      "en": "Project Part #4. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 9960,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/ModularEngine/UI/IconDesc_SpelevatorPart_4_256"
+  },
+  {
+    "id": "Desc_SpaceElevatorPart_5_C",
+    "name": {
+      "es": "Unidad de control adaptativa",
+      "en": "Adaptive Control Unit"
+    },
+    "description": {
+      "es": "Pieza del proyecto n.º 5. Envíala con el ascensor espacial para completar fases del Proyecto Montaje.",
+      "en": "Project Part #5. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 76368,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/ControlSystem/UI/IconDesc_SpelevatorPart_5_256"
+  },
+  {
+    "id": "Desc_SpaceElevatorPart_6_C",
+    "name": {
+      "es": "Generador de campos magnéticos",
+      "en": "Magnetic Field Generator"
+    },
+    "description": {
+      "es": "Pieza del proyecto n.º 7. Envíala con el ascensor espacial para completar las fases del Proyecto Montaje.\n\nEstos generadores modulares utilizan imanes superconductores y grandes cantidades de electricidad para producir un campo magnético potente y fácilmente ampliable.",
+      "en": "Project Part #7. Ship via the Space Elevator to complete phases of Project Assembly.\r\n\r\nThese modular generators use superconducting magnets and vast amounts of electricity to produce a powerful and easily expandable magnetic field."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 11000,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/MagneticFieldGenerator/UI/IconDesc_MagneticFieldGenerator_256"
+  },
+  {
+    "id": "Desc_SpaceElevatorPart_7_C",
+    "name": {
+      "es": "Sistema director de montaje",
+      "en": "Assembly Director System"
+    },
+    "description": {
+      "es": "Pieza del proyecto n.º 6. Envíala con el ascensor espacial para completar las fases del Proyecto Montaje.\n\nEste sistema de computación extremadamente rápido y preciso está diseñado específicamente para dirigir la fase de ensamblaje del Proyecto Montaje.",
+      "en": "Project Part #6. Ship via the Space Elevator to complete phases of Project Assembly.\r\n\r\nThis extremely fast and precise computing system is specifically designed to direct the Project Assembly: Assembly Phase."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 500176,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/AssemblyControlUnit/UI/IconDesc_AssemblyDirectorSystem_256"
+  },
+  {
+    "id": "Desc_SpaceElevatorPart_8_C",
+    "name": {
+      "es": "Cohete de propulsión térmica",
+      "en": "Thermal Propulsion Rocket"
+    },
+    "description": {
+      "es": "Pieza del proyecto n.º 8. Envíala con el ascensor espacial para completar las fases del Proyecto Montaje.\n\nUtiliza calor extremo para producir el plasma de alta presión necesario para poner en movimiento el Proyecto Montaje.",
+      "en": "Project Part #8. Ship via the Space Elevator to complete phases of Project Assembly.\r\n\r\nUses extreme heat to produce the high-pressure plasma required to get Project Assembly into motion."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 728508,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/ThermalAntimatterPropulsionRocket/UI/IconDesc_ThermalPropulsionRocket_256"
+  },
+  {
+    "id": "Desc_SpaceElevatorPart_9_C",
+    "name": {
+      "es": "Pasta nuclear",
+      "en": "Nuclear Pasta"
+    },
+    "description": {
+      "es": "Pieza del proyecto n.º 9. Envíala con el ascensor espacial para completar fases del Proyecto Montaje.\nConsumo de energía: 500-1500 MW (1000 MW de media).\n\nLa pasta nuclear es una materia degenerada extremadamente densa, que se forma cuando la presión extrema obliga a los protones y electrones a formar neutrones. Se cree que existe de forma natural en la corteza de las estrellas de neutrones.",
+      "en": "Project Part #9. Ship via the Space Elevator to complete phases of Project Assembly.\r\nPower Usage: 500-1500 MW (1000 MW average).\r\n\r\nNuclear Pasta is extremely dense degenerate matter, formed when extreme pressure forces protons and electrons together into neutrons. It is theorized to exist naturally within the crust of neutron stars."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 538976,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/NuclearPasta/UI/IconDesc_NuclearPasta_256"
+  },
+  {
+    "id": "Desc_SpikedRebar_C",
+    "name": {
+      "es": "Varilla de hierro",
+      "en": "Iron Rebar"
+    },
+    "description": {
+      "es": "Se puede disparar usando la pistola de varillas con fines de autodefensa.",
+      "en": "Can be shot using the Rebar Gun for self-defense purposes."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 8,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Equipment/RebarGun/UI/IconDesc_Rebar_256"
+  },
+  {
+    "id": "Desc_SpitterParts_C",
+    "name": {
+      "es": "Restos de escupidor",
+      "en": "Spitter Remains"
+    },
+    "description": {
+      "es": "Los restos de una criatura alienígena que escupe plasma.\nSe utiliza para investigación en la MAM.",
+      "en": "The remains of a plasma-spitting alien creature.\r\nUsed for MAM research."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 0,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/AnimalParts/UI/IconDesc_SpitterPart_256"
+  },
+  {
+    "id": "Desc_Stator_C",
+    "name": {
+      "es": "Estátor",
+      "en": "Stator"
+    },
+    "description": {
+      "es": "Material de fabricación.\nLas piezas fijas de un motor.",
+      "en": "Used for crafting.\r\nThe static parts of a motor."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 240,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/Stator/UI/IconDesc_Stator_256"
+  },
+  {
+    "id": "Desc_SteelIngot_C",
+    "name": {
+      "es": "Lingote de acero",
+      "en": "Steel Ingot"
+    },
+    "description": {
+      "es": "Se obtiene fundiendo mineral de hierro y carbón. Puede transformarse en diversas piezas empleadas en la construcción de estructuras.",
+      "en": "Smelted from a combination of Iron Ore and Coal. Can be made into several parts used in building construction."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 8,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/SteelIngot/UI/IconDesc_SteelIngot_256"
+  },
+  {
+    "id": "Desc_SteelPipe_C",
+    "name": {
+      "es": "Tubería de acero",
+      "en": "Steel Pipe"
+    },
+    "description": {
+      "es": "Se utiliza principalmente en la construcción de estructuras un poco más avanzadas.",
+      "en": "Primarily used when constructing slightly more advanced buildings."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 24,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/SteelPipe/UI/IconDesc_SteelPipe_256"
+  },
+  {
+    "id": "Desc_SteelPlate_C",
+    "name": {
+      "es": "Viga de acero",
+      "en": "Steel Beam"
+    },
+    "description": {
+      "es": "Se utiliza principalmente en la construcción de estructuras un poco más avanzadas.",
+      "en": "Primarily used when constructing slightly more advanced buildings."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 64,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/SteelPlate/UI/IconDesc_SteelBeam_256"
+  },
+  {
+    "id": "Desc_SteelPlateReinforced_C",
+    "name": {
+      "es": "Viga industrial reforzada",
+      "en": "Encased Industrial Beam"
+    },
+    "description": {
+      "es": "Utiliza simultáneamente la resistencia a la compresión del hormigón y la resistencia a la tensión del acero.\nSe emplea principalmente como base estable en la construcción de estructuras.",
+      "en": "Simultaneously utilizes the compressive strength of concrete and the tensile strength of steel.\r\nMostly used as a stable base for constructing buildings."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 528,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/SteelPlateReinforced/UI/IconDesc_EncasedSteelBeam_256"
+  },
+  {
+    "id": "Desc_StingerParts_C",
+    "name": {
+      "es": "Restos de picador",
+      "en": "Stinger Remains"
+    },
+    "description": {
+      "es": "Los restos de lo que quiera que fuera esa cosa horrenda.\nSe usa para investigación en la MAM.",
+      "en": "The remains of whatever that creepy thing was.\r\nUsed for MAM research."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 0,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Environment/AnimalParts/UI/IconDesc_StingerPart_256"
+  },
+  {
+    "id": "Desc_Stone_C",
+    "name": {
+      "es": "Caliza",
+      "en": "Limestone"
+    },
+    "description": {
+      "es": "Material de fabricación.\nRecurso básico que se usa principalmente para hacer cimientos estables.",
+      "en": "Used for crafting.\r\nA basic resource primarily used for stable Foundations."
+    },
+    "form": "solid",
+    "isRawResource": true,
+    "stackSize": 100,
+    "sinkPoints": 2,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/RawResources/Stone/UI/Stone_256"
+  },
+  {
+    "id": "Desc_Sulfur_C",
+    "name": {
+      "es": "Azufre",
+      "en": "Sulfur"
+    },
+    "description": {
+      "es": "Se utiliza principalmente para producir pólvora.",
+      "en": "Primarily used to produce Black Powder."
+    },
+    "form": "solid",
+    "isRawResource": true,
+    "stackSize": 100,
+    "sinkPoints": 11,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/RawResources/Sulfur/UI/Sulfur_256"
+  },
+  {
+    "id": "Desc_SulfuricAcid_C",
+    "name": {
+      "es": "Ácido sulfúrico",
+      "en": "Sulfuric Acid"
+    },
+    "description": {
+      "es": "Producido al combinar azufre y agua en una reacción compleja. Se utiliza principalmente en procesos de refinamiento y en la producción de baterías.",
+      "en": "Produced by combining Sulfur and Water in a complex reaction. Primarily used in refinement processes and Battery production."
+    },
+    "form": "liquid",
+    "isRawResource": false,
+    "stackSize": null,
+    "sinkPoints": 16,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": "#ffff00",
+    "iconPath": "/Game/FactoryGame/Resource/Parts/SulfuricAcid/UI/IconDesc_LiquidSulfuricAcid_Pipe_256"
+  },
+  {
+    "id": "Desc_TemporalProcessor_C",
+    "name": {
+      "es": "Procesador neurocuántico",
+      "en": "Neural-Quantum Processor"
+    },
+    "description": {
+      "es": "El procesador neurocuántico utiliza una combinación de arquitectura de red neuronal y técnicas de computación cuántica para lograr un rendimiento sin precedentes. Esta tecnología ha permitido algunos de los mayores avances de FICSIT en inteligencia artificial e ingeniería relativista.",
+      "en": "The Neural-Quantum Processor utilizes a combination of neural network architecture and quantum computing techniques to achieve unprecedented performance. This technology has enabled some of FICSIT's biggest advancements in artificial intelligence and relativistic engineering."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 248034,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/TemporalProcessor/UI/IconDesc_TemporalProcessor_256"
+  },
+  {
+    "id": "Desc_TimeCrystal_C",
+    "name": {
+      "es": "Cronocristales",
+      "en": "Time Crystal"
+    },
+    "description": {
+      "es": "Los cronocristales son diamantes que han sido reconfigurados a nivel subatómico en el convertidor para conservar una estructura autoorganizada con periodicidad temporal, lo que permite utilizarlos en el desarrollo de tecnologías de almacenamiento y procesamiento cuántico.",
+      "en": "Time Crystals are Diamonds that have been reconfigured on a sub-atomic level in the Converter to retain a time-periodic self-organizing structure. This allows them to be used in the development of quantum processing and storage technologies."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 960,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/ExoticMatter/UI/IconDesc_ExoticMatter_256"
+  },
+  {
+    "id": "Desc_TurboFuel_C",
+    "name": {
+      "es": "Turbocombustible envasado",
+      "en": "Packaged Turbofuel"
+    },
+    "description": {
+      "es": "Turbocombustible, envasado para transporte alternativo. Puede usarse como combustible para vehículos y mochilas propulsoras.",
+      "en": "Turbofuel, packaged for alternative transport. Can be used as fuel for vehicles and the Jetpack."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 570,
+    "energyMJ": 2000,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/Turbofuel/UI/IconDesc_TurboFuel_256"
+  },
+  {
+    "id": "Desc_UraniumCell_C",
+    "name": {
+      "es": "Célula de uranio revestida",
+      "en": "Encased Uranium Cell"
+    },
+    "description": {
+      "es": "Se utiliza para producir barras de combustible de uranio para la producción de energía nuclear. Hecho de mineral de uranio.\n\nPrecaución: Ligeramente radiactivo.",
+      "en": "Used to produce Uranium Fuel Rods for Nuclear Power production. Made from Uranium Ore.\r\n\r\nCaution: Mildly Radioactive."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 147,
+    "energyMJ": 0,
+    "radioactiveDecay": 0.5,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/UraniumCell/UI/IconDesc_NuclearCell_256"
+  },
+  {
+    "id": "Desc_Water_C",
+    "name": {
+      "es": "Agua",
+      "en": "Water"
+    },
+    "description": {
+      "es": "Es agua.",
+      "en": "It's water."
+    },
+    "form": "liquid",
+    "isRawResource": true,
+    "stackSize": null,
+    "sinkPoints": 5,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": "#7ab0d4",
+    "iconPath": "/Game/FactoryGame/Resource/RawResources/Water/UI/LiquidWater_Pipe_256"
+  },
+  {
+    "id": "Desc_Wire_C",
+    "name": {
+      "es": "Alambre",
+      "en": "Wire"
+    },
+    "description": {
+      "es": "Material de fabricación.\nUna de las piezas más básicas.",
+      "en": "Used for crafting.\r\nOne of the most basic parts."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 500,
+    "sinkPoints": 6,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/Wire/UI/IconDesc_Wire_256"
+  },
+  {
+    "id": "Desc_Wood_C",
+    "name": {
+      "es": "Madera",
+      "en": "Wood"
+    },
+    "description": {
+      "es": "Se usa principalmente como combustible.\nLos quemadores de biomasa y los vehículos pueden usar madera como fuente de energía.",
+      "en": "Primarily used as fuel.\r\nBiomass Burners and vehicles can use Wood for power."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 30,
+    "energyMJ": 100,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Resource/Parts/GenericBiomass/UI/IconDesc_Wood_256"
+  },
+  {
+    "id": "Desc_XmasBall1_C",
+    "name": {
+      "es": "Adorno rojo de FICSIVIDAD",
+      "en": "Red FICSMAS Ornament"
+    },
+    "description": {
+      "es": "Un adorno para hacer decoraciones de FICSIVIDAD. Un rojo aceptable.",
+      "en": "An ornament for making FICSMAS Decorations. An acceptable red."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 2,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Events/Christmas/Parts/UI/IconDesc_XmasBall_Red_256"
+  },
+  {
+    "id": "Desc_XmasBall2_C",
+    "name": {
+      "es": "Adorno azul de FICSIVIDAD",
+      "en": "Blue FICSMAS Ornament"
+    },
+    "description": {
+      "es": "Un adorno para hacer decoraciones de FICSIVIDAD. Un azul ligeramente agradable.",
+      "en": "An ornament for making FICSMAS Decorations. A mildly pleasing blue."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 200,
+    "sinkPoints": 1,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Events/Christmas/Parts/UI/IconDesc_XmasBall_Blue_256"
+  },
+  {
+    "id": "Desc_XmasBall3_C",
+    "name": {
+      "es": "Adorno cobrizo de FICSIVIDAD",
+      "en": "Copper FICSMAS Ornament"
+    },
+    "description": {
+      "es": "Un adorno para hacer decoraciones de FICSIVIDAD. Un cobre con algo de dignidad.",
+      "en": "An ornament for making FICSMAS Decorations. A slightly dignified copper."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 32,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Events/Christmas/Parts/UI/IconDesc_XmasBall_Yellow_256"
+  },
+  {
+    "id": "Desc_XmasBall4_C",
+    "name": {
+      "es": "Adorno metálico de FICSIVIDAD",
+      "en": "Iron FICSMAS Ornament"
+    },
+    "description": {
+      "es": "Un adorno para hacer decoraciones de FICSIVIDAD. Un hierro decente.",
+      "en": "An ornament for making FICSMAS Decorations. An okay iron."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 18,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Events/Christmas/Parts/UI/IconDesc_XmasBall_Silver_256"
+  },
+  {
+    "id": "Desc_XmasBallCluster_C",
+    "name": {
+      "es": "Lote de decoraciones de FICSIVIDAD",
+      "en": "FICSMAS Ornament Bundle"
+    },
+    "description": {
+      "es": "Una colección de adornos de FICSIVIDAD y también una monstruosidad.",
+      "en": "A collection of FICSMAS ornaments and also an eyesore."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 100,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Events/Christmas/Parts/UI/IconDesc_Balls_256"
+  },
+  {
+    "id": "Desc_XmasBow_C",
+    "name": {
+      "es": "Lazo de FICSIVIDAD",
+      "en": "FICSMAS Bow"
+    },
+    "description": {
+      "es": "Un lazo bonito. No es apto para lucir, consumir, admirar, usar con canes lagarto, humanos o alienígenas, ni para nada relacionado con la producción industrial de FICSIVIDAD.",
+      "en": "A fancy bow. Not for wearing, eating, admiring, Lizard Doggos, humans, aliens, or anything not related to FICSMAS factory production."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 100,
+    "sinkPoints": 4,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Events/Christmas/Parts/UI/IconDesc_Bow_256"
+  },
+  {
+    "id": "Desc_XmasBranch_C",
+    "name": {
+      "es": "Rama de árbol de FICSIVIDAD",
+      "en": "FICSMAS Tree Branch"
+    },
+    "description": {
+      "es": "Esta rama de árbol de FICSIVIDAD es muy diferente de las ramas de árbol normales: se utiliza para producir piezas y estructuras durante el evento de FICSIVIDAD, en lugar de para la combustión.",
+      "en": "This FICSMAS Tree Branch is very different from regular tree branches: it's used to produce parts and buildings during the FICSMAS event, rather than for combustion."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 500,
+    "sinkPoints": 2,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Events/Christmas/Parts/UI/IconDesc_Branch_256"
+  },
+  {
+    "id": "Desc_XmasStar_C",
+    "name": {
+      "es": "Estrella de FICSIVIDAD",
+      "en": "FICSMAS Wonder Star"
+    },
+    "description": {
+      "es": "Un símbolo de agradecimiento por todo el trabajo duro que FICSIT ha realizado por sus empleados. Parece tener un aura de gratitud. Ver esto también significa que el evento de temporada está a punto de terminar y por fin podemos volver a traer esperanza.",
+      "en": "A symbol of appreciation for all the hard work FICSIT has done for its employees. It seems to have an aura of gratitude. Seeing this also means the seasonal event is nearly done, and we can finally get back to Saving The Day."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 6540,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Events/Christmas/Parts/UI/IconDesc_Star_256"
+  },
+  {
+    "id": "Desc_XmasWreath_C",
+    "name": {
+      "es": "Corona de FICSIVIDAD",
+      "en": "FICSMAS Wreath"
+    },
+    "description": {
+      "es": "La última innovación navideña de FICSIT: ¡adornos que se pueden convertir en otros adornos! Eficiencia y diseño que ahorra residuos en su máxima expresión.",
+      "en": "FICSIT's newest holiday innovation: decorations that can be turned into decorations! Efficiency and waste-conscious design at its best."
+    },
+    "form": "solid",
+    "isRawResource": false,
+    "stackSize": 50,
+    "sinkPoints": 630,
+    "energyMJ": 0,
+    "radioactiveDecay": 0,
+    "fluidColor": null,
+    "iconPath": "/Game/FactoryGame/Events/Christmas/Parts/UI/IconDesc_WreathNoBow_256"
+  }
+]

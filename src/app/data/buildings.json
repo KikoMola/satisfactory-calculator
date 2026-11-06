@@ -1,0 +1,550 @@
+[
+  {
+    "id": "Build_AssemblerMk1_C",
+    "name": {
+      "es": "Ensambladora",
+      "en": "Assembler"
+    },
+    "description": {
+      "es": "Fabrica 2 piezas a partir de otra.\n\nSe puede automatizar al suministrarle piezas con cintas transportadoras conectadas a los puertos de entrada. Las piezas producidas se pueden extraer automáticamente al conectar una cinta transportadora al puerto de salida.",
+      "en": "Crafts 2 parts into another part.\r\n\r\nCan be automated by feeding component parts in via Conveyor Belts connected to the input ports. The resulting parts can be automatically extracted by connecting a Conveyor Belt to the output port."
+    },
+    "powerMW": 15,
+    "powerExponent": 1.321929,
+    "canOverclock": true,
+    "kind": "manufacturer",
+    "somersloopSlots": 2,
+    "somersloopMultiplier": 0.5,
+    "boostPowerExponent": 2,
+    "variablePower": null
+  },
+  {
+    "id": "Build_Blender_C",
+    "name": {
+      "es": "Mezcladora",
+      "en": "Blender"
+    },
+    "description": {
+      "es": "Mezcla fluidos o los combina con piezas sólidas en una amplia variedad de procesos.\nElevación: 10 m\n(Permite transportar fluidos 10 metros hacia arriba).\n\nTiene puertos de entrada y salida de cinta transportadora y tubería.",
+      "en": "Blends fluids together or combines them with solid parts in a wide variety of processes.\r\nHead Lift: 10 m\r\n(Allows fluids to be transported 10 meters upwards.)\r\n\r\nHas both Conveyor Belt and Pipeline input and output ports."
+    },
+    "powerMW": 75,
+    "powerExponent": 1.321929,
+    "canOverclock": true,
+    "kind": "manufacturer",
+    "somersloopSlots": 4,
+    "somersloopMultiplier": 0.25,
+    "boostPowerExponent": 2,
+    "variablePower": null
+  },
+  {
+    "id": "Build_ConstructorMk1_C",
+    "name": {
+      "es": "Constructor",
+      "en": "Constructor"
+    },
+    "description": {
+      "es": "Fabrica 1 pieza a partir de otra.\n\nSe puede automatizar al suministrarle piezas con cintas transportadoras conectadas al puerto de entrada. Las piezas producidas se pueden extraer automáticamente conectando una cinta transportadora al puerto de salida.",
+      "en": "Crafts 1 part into another part.\r\n\r\nCan be automated by feeding component parts in via a Conveyor Belt connected to the input port. The resulting parts can be automatically extracted by connecting a Conveyor Belt to the output port."
+    },
+    "powerMW": 4,
+    "powerExponent": 1.321929,
+    "canOverclock": true,
+    "kind": "manufacturer",
+    "somersloopSlots": 1,
+    "somersloopMultiplier": 1,
+    "boostPowerExponent": 2,
+    "variablePower": null
+  },
+  {
+    "id": "Build_Converter_C",
+    "name": {
+      "es": "Transformador",
+      "en": "Converter"
+    },
+    "description": {
+      "es": "El transformador aprovecha la MAR reanimada para realizar una transmutación precisa de materia y energía.\n\nAdvertencia: El consumo de energía es muy elevado e inestable.",
+      "en": "The Converter harnesses Reanimated SAM to enable precise matter and energy transmutation.\r\n\r\nWarning: Power usage is very high and unstable."
+    },
+    "powerMW": 0,
+    "powerExponent": 1.321929,
+    "canOverclock": true,
+    "kind": "manufacturer",
+    "somersloopSlots": 2,
+    "somersloopMultiplier": 0.5,
+    "boostPowerExponent": 2,
+    "variablePower": {
+      "min": 100,
+      "max": 400
+    }
+  },
+  {
+    "id": "Build_FoundryMk1_C",
+    "name": {
+      "es": "Fundición",
+      "en": "Foundry"
+    },
+    "description": {
+      "es": "Funde 2 recursos en lingotes de aleación.\n\nSe puede automatizar suministrando mineral a través de cintas transportadoras conectadas a los puertos de entrada. Los lingotes resultantes se pueden extraer automáticamente conectando una cinta transportadora al puerto de salida.",
+      "en": "Smelts 2 resources into alloy ingots.\r\n\r\nCan be automated by feeding ore in via Conveyor Belts connected to the input ports. The resulting ingots can be automatically extracted by connecting a Conveyor Belt to the output port."
+    },
+    "powerMW": 16,
+    "powerExponent": 1.321929,
+    "canOverclock": true,
+    "kind": "manufacturer",
+    "somersloopSlots": 2,
+    "somersloopMultiplier": 0.5,
+    "boostPowerExponent": 2,
+    "variablePower": null
+  },
+  {
+    "id": "Build_FrackingExtractor_C",
+    "name": {
+      "es": "Extractor de pozo de recursos",
+      "en": "Resource Well Extractor"
+    },
+    "description": {
+      "es": "Recoge recursos presurizados cuando se coloca en los subnodos activados de un pozo de recursos. No requiere energía.\n\nTasa de extracción por defecto: 60 m³ de fluido por minuto.\nElevación: 10 m\n(Permite transportar fluidos 10 metros hacia arriba).",
+      "en": "Collects pressurized resources when placed on the activated sub-nodes of a Resource Well. Does not require power.\r\n\r\nDefault Extraction Rate: 60 m³ of fluid per minute.\r\nHead Lift: 10 m\r\n(Allows fluids to be transported 10 meters upwards.)"
+    },
+    "powerMW": 0,
+    "powerExponent": 1.321929,
+    "canOverclock": true,
+    "kind": "extractor",
+    "cycleTime": 1,
+    "itemsPerCycle": 1,
+    "ratePerMinute": 60,
+    "allowedForms": ["liquid", "gas"],
+    "allowedResources": ["Desc_LiquidOil_C", "Desc_NitrogenGas_C", "Desc_Water_C"]
+  },
+  {
+    "id": "Build_FrackingSmasher_C",
+    "name": {
+      "es": "Presurizador de pozo de recursos",
+      "en": "Resource Well Pressurizer"
+    },
+    "description": {
+      "es": "Activa un pozo de recursos presurizando el recurso subterráneo. Debe colocarse en un pozo de recursos.\nUna vez activados, los extractores de pozo de recursos se pueden colocar en los subnodos circundantes para extraer el recurso.\nRequiere energía. Acelerar la producción aumenta el potencial de salida de todo el pozo de recursos.",
+      "en": "Activates a Resource Well by pressurizing the underground resource. Must be placed on a Resource Well.\r\nOnce activated, Resource Well Extractors can be placed on the surrounding sub-nodes to extract the resource.\r\nRequires power. Overclocking increases the output potential of the entire Resource Well."
+    },
+    "powerMW": 150,
+    "powerExponent": 1.321929,
+    "canOverclock": true,
+    "kind": "pressurizer",
+    "allowedResources": ["Desc_LiquidOil_C", "Desc_NitrogenGas_C", "Desc_Water_C"]
+  },
+  {
+    "id": "Build_GeneratorBiomass_Automated_C",
+    "name": {
+      "es": "Quemador de biomasa",
+      "en": "Biomass Burner"
+    },
+    "description": {
+      "es": "Quema varias formas de biomasa para generar electricidad para la red eléctrica.\nDispone de un puerto de entrada de cinta transportadora que permite automatizar el suministro de biomasa.\n\nReduce el consumo de recursos automáticamente para satisfacer la demanda de energía.",
+      "en": "Burns various forms of Biomass to generate electricity for the power grid.\r\nHas a Conveyor Belt input port that allows the Biomass supply to be automated.\r\n\r\nResource consumption will automatically be lowered to meet power demands."
+    },
+    "powerMW": 0,
+    "powerExponent": 1.6,
+    "canOverclock": true,
+    "kind": "generator",
+    "powerProductionMW": 30,
+    "fuels": [
+      {
+        "fuel": "Desc_Leaves_C",
+        "supplemental": null,
+        "byproduct": null
+      },
+      {
+        "fuel": "Desc_Wood_C",
+        "supplemental": null,
+        "byproduct": null
+      },
+      {
+        "fuel": "Desc_Mycelia_C",
+        "supplemental": null,
+        "byproduct": null
+      },
+      {
+        "fuel": "Desc_GenericBiomass_C",
+        "supplemental": null,
+        "byproduct": null
+      },
+      {
+        "fuel": "Desc_Biofuel_C",
+        "supplemental": null,
+        "byproduct": null
+      },
+      {
+        "fuel": "Desc_PackagedBiofuel_C",
+        "supplemental": null,
+        "byproduct": null
+      }
+    ],
+    "supplementalToPowerRatio": 0,
+    "variablePowerProduction": null
+  },
+  {
+    "id": "Build_GeneratorCoal_C",
+    "name": {
+      "es": "Generador de carbón",
+      "en": "Coal-Powered Generator"
+    },
+    "description": {
+      "es": "Quema carbón para hervir agua. El vapor producido hace rotar turbinas que generan electricidad para la red eléctrica.\nTiene una entrada de cinta transportadora y tubería, para automatizar el suministro de carbón y de agua.\n\nAviso: Siempre genera energía a la velocidad de reloj configurada. Se apaga cuando no tiene suficiente combustible.",
+      "en": "Burns Coal to boil Water. The steam produced rotates turbines that generate electricity for the power grid.\r\nHas Conveyor Belt and Pipeline input ports that allow the Coal and Water supply to be automated.\r\n\r\nCaution: Always generates power at the set clock speed. Shuts down if fuel requirements are not met."
+    },
+    "powerMW": 0,
+    "powerExponent": 1.6,
+    "canOverclock": true,
+    "kind": "generator",
+    "powerProductionMW": 75,
+    "fuels": [
+      {
+        "fuel": "Desc_Coal_C",
+        "supplemental": "Desc_Water_C",
+        "byproduct": null
+      },
+      {
+        "fuel": "Desc_CompactedCoal_C",
+        "supplemental": "Desc_Water_C",
+        "byproduct": null
+      },
+      {
+        "fuel": "Desc_PetroleumCoke_C",
+        "supplemental": "Desc_Water_C",
+        "byproduct": null
+      }
+    ],
+    "supplementalToPowerRatio": 10,
+    "variablePowerProduction": null
+  },
+  {
+    "id": "Build_GeneratorFuel_C",
+    "name": {
+      "es": "Generador de combustible",
+      "en": "Fuel-Powered Generator"
+    },
+    "description": {
+      "es": "Consume combustible para generar electricidad para la red eléctrica.\nTiene un puerto de entrada de tubería que permite automatizar el suministro de combustible.\n\nAviso: Siempre genera energía a la velocidad de producción fijada. Se apaga cuando no tiene suficiente combustible.",
+      "en": "Consumes Fuel to generate electricity for the power grid.\r\nHas a Pipeline input port that allows the Fuel supply to be automated.\r\n\r\nCaution: Always generates power at the set clock speed. Shuts down if fuel requirements are not met."
+    },
+    "powerMW": 0,
+    "powerExponent": 1.6,
+    "canOverclock": true,
+    "kind": "generator",
+    "powerProductionMW": 250,
+    "fuels": [
+      {
+        "fuel": "Desc_LiquidFuel_C",
+        "supplemental": null,
+        "byproduct": null
+      },
+      {
+        "fuel": "Desc_LiquidTurboFuel_C",
+        "supplemental": null,
+        "byproduct": null
+      },
+      {
+        "fuel": "Desc_LiquidBiofuel_C",
+        "supplemental": null,
+        "byproduct": null
+      },
+      {
+        "fuel": "Desc_RocketFuel_C",
+        "supplemental": null,
+        "byproduct": null
+      },
+      {
+        "fuel": "Desc_IonizedFuel_C",
+        "supplemental": null,
+        "byproduct": null
+      }
+    ],
+    "supplementalToPowerRatio": 0,
+    "variablePowerProduction": null
+  },
+  {
+    "id": "Build_GeneratorGeoThermal_C",
+    "name": {
+      "es": "Generador geotérmico",
+      "en": "Geothermal Generator"
+    },
+    "description": {
+      "es": "Aprovecha la energía geotérmica para generar energía. Debe construirse sobre un géiser.\n\nAviso: La electricidad generada fluctúa.\n\nProducción de energía:\nGéiser impuro: 50-150 MW (100 MW de media) \nGéiser normal: 100-300 MW (200 MW de media) \nGéiser puro: 200-600 MW (400 MW de media)",
+      "en": "Harnesses geothermal energy to generate power. Must be built on a Geyser.\r\n\r\nCaution: Power production fluctuates.\r\n\r\nPower Production:\r\nImpure Geyser: 50-150 MW (100 MW average)\r\nNormal Geyser: 100-300 MW (200 MW average)\r\nPure Geyser: 200-600 MW (400 MW average)"
+    },
+    "powerMW": 0,
+    "powerExponent": 1.6,
+    "canOverclock": false,
+    "kind": "generator",
+    "powerProductionMW": 0,
+    "fuels": [],
+    "supplementalToPowerRatio": 0,
+    "variablePowerProduction": {
+      "constant": 0,
+      "factor": 200,
+      "cycleLength": 60
+    }
+  },
+  {
+    "id": "Build_GeneratorNuclear_C",
+    "name": {
+      "es": "Central nuclear",
+      "en": "Nuclear Power Plant"
+    },
+    "description": {
+      "es": "Consume barras de combustible nuclear y agua para generar electricidad para la red eléctrica.\n\nProduce residuos nucleares, que se extraen a través de la cinta transportadora de salida.\n\nAviso: Siempre genera energía a la velocidad de producción fijada. Se apaga cuando no tiene suficiente combustible.",
+      "en": "Consumes Nuclear Fuel Rods and Water to produce electricity for the power grid.\r\n\r\nProduces Nuclear Waste, which is extracted via the Conveyor Belt output.\r\n\r\nCaution: Always generates power at the set clock speed. Shuts down if fuel requirements are not met."
+    },
+    "powerMW": 0,
+    "powerExponent": 1.6,
+    "canOverclock": true,
+    "kind": "generator",
+    "powerProductionMW": 2500,
+    "fuels": [
+      {
+        "fuel": "Desc_NuclearFuelRod_C",
+        "supplemental": "Desc_Water_C",
+        "byproduct": {
+          "item": "Desc_NuclearWaste_C",
+          "amount": 50
+        }
+      },
+      {
+        "fuel": "Desc_PlutoniumFuelRod_C",
+        "supplemental": "Desc_Water_C",
+        "byproduct": {
+          "item": "Desc_PlutoniumWaste_C",
+          "amount": 10
+        }
+      },
+      {
+        "fuel": "Desc_FicsoniumFuelRod_C",
+        "supplemental": "Desc_Water_C",
+        "byproduct": null
+      }
+    ],
+    "supplementalToPowerRatio": 1.6,
+    "variablePowerProduction": null
+  },
+  {
+    "id": "Build_HadronCollider_C",
+    "name": {
+      "es": "Acelerador de partículas",
+      "en": "Particle Accelerator"
+    },
+    "description": {
+      "es": "Usa campos electromagnéticos para propulsar partículas a niveles altísimos de velocidad y energía. Este modelo lleva a cabo varios procesos, como generación y conversión de materia.\n\nAtención: El consumo energético varía según la receta, y es inestable y elevado.",
+      "en": "Uses electromagnetic fields to propel particles to very high speeds and energies. The specific design allows for a variety of processes, including matter generation and conversion.\r\n\r\nWarning: Power usage is extremely high and unstable, and varies per recipe."
+    },
+    "powerMW": 0,
+    "powerExponent": 1.321929,
+    "canOverclock": true,
+    "kind": "manufacturer",
+    "somersloopSlots": 4,
+    "somersloopMultiplier": 0.25,
+    "boostPowerExponent": 2,
+    "variablePower": {
+      "min": 250,
+      "max": 1500
+    }
+  },
+  {
+    "id": "Build_ManufacturerMk1_C",
+    "name": {
+      "es": "Productor",
+      "en": "Manufacturer"
+    },
+    "description": {
+      "es": "Fabrica 3 o 4 piezas a partir de otra.\n\nSe puede automatizar al suministrarle piezas con cintas transportadoras conectadas al puerto de entrada. Las piezas producidas se pueden extraer automáticamente conectando una cinta transportadora al puerto de salida.",
+      "en": "Crafts 3 or 4 parts into another part.\r\n\r\nCan be automated by feeding component parts in via Conveyor Belts connected to the input ports. The resulting parts can be automatically extracted by connecting a Conveyor Belt to the output port."
+    },
+    "powerMW": 55,
+    "powerExponent": 1.321929,
+    "canOverclock": true,
+    "kind": "manufacturer",
+    "somersloopSlots": 4,
+    "somersloopMultiplier": 0.25,
+    "boostPowerExponent": 2,
+    "variablePower": null
+  },
+  {
+    "id": "Build_MinerMk1_C",
+    "name": {
+      "es": "Taladro Mk.1",
+      "en": "Miner Mk.1"
+    },
+    "description": {
+      "es": "Extrae recursos sólidos del nodo de recursos sobre el que está construido.\nLa tasa normal de extracción es de 60 recursos por minuto.\nLa tasa de extracción depende de la pureza del nodo de recursos. Los recursos salen por las cintas transportadoras conectadas.",
+      "en": "Extracts solid resources from the resource node it is built on. \r\nDefault extraction rate is 60 resources per minute. \r\nExtraction rate varies based on resource node purity. Outputs all extracted resources onto connected Conveyor Belts."
+    },
+    "powerMW": 5,
+    "powerExponent": 1.321929,
+    "canOverclock": true,
+    "kind": "extractor",
+    "cycleTime": 1,
+    "itemsPerCycle": 1,
+    "ratePerMinute": 60,
+    "allowedForms": ["solid"],
+    "allowedResources": []
+  },
+  {
+    "id": "Build_MinerMk2_C",
+    "name": {
+      "es": "Taladro Mk.2",
+      "en": "Miner Mk.2"
+    },
+    "description": {
+      "es": "Extrae recursos sólidos del nodo de recursos sobre el que está construido.\nLa tasa normal de extracción es de 120 recursos por minuto.\nLa tasa de extracción depende de la pureza del nodo de recursos. Los recursos salen por las cintas transportadoras conectadas.",
+      "en": "Extracts solid resources from the resource node it is built on. \r\nDefault extraction rate is 120 resources per minute. \r\nExtraction rate varies based on resource node purity. Outputs all extracted resources onto connected Conveyor Belts."
+    },
+    "powerMW": 15,
+    "powerExponent": 1.321929,
+    "canOverclock": true,
+    "kind": "extractor",
+    "cycleTime": 0.5,
+    "itemsPerCycle": 1,
+    "ratePerMinute": 120,
+    "allowedForms": ["solid"],
+    "allowedResources": []
+  },
+  {
+    "id": "Build_MinerMk3_C",
+    "name": {
+      "es": "Taladro Mk.3",
+      "en": "Miner Mk.3"
+    },
+    "description": {
+      "es": "Extrae recursos sólidos del nodo de recursos sobre el que está construido.\nLa tasa normal de extracción es de 240 recursos por minuto.\nLa tasa de extracción depende de la pureza del nodo de recursos. Los recursos salen por las cintas transportadoras conectadas.",
+      "en": "Extracts solid resources from the resource node it is built on. \r\nDefault extraction rate is 240 resources per minute. \r\nExtraction rate varies based on resource node purity. Outputs all extracted resources onto connected Conveyor Belts."
+    },
+    "powerMW": 45,
+    "powerExponent": 1.321929,
+    "canOverclock": true,
+    "kind": "extractor",
+    "cycleTime": 0.25,
+    "itemsPerCycle": 1,
+    "ratePerMinute": 240,
+    "allowedForms": ["solid"],
+    "allowedResources": []
+  },
+  {
+    "id": "Build_OilPump_C",
+    "name": {
+      "es": "Extractor de petróleo",
+      "en": "Oil Extractor"
+    },
+    "description": {
+      "es": "Extrae petróleo crudo cuando se construye sobre un nodo petrolífero. La tasa de extracción depende de la pureza del nodo.\n\nTasa de extracción por defecto: 120 m³ por minuto.\nElevación: 10 m\n(Permite transportar fluidos 10 metros hacia arriba).",
+      "en": "Extracts Crude Oil when built on an oil node. Extraction rates vary based on node purity.\r\n\r\nDefault Extraction Rate: 120 m³ of oil per minute.\r\nHead Lift: 10 m\r\n(Allows fluids to be transported 10 meters upwards.)"
+    },
+    "powerMW": 40,
+    "powerExponent": 1.321929,
+    "canOverclock": true,
+    "kind": "extractor",
+    "cycleTime": 1,
+    "itemsPerCycle": 2,
+    "ratePerMinute": 120,
+    "allowedForms": ["liquid"],
+    "allowedResources": ["Desc_LiquidOil_C"]
+  },
+  {
+    "id": "Build_OilRefinery_C",
+    "name": {
+      "es": "Refinería",
+      "en": "Refinery"
+    },
+    "description": {
+      "es": "Refina fluidos y piezas sólidas en otras piezas.\nElevación: 10 m\n(Permite transportar fluidos 10 metros hacia arriba).\n\nContiene puertos de entrada y salida tanto para cintas transportadoras como para tuberías, lo que permite la automatización de varias recetas.",
+      "en": "Refines fluid and/or solid parts into other parts.\r\nHead Lift: 10 m\r\n(Allows fluids to be transported 10 meters upwards.)\r\n\r\nHas both Conveyor Belt and Pipeline input and output ports so that a wide range of recipes can be automated."
+    },
+    "powerMW": 30,
+    "powerExponent": 1.321929,
+    "canOverclock": true,
+    "kind": "manufacturer",
+    "somersloopSlots": 2,
+    "somersloopMultiplier": 0.5,
+    "boostPowerExponent": 2,
+    "variablePower": null
+  },
+  {
+    "id": "Build_Packager_C",
+    "name": {
+      "es": "Envasadora",
+      "en": "Packager"
+    },
+    "description": {
+      "es": "Envasa y desenvasa fluidos.\nElevación 10 m\n(Permite transportar fluidos 10 metros hacia arriba).\n\nContiene puertos de entrada y salida de cinta transportadora y tubería para automatizar una amplia gama de recetas.",
+      "en": "Packages and unpackages fluids.\r\nHead Lift: 10 m\r\n(Allows fluids to be transported 10 meters upwards.)\r\n\r\nHas both Conveyor Belt and Pipeline input and output ports so that a wide range of recipes can be automated."
+    },
+    "powerMW": 10,
+    "powerExponent": 1.321929,
+    "canOverclock": true,
+    "kind": "manufacturer",
+    "somersloopSlots": 0,
+    "somersloopMultiplier": 1,
+    "boostPowerExponent": 2,
+    "variablePower": null
+  },
+  {
+    "id": "Build_QuantumEncoder_C",
+    "name": {
+      "es": "Codificador cuántico",
+      "en": "Quantum Encoder"
+    },
+    "description": {
+      "es": "El codificador cuántico utiliza materia fotónica excitada para producir las piezas más complejas, controlando el desarrollo hasta el nivel cuántico.\n\nAdvertencia: El uso de energía es extremadamente elevado e inestable.",
+      "en": "The Quantum Encoder uses Excited Photonic Matter to produce the most complex of parts, controlling development up to the quantum level.\r\n\r\nWarning: Power usage is extremely high and unstable."
+    },
+    "powerMW": 0,
+    "powerExponent": 1.321929,
+    "canOverclock": true,
+    "kind": "manufacturer",
+    "somersloopSlots": 4,
+    "somersloopMultiplier": 0.25,
+    "boostPowerExponent": 2,
+    "variablePower": {
+      "min": 0,
+      "max": 2000
+    }
+  },
+  {
+    "id": "Build_SmelterMk1_C",
+    "name": {
+      "es": "Horno",
+      "en": "Smelter"
+    },
+    "description": {
+      "es": "Funde el mineral en lingotes.\n\nSe puede automatizar al suministrarle mineral con una cinta transportadora conectada al puerto de entrada. Los lingotes resultantes se pueden extraer automáticamente al conectar una cinta transportadora al puerto de salida.",
+      "en": "Smelts ore into ingots.\r\n\r\nCan be automated by feeding ore in via a Conveyor Belt connected to the input port. The resulting ingots can be automatically extracted by connecting a Conveyor Belt to the output port."
+    },
+    "powerMW": 4,
+    "powerExponent": 1.321929,
+    "canOverclock": true,
+    "kind": "manufacturer",
+    "somersloopSlots": 0,
+    "somersloopMultiplier": 1,
+    "boostPowerExponent": 2,
+    "variablePower": null
+  },
+  {
+    "id": "Build_WaterPump_C",
+    "name": {
+      "es": "Extractor de agua",
+      "en": "Water Extractor"
+    },
+    "description": {
+      "es": "Extrae agua de la masa de agua sobre la que esté construido.\nNota: El agua debe ser lo suficientemente profunda, y los ríos generalmente no lo son.\n\nTasa de extracción por defecto: 120 m³ de agua por minuto. \nElevación: 10 m\n(Permite transportar fluidos 10 metros hacia arriba).",
+      "en": "Extracts water from the body of water it is built on.\r\nNote: the water needs to be sufficiently deep, and rivers are generally not deep enough.\r\n\r\nDefault Extraction Rate: 120 m³ of water per minute.\r\nHead Lift: 10 m\r\n(Allows fluids to be transported 10 meters upwards.)"
+    },
+    "powerMW": 20,
+    "powerExponent": 1.321929,
+    "canOverclock": true,
+    "kind": "extractor",
+    "cycleTime": 1,
+    "itemsPerCycle": 2,
+    "ratePerMinute": 120,
+    "allowedForms": ["liquid"],
+    "allowedResources": ["Desc_Water_C"]
+  }
+]

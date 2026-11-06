@@ -1,0 +1,8171 @@
+[
+  {
+    "id": "Recipe_AILimiter_C",
+    "name": {
+      "es": "Limitador de IA",
+      "en": "AI Limiter"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_CopperSheet_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_HighSpeedWire_C",
+        "amount": 20
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_CircuitBoardHighSpeed_C",
+        "amount": 1
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_AlienDNACapsule_C",
+    "name": {
+      "es": "Cápsula de ADN de alienígena",
+      "en": "Alien DNA Capsule"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_AlienProtein_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_AlienDNACapsule_C",
+        "amount": 1
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_AlienPowerFuel_C",
+    "name": {
+      "es": "Matriz de energía alienígena",
+      "en": "Alien Power Matrix"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SAMFluctuator_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_CrystalShard_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_QuantumOscillator_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_QuantumEnergy_C",
+        "amount": 24
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_AlienPowerFuel_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_DarkEnergy_C",
+        "amount": 24
+      }
+    ],
+    "duration": 24,
+    "producedIn": "Build_QuantumEncoder_C",
+    "variablePower": {
+      "min": 0,
+      "max": 2000
+    }
+  },
+  {
+    "id": "Recipe_Alternate_AdheredIronPlate_C",
+    "name": {
+      "es": "Alternativa: Plancha de hierro adherida",
+      "en": "Alternate: Adhered Iron Plate"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_IronPlate_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_Rubber_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_IronPlateReinforced_C",
+        "amount": 1
+      }
+    ],
+    "duration": 16,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_AILimiter_Plastic_C",
+    "name": {
+      "es": "Alternativa: Limitador de IA de plástico",
+      "en": "Alternate: Plastic AI Limiter"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_HighSpeedWire_C",
+        "amount": 30
+      },
+      {
+        "item": "Desc_Plastic_C",
+        "amount": 7
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_CircuitBoardHighSpeed_C",
+        "amount": 2
+      }
+    ],
+    "duration": 15,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_AlcladCasing_C",
+    "name": {
+      "es": "Alternativa: Carcasa de aluminio revestido",
+      "en": "Alternate: Alclad Casing"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_AluminumIngot_C",
+        "amount": 20
+      },
+      {
+        "item": "Desc_CopperIngot_C",
+        "amount": 10
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_AluminumCasing_C",
+        "amount": 15
+      }
+    ],
+    "duration": 8,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_AluminumRod_C",
+    "name": {
+      "es": "Alternativa: Barra de aluminio",
+      "en": "Alternate: Aluminum Rod"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_AluminumIngot_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_IronRod_C",
+        "amount": 7
+      }
+    ],
+    "duration": 8,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_AutomatedMiner_C",
+    "name": {
+      "es": "Alternativa: Taladro automatizado",
+      "en": "Alternate: Automated Miner"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_SteelPipe_C",
+        "amount": 4
+      },
+      {
+        "item": "Desc_IronPlate_C",
+        "amount": 4
+      }
+    ],
+    "products": [
+      {
+        "item": "BP_ItemDescriptorPortableMiner_C",
+        "amount": 1
+      }
+    ],
+    "duration": 60,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_BoltedFrame_C",
+    "name": {
+      "es": "Alternativa: Armazón atornillado",
+      "en": "Alternate: Bolted Frame"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_IronPlateReinforced_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_IronScrew_C",
+        "amount": 56
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_ModularFrame_C",
+        "amount": 2
+      }
+    ],
+    "duration": 24,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_Cable_1_C",
+    "name": {
+      "es": "Alternativa: Cable aislado",
+      "en": "Alternate: Insulated Cable"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_Wire_C",
+        "amount": 9
+      },
+      {
+        "item": "Desc_Rubber_C",
+        "amount": 6
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Cable_C",
+        "amount": 20
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_Cable_2_C",
+    "name": {
+      "es": "Alternativa: Cable de turboalambre",
+      "en": "Alternate: Quickwire Cable"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_HighSpeedWire_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_Rubber_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Cable_C",
+        "amount": 11
+      }
+    ],
+    "duration": 24,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_CateriumIngot_Leached_C",
+    "name": {
+      "es": "Alternativa: Lingote de caterio lixiviado",
+      "en": "Alternate: Leached Caterium Ingot"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_OreGold_C",
+        "amount": 9
+      },
+      {
+        "item": "Desc_SulfuricAcid_C",
+        "amount": 5
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_GoldIngot_C",
+        "amount": 6
+      }
+    ],
+    "duration": 10,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_CateriumIngot_Tempered_C",
+    "name": {
+      "es": "Alternativa: Lingote de caterio templado",
+      "en": "Alternate: Tempered Caterium Ingot"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_OreGold_C",
+        "amount": 6
+      },
+      {
+        "item": "Desc_PetroleumCoke_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_GoldIngot_C",
+        "amount": 3
+      }
+    ],
+    "duration": 8,
+    "producedIn": "Build_FoundryMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_CircuitBoard_1_C",
+    "name": {
+      "es": "Alternativa: Circuito impreso de silicio",
+      "en": "Alternate: Silicon Circuit Board"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_CopperSheet_C",
+        "amount": 11
+      },
+      {
+        "item": "Desc_Silica_C",
+        "amount": 11
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_CircuitBoard_C",
+        "amount": 5
+      }
+    ],
+    "duration": 24,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_CircuitBoard_2_C",
+    "name": {
+      "es": "Alternativa: Circuito impreso de caterio",
+      "en": "Alternate: Caterium Circuit Board"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_Plastic_C",
+        "amount": 10
+      },
+      {
+        "item": "Desc_HighSpeedWire_C",
+        "amount": 30
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_CircuitBoard_C",
+        "amount": 7
+      }
+    ],
+    "duration": 48,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_ClassicBattery_C",
+    "name": {
+      "es": "Alternativa: Batería clásica",
+      "en": "Alternate: Classic Battery"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_Sulfur_C",
+        "amount": 6
+      },
+      {
+        "item": "Desc_AluminumPlate_C",
+        "amount": 7
+      },
+      {
+        "item": "Desc_Plastic_C",
+        "amount": 8
+      },
+      {
+        "item": "Desc_Wire_C",
+        "amount": 12
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Battery_C",
+        "amount": 4
+      }
+    ],
+    "duration": 8,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_Coal_1_C",
+    "name": {
+      "es": "Alternativa: Carbón vegetal",
+      "en": "Alternate: Charcoal"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_Wood_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Coal_C",
+        "amount": 10
+      }
+    ],
+    "duration": 4,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_Coal_2_C",
+    "name": {
+      "es": "Alternativa: Biocarbón",
+      "en": "Alternate: Biocoal"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_GenericBiomass_C",
+        "amount": 5
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Coal_C",
+        "amount": 6
+      }
+    ],
+    "duration": 8,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_CoatedCable_C",
+    "name": {
+      "es": "Alternativa: Cable revestido",
+      "en": "Alternate: Coated Cable"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_Wire_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_HeavyOilResidue_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Cable_C",
+        "amount": 9
+      }
+    ],
+    "duration": 8,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_CoatedIronCanister_C",
+    "name": {
+      "es": "Alternativa: Recipiente de hierro revestido",
+      "en": "Alternate: Coated Iron Canister"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_IronPlate_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_CopperSheet_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_FluidCanister_C",
+        "amount": 4
+      }
+    ],
+    "duration": 4,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_CoatedIronPlate_C",
+    "name": {
+      "es": "Alternativa: Plancha de hierro revestida",
+      "en": "Alternate: Coated Iron Plate"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_IronIngot_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_Plastic_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_IronPlate_C",
+        "amount": 10
+      }
+    ],
+    "duration": 8,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_CokeSteelIngot_C",
+    "name": {
+      "es": "Alternativa: Lingote de acero de coque",
+      "en": "Alternate: Coke Steel Ingot"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_OreIron_C",
+        "amount": 15
+      },
+      {
+        "item": "Desc_PetroleumCoke_C",
+        "amount": 15
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SteelIngot_C",
+        "amount": 20
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_FoundryMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_Computer_1_C",
+    "name": {
+      "es": "Alternativa: Ordenador de caterio",
+      "en": "Alternate: Caterium Computer"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_CircuitBoard_C",
+        "amount": 4
+      },
+      {
+        "item": "Desc_HighSpeedWire_C",
+        "amount": 14
+      },
+      {
+        "item": "Desc_Rubber_C",
+        "amount": 6
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Computer_C",
+        "amount": 1
+      }
+    ],
+    "duration": 16,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_Computer_2_C",
+    "name": {
+      "es": "Alternativa: Ordenador de cristal",
+      "en": "Alternate: Crystal Computer"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_CircuitBoard_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_CrystalOscillator_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Computer_C",
+        "amount": 2
+      }
+    ],
+    "duration": 36,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_Concrete_C",
+    "name": {
+      "es": "Alternativa: Hormigón de calidad",
+      "en": "Alternate: Fine Concrete"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_Silica_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_Stone_C",
+        "amount": 12
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Cement_C",
+        "amount": 10
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_CoolingDevice_C",
+    "name": {
+      "es": "Alternativa: Dispositivo de refrigeración",
+      "en": "Alternate: Cooling Device"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_AluminumPlateReinforced_C",
+        "amount": 4
+      },
+      {
+        "item": "Desc_Motor_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_NitrogenGas_C",
+        "amount": 24
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_CoolingSystem_C",
+        "amount": 2
+      }
+    ],
+    "duration": 24,
+    "producedIn": "Build_Blender_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_CopperAlloyIngot_C",
+    "name": {
+      "es": "Alternativa: Lingote de aleación de cobre",
+      "en": "Alternate: Copper Alloy Ingot"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_OreCopper_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_OreIron_C",
+        "amount": 5
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_CopperIngot_C",
+        "amount": 10
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_FoundryMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_CopperIngot_Leached_C",
+    "name": {
+      "es": "Alternativa: Lingote de cobre lixiviado",
+      "en": "Alternate: Leached Copper Ingot"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_OreCopper_C",
+        "amount": 9
+      },
+      {
+        "item": "Desc_SulfuricAcid_C",
+        "amount": 5
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_CopperIngot_C",
+        "amount": 22
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_CopperIngot_Tempered_C",
+    "name": {
+      "es": "Alternativa: Lingote de cobre templado",
+      "en": "Alternate: Tempered Copper Ingot"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_OreCopper_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_PetroleumCoke_C",
+        "amount": 8
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_CopperIngot_C",
+        "amount": 12
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_FoundryMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_CopperRotor_C",
+    "name": {
+      "es": "Alternativa: Rotor de cobre",
+      "en": "Alternate: Copper Rotor"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_CopperSheet_C",
+        "amount": 6
+      },
+      {
+        "item": "Desc_IronScrew_C",
+        "amount": 52
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Rotor_C",
+        "amount": 3
+      }
+    ],
+    "duration": 16,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_CrystalOscillator_C",
+    "name": {
+      "es": "Alternativa: Oscilador de cristal aislado",
+      "en": "Alternate: Insulated Crystal Oscillator"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_QuartzCrystal_C",
+        "amount": 10
+      },
+      {
+        "item": "Desc_Rubber_C",
+        "amount": 7
+      },
+      {
+        "item": "Desc_CircuitBoardHighSpeed_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_CrystalOscillator_C",
+        "amount": 1
+      }
+    ],
+    "duration": 32,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_DarkMatter_Crystallization_C",
+    "name": {
+      "es": "Alternativa: Cristalización de materia oscura",
+      "en": "Alternate: Dark Matter Crystallization"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_DarkEnergy_C",
+        "amount": 10
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_DarkMatter_C",
+        "amount": 1
+      }
+    ],
+    "duration": 3,
+    "producedIn": "Build_HadronCollider_C",
+    "variablePower": {
+      "min": 500,
+      "max": 1500
+    }
+  },
+  {
+    "id": "Recipe_Alternate_DarkMatter_Trap_C",
+    "name": {
+      "es": "Alternativa: Trampa de materia oscura",
+      "en": "Alternate: Dark Matter Trap"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_TimeCrystal_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_DarkEnergy_C",
+        "amount": 5
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_DarkMatter_C",
+        "amount": 2
+      }
+    ],
+    "duration": 2,
+    "producedIn": "Build_HadronCollider_C",
+    "variablePower": {
+      "min": 500,
+      "max": 1500
+    }
+  },
+  {
+    "id": "Recipe_Alternate_Diamond_Cloudy_C",
+    "name": {
+      "es": "Alternativa: Diamantes turbios",
+      "en": "Alternate: Cloudy Diamonds"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_Coal_C",
+        "amount": 12
+      },
+      {
+        "item": "Desc_Stone_C",
+        "amount": 24
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Diamond_C",
+        "amount": 1
+      }
+    ],
+    "duration": 3,
+    "producedIn": "Build_HadronCollider_C",
+    "variablePower": {
+      "min": 250,
+      "max": 750
+    }
+  },
+  {
+    "id": "Recipe_Alternate_Diamond_OilBased_C",
+    "name": {
+      "es": "Alternativa: Diamantes a base de petróleo",
+      "en": "Alternate: Oil-Based Diamonds"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_LiquidOil_C",
+        "amount": 10
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Diamond_C",
+        "amount": 2
+      }
+    ],
+    "duration": 3,
+    "producedIn": "Build_HadronCollider_C",
+    "variablePower": {
+      "min": 250,
+      "max": 750
+    }
+  },
+  {
+    "id": "Recipe_Alternate_Diamond_Petroleum_C",
+    "name": {
+      "es": "Alternativa: Diamantes de petróleo",
+      "en": "Alternate: Petroleum Diamonds"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_PetroleumCoke_C",
+        "amount": 24
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Diamond_C",
+        "amount": 1
+      }
+    ],
+    "duration": 2,
+    "producedIn": "Build_HadronCollider_C",
+    "variablePower": {
+      "min": 250,
+      "max": 750
+    }
+  },
+  {
+    "id": "Recipe_Alternate_Diamond_Pink_C",
+    "name": {
+      "es": "Alternativa: Diamantes rosas",
+      "en": "Alternate: Pink Diamonds"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_Coal_C",
+        "amount": 8
+      },
+      {
+        "item": "Desc_QuartzCrystal_C",
+        "amount": 3
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Diamond_C",
+        "amount": 1
+      }
+    ],
+    "duration": 4,
+    "producedIn": "Build_Converter_C",
+    "variablePower": {
+      "min": 100,
+      "max": 400
+    }
+  },
+  {
+    "id": "Recipe_Alternate_Diamond_Turbo_C",
+    "name": {
+      "es": "Alternativa: Diamantes turbo",
+      "en": "Alternate: Turbo Diamonds"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_Coal_C",
+        "amount": 30
+      },
+      {
+        "item": "Desc_TurboFuel_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Diamond_C",
+        "amount": 3
+      }
+    ],
+    "duration": 3,
+    "producedIn": "Build_HadronCollider_C",
+    "variablePower": {
+      "min": 250,
+      "max": 750
+    }
+  },
+  {
+    "id": "Recipe_Alternate_DilutedFuel_C",
+    "name": {
+      "es": "Alternativa: Combustible diluido",
+      "en": "Alternate: Diluted Fuel"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_HeavyOilResidue_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_Water_C",
+        "amount": 10
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_LiquidFuel_C",
+        "amount": 10
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_Blender_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_DilutedPackagedFuel_C",
+    "name": {
+      "es": "Alternativa: Combustible diluido envasado",
+      "en": "Alternate: Diluted Packaged Fuel"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_HeavyOilResidue_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_PackagedWater_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Fuel_C",
+        "amount": 2
+      }
+    ],
+    "duration": 2,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_ElectricMotor_C",
+    "name": {
+      "es": "Alternativa: Motor eléctrico",
+      "en": "Alternate: Electric Motor"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_ElectromagneticControlRod_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_Rotor_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Motor_C",
+        "amount": 2
+      }
+    ],
+    "duration": 16,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_ElectroAluminumScrap_C",
+    "name": {
+      "es": "Alternativa: Electrodo de chatarra de aluminio",
+      "en": "Alternate: Electrode Aluminum Scrap"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_AluminaSolution_C",
+        "amount": 12
+      },
+      {
+        "item": "Desc_PetroleumCoke_C",
+        "amount": 4
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_AluminumScrap_C",
+        "amount": 20
+      },
+      {
+        "item": "Desc_Water_C",
+        "amount": 7
+      }
+    ],
+    "duration": 4,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_ElectrodeCircuitBoard_C",
+    "name": {
+      "es": "Alternativa: Circuito impreso de electrodos",
+      "en": "Alternate: Electrode Circuit Board"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_Rubber_C",
+        "amount": 4
+      },
+      {
+        "item": "Desc_PetroleumCoke_C",
+        "amount": 8
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_CircuitBoard_C",
+        "amount": 1
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_ElectromagneticControlRod_1_C",
+    "name": {
+      "es": "Alternativa: Barra de control electromagnética",
+      "en": "Alternate: Electromagnetic Connection Rod"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_Stator_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_HighSpeedConnector_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_ElectromagneticControlRod_C",
+        "amount": 2
+      }
+    ],
+    "duration": 15,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_EncasedIndustrialBeam_C",
+    "name": {
+      "es": "Alternativa: Tubería industrial reforzada",
+      "en": "Alternate: Encased Industrial Pipe"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_SteelPipe_C",
+        "amount": 6
+      },
+      {
+        "item": "Desc_Cement_C",
+        "amount": 5
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SteelPlateReinforced_C",
+        "amount": 1
+      }
+    ],
+    "duration": 15,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_EnrichedCoal_C",
+    "name": {
+      "es": "Alternativa: Carbón compactado",
+      "en": "Alternate: Compacted Coal"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_Coal_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_Sulfur_C",
+        "amount": 5
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_CompactedCoal_C",
+        "amount": 5
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_FertileUranium_C",
+    "name": {
+      "es": "Alternativa: Uranio fértil",
+      "en": "Alternate: Fertile Uranium"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_OreUranium_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_NuclearWaste_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_NitricAcid_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_SulfuricAcid_C",
+        "amount": 5
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_NonFissibleUranium_C",
+        "amount": 20
+      },
+      {
+        "item": "Desc_Water_C",
+        "amount": 8
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_Blender_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_FlexibleFramework_C",
+    "name": {
+      "es": "Alternativa: Estructura flexible",
+      "en": "Alternate: Flexible Framework"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_ModularFrame_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_SteelPlate_C",
+        "amount": 6
+      },
+      {
+        "item": "Desc_Rubber_C",
+        "amount": 8
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SpaceElevatorPart_2_C",
+        "amount": 2
+      }
+    ],
+    "duration": 16,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_FusedWire_C",
+    "name": {
+      "es": "Alternativa: Alambre fundido",
+      "en": "Alternate: Fused Wire"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_CopperIngot_C",
+        "amount": 4
+      },
+      {
+        "item": "Desc_GoldIngot_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Wire_C",
+        "amount": 30
+      }
+    ],
+    "duration": 20,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_Gunpowder_1_C",
+    "name": {
+      "es": "Alternativa: Pólvora fina",
+      "en": "Alternate: Fine Black Powder"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_Sulfur_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_CompactedCoal_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Gunpowder_C",
+        "amount": 6
+      }
+    ],
+    "duration": 8,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_HeatFusedFrame_C",
+    "name": {
+      "es": "Alternativa: Armazón termofusionado",
+      "en": "Alternate: Heat-Fused Frame"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_ModularFrameHeavy_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_AluminumIngot_C",
+        "amount": 50
+      },
+      {
+        "item": "Desc_NitricAcid_C",
+        "amount": 8
+      },
+      {
+        "item": "Desc_LiquidFuel_C",
+        "amount": 10
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_ModularFrameFused_C",
+        "amount": 1
+      }
+    ],
+    "duration": 20,
+    "producedIn": "Build_Blender_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_HeatSink_1_C",
+    "name": {
+      "es": "Alternativa: Intercambiador de calor",
+      "en": "Alternate: Heat Exchanger"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_AluminumCasing_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_Rubber_C",
+        "amount": 3
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_AluminumPlateReinforced_C",
+        "amount": 1
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_HeavyFlexibleFrame_C",
+    "name": {
+      "es": "Alternativa: Armazón flexible pesado",
+      "en": "Alternate: Heavy Flexible Frame"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_ModularFrame_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_SteelPlateReinforced_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_Rubber_C",
+        "amount": 20
+      },
+      {
+        "item": "Desc_IronScrew_C",
+        "amount": 104
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_ModularFrameHeavy_C",
+        "amount": 1
+      }
+    ],
+    "duration": 16,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_HeavyOilResidue_C",
+    "name": {
+      "es": "Alternativa: Residuo de petróleo pesado",
+      "en": "Alternate: Heavy Oil Residue"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_LiquidOil_C",
+        "amount": 3
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_HeavyOilResidue_C",
+        "amount": 4
+      },
+      {
+        "item": "Desc_PolymerResin_C",
+        "amount": 2
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_HighSpeedConnector_C",
+    "name": {
+      "es": "Alternativa: Conector de alta velocidad de silicio",
+      "en": "Alternate: Silicon High-Speed Connector"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_HighSpeedWire_C",
+        "amount": 60
+      },
+      {
+        "item": "Desc_Silica_C",
+        "amount": 25
+      },
+      {
+        "item": "Desc_CircuitBoard_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_HighSpeedConnector_C",
+        "amount": 2
+      }
+    ],
+    "duration": 40,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_HighSpeedWiring_C",
+    "name": {
+      "es": "Alternativa: Cableado automatizado de alta velocidad",
+      "en": "Alternate: Automated Speed Wiring"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_Stator_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_Wire_C",
+        "amount": 40
+      },
+      {
+        "item": "Desc_HighSpeedConnector_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SpaceElevatorPart_3_C",
+        "amount": 4
+      }
+    ],
+    "duration": 32,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_IngotIron_C",
+    "name": {
+      "es": "Alternativa: Lingote de aleación de hierro",
+      "en": "Alternate: Iron Alloy Ingot"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_OreIron_C",
+        "amount": 8
+      },
+      {
+        "item": "Desc_OreCopper_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_IronIngot_C",
+        "amount": 15
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_FoundryMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_IngotSteel_1_C",
+    "name": {
+      "es": "Alternativa: Lingote de acero sólido",
+      "en": "Alternate: Solid Steel Ingot"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_IronIngot_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_Coal_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SteelIngot_C",
+        "amount": 3
+      }
+    ],
+    "duration": 3,
+    "producedIn": "Build_FoundryMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_IngotSteel_2_C",
+    "name": {
+      "es": "Alternativa: Lingote de acero compactado",
+      "en": "Alternate: Compacted Steel Ingot"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_OreIron_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_CompactedCoal_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SteelIngot_C",
+        "amount": 4
+      }
+    ],
+    "duration": 24,
+    "producedIn": "Build_FoundryMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_InstantPlutoniumCell_C",
+    "name": {
+      "es": "Alternativa: Célula de plutonio instantánea",
+      "en": "Alternate: Instant Plutonium Cell"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_NonFissibleUranium_C",
+        "amount": 150
+      },
+      {
+        "item": "Desc_AluminumCasing_C",
+        "amount": 20
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_PlutoniumCell_C",
+        "amount": 20
+      }
+    ],
+    "duration": 120,
+    "producedIn": "Build_HadronCollider_C",
+    "variablePower": {
+      "min": 250,
+      "max": 750
+    }
+  },
+  {
+    "id": "Recipe_Alternate_InstantScrap_C",
+    "name": {
+      "es": "Alternativa: Chatarra instantánea",
+      "en": "Alternate: Instant Scrap"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_OreBauxite_C",
+        "amount": 15
+      },
+      {
+        "item": "Desc_Coal_C",
+        "amount": 10
+      },
+      {
+        "item": "Desc_SulfuricAcid_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_Water_C",
+        "amount": 6
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_AluminumScrap_C",
+        "amount": 30
+      },
+      {
+        "item": "Desc_Water_C",
+        "amount": 5
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_Blender_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_IonizedFuel_Dark_C",
+    "name": {
+      "es": "Alternativa: Combustible de iones oscuros",
+      "en": "Alternate: Dark-Ion Fuel"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_PackagedRocketFuel_C",
+        "amount": 12
+      },
+      {
+        "item": "Desc_DarkMatter_C",
+        "amount": 4
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_IonizedFuel_C",
+        "amount": 10
+      },
+      {
+        "item": "Desc_CompactedCoal_C",
+        "amount": 2
+      }
+    ],
+    "duration": 3,
+    "producedIn": "Build_Converter_C",
+    "variablePower": {
+      "min": 100,
+      "max": 400
+    }
+  },
+  {
+    "id": "Recipe_Alternate_IronIngot_Basic_C",
+    "name": {
+      "es": "Alternativa: Lingote de hierro básico",
+      "en": "Alternate: Basic Iron Ingot"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_OreIron_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_Stone_C",
+        "amount": 8
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_IronIngot_C",
+        "amount": 10
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_FoundryMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_IronIngot_Leached_C",
+    "name": {
+      "es": "Alternativa: Lingote de hierro lixiviado",
+      "en": "Alternate: Leached Iron Ingot"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_OreIron_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_SulfuricAcid_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_IronIngot_C",
+        "amount": 10
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_ModularFrame_C",
+    "name": {
+      "es": "Alternativa: Armazón de acero",
+      "en": "Alternate: Steeled Frame"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_IronPlateReinforced_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_SteelPipe_C",
+        "amount": 10
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_ModularFrame_C",
+        "amount": 3
+      }
+    ],
+    "duration": 60,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_ModularFrameHeavy_C",
+    "name": {
+      "es": "Alternativa: Armazón revestido pesado",
+      "en": "Alternate: Heavy Encased Frame"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_ModularFrame_C",
+        "amount": 8
+      },
+      {
+        "item": "Desc_SteelPlateReinforced_C",
+        "amount": 10
+      },
+      {
+        "item": "Desc_SteelPipe_C",
+        "amount": 36
+      },
+      {
+        "item": "Desc_Cement_C",
+        "amount": 22
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_ModularFrameHeavy_C",
+        "amount": 3
+      }
+    ],
+    "duration": 64,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_Motor_1_C",
+    "name": {
+      "es": "Alternativa: Motor robusto",
+      "en": "Alternate: Rigor Motor"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_Rotor_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_Stator_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_CrystalOscillator_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Motor_C",
+        "amount": 6
+      }
+    ],
+    "duration": 48,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_NuclearFuelRod_1_C",
+    "name": {
+      "es": "Alternativa: Unidad de combustible de uranio",
+      "en": "Alternate: Uranium Fuel Unit"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_UraniumCell_C",
+        "amount": 100
+      },
+      {
+        "item": "Desc_ElectromagneticControlRod_C",
+        "amount": 10
+      },
+      {
+        "item": "Desc_CrystalOscillator_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_Rotor_C",
+        "amount": 10
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_NuclearFuelRod_C",
+        "amount": 3
+      }
+    ],
+    "duration": 300,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_OCSupercomputer_C",
+    "name": {
+      "es": "Alternativa: Superordenador overclockeado",
+      "en": "Alternate: OC Supercomputer"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_ModularFrameLightweight_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_CoolingSystem_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_ComputerSuper_C",
+        "amount": 1
+      }
+    ],
+    "duration": 20,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_Plastic_1_C",
+    "name": {
+      "es": "Alternativa: Plástico reciclado",
+      "en": "Alternate: Recycled Plastic"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_Rubber_C",
+        "amount": 6
+      },
+      {
+        "item": "Desc_LiquidFuel_C",
+        "amount": 6
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Plastic_C",
+        "amount": 12
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_PlasticSmartPlating_C",
+    "name": {
+      "es": "Alternativa: Placas de plástico inteligente",
+      "en": "Alternate: Plastic Smart Plating"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_IronPlateReinforced_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_Rotor_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_Plastic_C",
+        "amount": 3
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SpaceElevatorPart_1_C",
+        "amount": 2
+      }
+    ],
+    "duration": 24,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_PlutoniumFuelUnit_C",
+    "name": {
+      "es": "Alternativa: Unidad de combustible de plutonio",
+      "en": "Alternate: Plutonium Fuel Unit"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_PlutoniumCell_C",
+        "amount": 20
+      },
+      {
+        "item": "Desc_PressureConversionCube_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_PlutoniumFuelRod_C",
+        "amount": 1
+      }
+    ],
+    "duration": 120,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_PolyesterFabric_C",
+    "name": {
+      "es": "Alternativa: Tela de poliéster",
+      "en": "Alternate: Polyester Fabric"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_PolymerResin_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_Water_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Fabric_C",
+        "amount": 1
+      }
+    ],
+    "duration": 2,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_PolymerResin_C",
+    "name": {
+      "es": "Alternativa: Resina de polímero",
+      "en": "Alternate: Polymer Resin"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_LiquidOil_C",
+        "amount": 6
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_PolymerResin_C",
+        "amount": 13
+      },
+      {
+        "item": "Desc_HeavyOilResidue_C",
+        "amount": 2
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_PureCateriumIngot_C",
+    "name": {
+      "es": "Alternativa: Lingote de caterio puro",
+      "en": "Alternate: Pure Caterium Ingot"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_OreGold_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_Water_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_GoldIngot_C",
+        "amount": 1
+      }
+    ],
+    "duration": 5,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_PureCopperIngot_C",
+    "name": {
+      "es": "Alternativa: Lingote de cobre puro",
+      "en": "Alternate: Pure Copper Ingot"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_OreCopper_C",
+        "amount": 6
+      },
+      {
+        "item": "Desc_Water_C",
+        "amount": 4
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_CopperIngot_C",
+        "amount": 15
+      }
+    ],
+    "duration": 24,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_PureIronIngot_C",
+    "name": {
+      "es": "Alternativa: Lingote de hierro puro",
+      "en": "Alternate: Pure Iron Ingot"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_OreIron_C",
+        "amount": 7
+      },
+      {
+        "item": "Desc_Water_C",
+        "amount": 4
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_IronIngot_C",
+        "amount": 13
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_PureQuartzCrystal_C",
+    "name": {
+      "es": "Alternativa: Cristal de cuarzo puro",
+      "en": "Alternate: Pure Quartz Crystal"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_RawQuartz_C",
+        "amount": 9
+      },
+      {
+        "item": "Desc_Water_C",
+        "amount": 5
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_QuartzCrystal_C",
+        "amount": 7
+      }
+    ],
+    "duration": 8,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_Quartz_Fused_C",
+    "name": {
+      "es": "Alternativa: Cristal de cuarzo fundido",
+      "en": "Alternate: Fused Quartz Crystal"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_RawQuartz_C",
+        "amount": 25
+      },
+      {
+        "item": "Desc_Coal_C",
+        "amount": 12
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_QuartzCrystal_C",
+        "amount": 18
+      }
+    ],
+    "duration": 20,
+    "producedIn": "Build_FoundryMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_Quartz_Purified_C",
+    "name": {
+      "es": "Alternativa: Purificación de cuarzo",
+      "en": "Alternate: Quartz Purification"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_RawQuartz_C",
+        "amount": 24
+      },
+      {
+        "item": "Desc_NitricAcid_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_QuartzCrystal_C",
+        "amount": 15
+      },
+      {
+        "item": "Desc_DissolvedSilica_C",
+        "amount": 12
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_Quickwire_C",
+    "name": {
+      "es": "Alternativa: Turboalambre fundido",
+      "en": "Alternate: Fused Quickwire"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_GoldIngot_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_CopperIngot_C",
+        "amount": 5
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_HighSpeedWire_C",
+        "amount": 12
+      }
+    ],
+    "duration": 8,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_RadioControlSystem_C",
+    "name": {
+      "es": "Alternativa: Sistema de control de radio",
+      "en": "Alternate: Radio Control System"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_CrystalOscillator_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_CircuitBoard_C",
+        "amount": 10
+      },
+      {
+        "item": "Desc_AluminumCasing_C",
+        "amount": 60
+      },
+      {
+        "item": "Desc_Rubber_C",
+        "amount": 30
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_ModularFrameLightweight_C",
+        "amount": 3
+      }
+    ],
+    "duration": 40,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_RadioControlUnit_1_C",
+    "name": {
+      "es": "Alternativa: Unidad de conexión de radio",
+      "en": "Alternate: Radio Connection Unit"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_AluminumPlateReinforced_C",
+        "amount": 4
+      },
+      {
+        "item": "Desc_HighSpeedConnector_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_QuartzCrystal_C",
+        "amount": 12
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_ModularFrameLightweight_C",
+        "amount": 1
+      }
+    ],
+    "duration": 16,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_RecycledRubber_C",
+    "name": {
+      "es": "Alternativa: Caucho reciclado",
+      "en": "Alternate: Recycled Rubber"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_Plastic_C",
+        "amount": 6
+      },
+      {
+        "item": "Desc_LiquidFuel_C",
+        "amount": 6
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Rubber_C",
+        "amount": 12
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_ReinforcedIronPlate_1_C",
+    "name": {
+      "es": "Alternativa: Plancha de hierro atornillada",
+      "en": "Alternate: Bolted Iron Plate"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_IronPlate_C",
+        "amount": 18
+      },
+      {
+        "item": "Desc_IronScrew_C",
+        "amount": 50
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_IronPlateReinforced_C",
+        "amount": 3
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_ReinforcedIronPlate_2_C",
+    "name": {
+      "es": "Alternativa: Plancha de hierro soldada",
+      "en": "Alternate: Stitched Iron Plate"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_IronPlate_C",
+        "amount": 10
+      },
+      {
+        "item": "Desc_Wire_C",
+        "amount": 20
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_IronPlateReinforced_C",
+        "amount": 3
+      }
+    ],
+    "duration": 32,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_RocketFuel_Nitro_C",
+    "name": {
+      "es": "Alternativa: Combustible de cohetes nitro",
+      "en": "Alternate: Nitro Rocket Fuel"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_LiquidFuel_C",
+        "amount": 4
+      },
+      {
+        "item": "Desc_NitrogenGas_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_Sulfur_C",
+        "amount": 4
+      },
+      {
+        "item": "Desc_Coal_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_RocketFuel_C",
+        "amount": 6
+      },
+      {
+        "item": "Desc_CompactedCoal_C",
+        "amount": 1
+      }
+    ],
+    "duration": 2.4,
+    "producedIn": "Build_Blender_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_Rotor_C",
+    "name": {
+      "es": "Alternativa: Rotor de acero",
+      "en": "Alternate: Steel Rotor"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_SteelPipe_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_Wire_C",
+        "amount": 6
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Rotor_C",
+        "amount": 1
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_RubberConcrete_C",
+    "name": {
+      "es": "Alternativa: Hormigón de goma",
+      "en": "Alternate: Rubber Concrete"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_Stone_C",
+        "amount": 10
+      },
+      {
+        "item": "Desc_Rubber_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Cement_C",
+        "amount": 9
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_Screw_2_C",
+    "name": {
+      "es": "Alternativa: Tornillos de acero",
+      "en": "Alternate: Steel Screws"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_SteelPlate_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_IronScrew_C",
+        "amount": 52
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_Screw_C",
+    "name": {
+      "es": "Alternativa: Tornillos fundidos",
+      "en": "Alternate: Cast Screws"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_IronIngot_C",
+        "amount": 5
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_IronScrew_C",
+        "amount": 20
+      }
+    ],
+    "duration": 24,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_Silica_C",
+    "name": {
+      "es": "Alternativa: Sílice económico",
+      "en": "Alternate: Cheap Silica"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_RawQuartz_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_Stone_C",
+        "amount": 5
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Silica_C",
+        "amount": 7
+      }
+    ],
+    "duration": 8,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_Silica_Distilled_C",
+    "name": {
+      "es": "Alternativa: Sílice destilada",
+      "en": "Alternate: Distilled Silica"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_DissolvedSilica_C",
+        "amount": 12
+      },
+      {
+        "item": "Desc_Stone_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_Water_C",
+        "amount": 10
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Silica_C",
+        "amount": 27
+      },
+      {
+        "item": "Desc_Water_C",
+        "amount": 8
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_Blender_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_SloppyAlumina_C",
+    "name": {
+      "es": "Alternativa: Alúmina chapucera",
+      "en": "Alternate: Sloppy Alumina"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_OreBauxite_C",
+        "amount": 10
+      },
+      {
+        "item": "Desc_Water_C",
+        "amount": 10
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_AluminaSolution_C",
+        "amount": 12
+      }
+    ],
+    "duration": 3,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_Stator_C",
+    "name": {
+      "es": "Alternativa: Estátor de turboalambre",
+      "en": "Alternate: Quickwire Stator"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_SteelPipe_C",
+        "amount": 4
+      },
+      {
+        "item": "Desc_HighSpeedWire_C",
+        "amount": 15
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Stator_C",
+        "amount": 2
+      }
+    ],
+    "duration": 15,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_SteamedCopperSheet_C",
+    "name": {
+      "es": "Alternativa: Lámina de cobre vaporizada",
+      "en": "Alternate: Steamed Copper Sheet"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_CopperIngot_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_Water_C",
+        "amount": 3
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_CopperSheet_C",
+        "amount": 3
+      }
+    ],
+    "duration": 8,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_SteelBeam_Aluminum_C",
+    "name": {
+      "es": "Alternativa: Viga de aluminio",
+      "en": "Alternate: Aluminum Beam"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_AluminumIngot_C",
+        "amount": 3
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SteelPlate_C",
+        "amount": 3
+      }
+    ],
+    "duration": 8,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_SteelBeam_Molded_C",
+    "name": {
+      "es": "Alternativa: Viga moldeada",
+      "en": "Alternate: Molded Beam"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_SteelIngot_C",
+        "amount": 24
+      },
+      {
+        "item": "Desc_Cement_C",
+        "amount": 16
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SteelPlate_C",
+        "amount": 9
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_FoundryMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_SteelCanister_C",
+    "name": {
+      "es": "Alternativa: Recipiente de acero",
+      "en": "Alternate: Steel Canister"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_SteelIngot_C",
+        "amount": 4
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_FluidCanister_C",
+        "amount": 4
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_SteelCastedPlate_C",
+    "name": {
+      "es": "Alternativa: Plancha de acero fundido",
+      "en": "Alternate: Steel Cast Plate"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_IronIngot_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_SteelIngot_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_IronPlate_C",
+        "amount": 3
+      }
+    ],
+    "duration": 4,
+    "producedIn": "Build_FoundryMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_SteelPipe_Iron_C",
+    "name": {
+      "es": "Alternativa: Tubería de hierro",
+      "en": "Alternate: Iron Pipe"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_IronIngot_C",
+        "amount": 20
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SteelPipe_C",
+        "amount": 5
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_SteelPipe_Molded_C",
+    "name": {
+      "es": "Alternativa: Tubería de acero moldeado",
+      "en": "Alternate: Molded Steel Pipe"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_SteelIngot_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_Cement_C",
+        "amount": 3
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SteelPipe_C",
+        "amount": 5
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_FoundryMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_SteelRod_C",
+    "name": {
+      "es": "Alternativa: Barra de acero",
+      "en": "Alternate: Steel Rod"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_SteelIngot_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_IronRod_C",
+        "amount": 4
+      }
+    ],
+    "duration": 5,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_SuperStateComputer_C",
+    "name": {
+      "es": "Alternativa: Ordenador en superestado",
+      "en": "Alternate: Super-State Computer"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_Computer_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_ElectromagneticControlRod_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_Battery_C",
+        "amount": 10
+      },
+      {
+        "item": "Desc_Wire_C",
+        "amount": 25
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_ComputerSuper_C",
+        "amount": 1
+      }
+    ],
+    "duration": 25,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_TurboBlendFuel_C",
+    "name": {
+      "es": "Alternativa: Turbocombustible mezclado",
+      "en": "Alternate: Turbo Blend Fuel"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_LiquidFuel_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_HeavyOilResidue_C",
+        "amount": 4
+      },
+      {
+        "item": "Desc_Sulfur_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_PetroleumCoke_C",
+        "amount": 3
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_LiquidTurboFuel_C",
+        "amount": 6
+      }
+    ],
+    "duration": 8,
+    "producedIn": "Build_Blender_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_Turbofuel_C",
+    "name": {
+      "es": "Turbocombustible",
+      "en": "Turbofuel"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_LiquidFuel_C",
+        "amount": 6
+      },
+      {
+        "item": "Desc_CompactedCoal_C",
+        "amount": 4
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_LiquidTurboFuel_C",
+        "amount": 5
+      }
+    ],
+    "duration": 16,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_TurboHeavyFuel_C",
+    "name": {
+      "es": "Alternativa: Turbocombustible pesado",
+      "en": "Alternate: Turbo Heavy Fuel"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_HeavyOilResidue_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_CompactedCoal_C",
+        "amount": 4
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_LiquidTurboFuel_C",
+        "amount": 4
+      }
+    ],
+    "duration": 8,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_TurboMotor_1_C",
+    "name": {
+      "es": "Alternativa: Motor turbo eléctrico",
+      "en": "Alternate: Turbo Electric Motor"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_Motor_C",
+        "amount": 7
+      },
+      {
+        "item": "Desc_ModularFrameLightweight_C",
+        "amount": 9
+      },
+      {
+        "item": "Desc_ElectromagneticControlRod_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_Rotor_C",
+        "amount": 7
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_MotorLightweight_C",
+        "amount": 3
+      }
+    ],
+    "duration": 64,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_TurboPressureMotor_C",
+    "name": {
+      "es": "Alternativa: Motor turbo presurizado",
+      "en": "Alternate: Turbo Pressure Motor"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_Motor_C",
+        "amount": 4
+      },
+      {
+        "item": "Desc_PressureConversionCube_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_PackagedNitrogenGas_C",
+        "amount": 24
+      },
+      {
+        "item": "Desc_Stator_C",
+        "amount": 8
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_MotorLightweight_C",
+        "amount": 2
+      }
+    ],
+    "duration": 32,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_UraniumCell_1_C",
+    "name": {
+      "es": "Alternativa: Célula de uranio inyectado",
+      "en": "Alternate: Infused Uranium Cell"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_OreUranium_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_Silica_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_Sulfur_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_HighSpeedWire_C",
+        "amount": 15
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_UraniumCell_C",
+        "amount": 4
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_WetConcrete_C",
+    "name": {
+      "es": "Alternativa: Hormigón mojado",
+      "en": "Alternate: Wet Concrete"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_Stone_C",
+        "amount": 6
+      },
+      {
+        "item": "Desc_Water_C",
+        "amount": 5
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Cement_C",
+        "amount": 4
+      }
+    ],
+    "duration": 3,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_Wire_1_C",
+    "name": {
+      "es": "Alternativa: Alambre de hierro",
+      "en": "Alternate: Iron Wire"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_IronIngot_C",
+        "amount": 5
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Wire_C",
+        "amount": 9
+      }
+    ],
+    "duration": 24,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Alternate_Wire_2_C",
+    "name": {
+      "es": "Alternativa: Alambre de caterio",
+      "en": "Alternate: Caterium Wire"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_GoldIngot_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Wire_C",
+        "amount": 8
+      }
+    ],
+    "duration": 4,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_AluminaSolution_C",
+    "name": {
+      "es": "Solución de alúmina",
+      "en": "Alumina Solution"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_OreBauxite_C",
+        "amount": 12
+      },
+      {
+        "item": "Desc_Water_C",
+        "amount": 18
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_AluminaSolution_C",
+        "amount": 12
+      },
+      {
+        "item": "Desc_Silica_C",
+        "amount": 5
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_AluminumCasing_C",
+    "name": {
+      "es": "Carcasa de aluminio",
+      "en": "Aluminum Casing"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_AluminumIngot_C",
+        "amount": 3
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_AluminumCasing_C",
+        "amount": 2
+      }
+    ],
+    "duration": 2,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_AluminumScrap_C",
+    "name": {
+      "es": "Chatarra de aluminio",
+      "en": "Aluminum Scrap"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_AluminaSolution_C",
+        "amount": 4
+      },
+      {
+        "item": "Desc_Coal_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_AluminumScrap_C",
+        "amount": 6
+      },
+      {
+        "item": "Desc_Water_C",
+        "amount": 2
+      }
+    ],
+    "duration": 1,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_AluminumSheet_C",
+    "name": {
+      "es": "Lámina de aluminio revestido",
+      "en": "Alclad Aluminum Sheet"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_AluminumIngot_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_CopperIngot_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_AluminumPlate_C",
+        "amount": 3
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Battery_C",
+    "name": {
+      "es": "Batería",
+      "en": "Battery"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SulfuricAcid_C",
+        "amount": 2.5
+      },
+      {
+        "item": "Desc_AluminaSolution_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_AluminumCasing_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Battery_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_Water_C",
+        "amount": 1.5
+      }
+    ],
+    "duration": 3,
+    "producedIn": "Build_Blender_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Bauxite_Caterium_C",
+    "name": {
+      "es": "Bauxita (caterio)",
+      "en": "Bauxite (Caterium)"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SAMIngot_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_OreGold_C",
+        "amount": 15
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_OreBauxite_C",
+        "amount": 12
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_Converter_C",
+    "variablePower": {
+      "min": 100,
+      "max": 400
+    }
+  },
+  {
+    "id": "Recipe_Bauxite_Copper_C",
+    "name": {
+      "es": "Bauxita (cobre)",
+      "en": "Bauxite (Copper)"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SAMIngot_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_OreCopper_C",
+        "amount": 18
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_OreBauxite_C",
+        "amount": 12
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_Converter_C",
+    "variablePower": {
+      "min": 100,
+      "max": 400
+    }
+  },
+  {
+    "id": "Recipe_Biofuel_C",
+    "name": {
+      "es": "Biocombustible sólido",
+      "en": "Solid Biofuel"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_GenericBiomass_C",
+        "amount": 8
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Biofuel_C",
+        "amount": 4
+      }
+    ],
+    "duration": 4,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Biomass_AlienProtein_C",
+    "name": {
+      "es": "Biomasa (proteína alienígena)",
+      "en": "Biomass (Alien Protein)"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_AlienProtein_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_GenericBiomass_C",
+        "amount": 100
+      }
+    ],
+    "duration": 4,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Biomass_Leaves_C",
+    "name": {
+      "es": "Biomasa (hojas)",
+      "en": "Biomass (Leaves)"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Leaves_C",
+        "amount": 10
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_GenericBiomass_C",
+        "amount": 5
+      }
+    ],
+    "duration": 5,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Biomass_Mycelia_C",
+    "name": {
+      "es": "Biomasa (micelios)",
+      "en": "Biomass (Mycelia)"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Mycelia_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_GenericBiomass_C",
+        "amount": 10
+      }
+    ],
+    "duration": 4,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Biomass_Wood_C",
+    "name": {
+      "es": "Biomasa (madera)",
+      "en": "Biomass (Wood)"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Wood_C",
+        "amount": 4
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_GenericBiomass_C",
+        "amount": 20
+      }
+    ],
+    "duration": 4,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Cable_C",
+    "name": {
+      "es": "Cable",
+      "en": "Cable"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Wire_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Cable_C",
+        "amount": 1
+      }
+    ],
+    "duration": 2,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_CandyCane_C",
+    "name": {
+      "es": "Bastón de caramelo",
+      "en": "Candy Cane"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Gift_C",
+        "amount": 3
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_CandyCane_C",
+        "amount": 1
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Cartridge_C",
+    "name": {
+      "es": "Munición de rifle",
+      "en": "Rifle Ammo"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_CopperSheet_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_GunpowderMK2_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_CartridgeStandard_C",
+        "amount": 15
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_CartridgeChaos_C",
+    "name": {
+      "es": "Turbomunición para rifle",
+      "en": "Turbo Rifle Ammo"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_CartridgeStandard_C",
+        "amount": 25
+      },
+      {
+        "item": "Desc_AluminumCasing_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_LiquidTurboFuel_C",
+        "amount": 3
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_CartridgeChaos_C",
+        "amount": 50
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_Blender_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_CartridgeChaos_Packaged_C",
+    "name": {
+      "es": "Turbomunición para rifle",
+      "en": "Turbo Rifle Ammo"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_CartridgeStandard_C",
+        "amount": 25
+      },
+      {
+        "item": "Desc_AluminumCasing_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_TurboFuel_C",
+        "amount": 3
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_CartridgeChaos_C",
+        "amount": 50
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_CartridgeSmart_C",
+    "name": {
+      "es": "Munición buscadora de rifle",
+      "en": "Homing Rifle Ammo"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_CartridgeStandard_C",
+        "amount": 20
+      },
+      {
+        "item": "Desc_HighSpeedConnector_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_CartridgeSmartProjectile_C",
+        "amount": 10
+      }
+    ],
+    "duration": 24,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Caterium_Copper_C",
+    "name": {
+      "es": "Mineral de caterio (cobre)",
+      "en": "Caterium Ore (Copper)"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SAMIngot_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_OreCopper_C",
+        "amount": 15
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_OreGold_C",
+        "amount": 12
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_Converter_C",
+    "variablePower": {
+      "min": 100,
+      "max": 400
+    }
+  },
+  {
+    "id": "Recipe_Caterium_Quartz_C",
+    "name": {
+      "es": "Mineral de caterio (cuarzo)",
+      "en": "Caterium Ore (Quartz)"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SAMIngot_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_RawQuartz_C",
+        "amount": 12
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_OreGold_C",
+        "amount": 12
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_Converter_C",
+    "variablePower": {
+      "min": 100,
+      "max": 400
+    }
+  },
+  {
+    "id": "Recipe_CircuitBoard_C",
+    "name": {
+      "es": "Circuito impreso",
+      "en": "Circuit Board"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_CopperSheet_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_Plastic_C",
+        "amount": 4
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_CircuitBoard_C",
+        "amount": 1
+      }
+    ],
+    "duration": 8,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Coal_Iron_C",
+    "name": {
+      "es": "Carbón (hierro)",
+      "en": "Coal (Iron)"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SAMIngot_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_OreIron_C",
+        "amount": 18
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Coal_C",
+        "amount": 12
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_Converter_C",
+    "variablePower": {
+      "min": 100,
+      "max": 400
+    }
+  },
+  {
+    "id": "Recipe_Coal_Limestone_C",
+    "name": {
+      "es": "Carbón (caliza)",
+      "en": "Coal (Limestone)"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SAMIngot_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_Stone_C",
+        "amount": 36
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Coal_C",
+        "amount": 12
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_Converter_C",
+    "variablePower": {
+      "min": 100,
+      "max": 400
+    }
+  },
+  {
+    "id": "Recipe_Computer_C",
+    "name": {
+      "es": "Ordenador",
+      "en": "Computer"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_CircuitBoard_C",
+        "amount": 4
+      },
+      {
+        "item": "Desc_Cable_C",
+        "amount": 8
+      },
+      {
+        "item": "Desc_Plastic_C",
+        "amount": 16
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Computer_C",
+        "amount": 1
+      }
+    ],
+    "duration": 24,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_ComputerSuper_C",
+    "name": {
+      "es": "Superordenador",
+      "en": "Supercomputer"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Computer_C",
+        "amount": 4
+      },
+      {
+        "item": "Desc_CircuitBoardHighSpeed_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_HighSpeedConnector_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_Plastic_C",
+        "amount": 28
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_ComputerSuper_C",
+        "amount": 1
+      }
+    ],
+    "duration": 32,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Concrete_C",
+    "name": {
+      "es": "Hormigón",
+      "en": "Concrete"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Stone_C",
+        "amount": 3
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Cement_C",
+        "amount": 1
+      }
+    ],
+    "duration": 4,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_CoolingSystem_C",
+    "name": {
+      "es": "Sistema de refrigeración",
+      "en": "Cooling System"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_AluminumPlateReinforced_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_Rubber_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_Water_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_NitrogenGas_C",
+        "amount": 25
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_CoolingSystem_C",
+        "amount": 1
+      }
+    ],
+    "duration": 10,
+    "producedIn": "Build_Blender_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Copper_Quartz_C",
+    "name": {
+      "es": "Mineral de cobre (cuarzo)",
+      "en": "Copper Ore (Quartz)"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SAMIngot_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_RawQuartz_C",
+        "amount": 10
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_OreCopper_C",
+        "amount": 12
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_Converter_C",
+    "variablePower": {
+      "min": 100,
+      "max": 400
+    }
+  },
+  {
+    "id": "Recipe_Copper_Sulfur_C",
+    "name": {
+      "es": "Mineral de cobre (azufre)",
+      "en": "Copper Ore (Sulfur)"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SAMIngot_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_Sulfur_C",
+        "amount": 12
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_OreCopper_C",
+        "amount": 12
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_Converter_C",
+    "variablePower": {
+      "min": 100,
+      "max": 400
+    }
+  },
+  {
+    "id": "Recipe_CopperDust_C",
+    "name": {
+      "es": "Cobre en polvo",
+      "en": "Copper Powder"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_CopperIngot_C",
+        "amount": 30
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_CopperDust_C",
+        "amount": 5
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_CopperSheet_C",
+    "name": {
+      "es": "Lámina de cobre",
+      "en": "Copper Sheet"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_CopperIngot_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_CopperSheet_C",
+        "amount": 1
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_CrystalOscillator_C",
+    "name": {
+      "es": "Oscilador de cristal",
+      "en": "Crystal Oscillator"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_QuartzCrystal_C",
+        "amount": 36
+      },
+      {
+        "item": "Desc_Cable_C",
+        "amount": 28
+      },
+      {
+        "item": "Desc_IronPlateReinforced_C",
+        "amount": 5
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_CrystalOscillator_C",
+        "amount": 2
+      }
+    ],
+    "duration": 120,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_DarkEnergy_C",
+    "name": {
+      "es": "Residuo de materia oscura",
+      "en": "Dark Matter Residue"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SAMIngot_C",
+        "amount": 5
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_DarkEnergy_C",
+        "amount": 10
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_Converter_C",
+    "variablePower": {
+      "min": 100,
+      "max": 400
+    }
+  },
+  {
+    "id": "Recipe_DarkMatter_C",
+    "name": {
+      "es": "Cristal de materia oscura",
+      "en": "Dark Matter Crystal"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Diamond_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_DarkEnergy_C",
+        "amount": 5
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_DarkMatter_C",
+        "amount": 1
+      }
+    ],
+    "duration": 2,
+    "producedIn": "Build_HadronCollider_C",
+    "variablePower": {
+      "min": 500,
+      "max": 1500
+    }
+  },
+  {
+    "id": "Recipe_Diamond_C",
+    "name": {
+      "es": "Diamantes",
+      "en": "Diamonds"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Coal_C",
+        "amount": 20
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Diamond_C",
+        "amount": 1
+      }
+    ],
+    "duration": 2,
+    "producedIn": "Build_HadronCollider_C",
+    "variablePower": {
+      "min": 250,
+      "max": 750
+    }
+  },
+  {
+    "id": "Recipe_ElectromagneticControlRod_C",
+    "name": {
+      "es": "Barra de control electromagnética",
+      "en": "Electromagnetic Control Rod"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Stator_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_CircuitBoardHighSpeed_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_ElectromagneticControlRod_C",
+        "amount": 2
+      }
+    ],
+    "duration": 30,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_EncasedIndustrialBeam_C",
+    "name": {
+      "es": "Viga industrial reforzada",
+      "en": "Encased Industrial Beam"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SteelPlate_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_Cement_C",
+        "amount": 6
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SteelPlateReinforced_C",
+        "amount": 1
+      }
+    ],
+    "duration": 10,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Fabric_C",
+    "name": {
+      "es": "Tejido",
+      "en": "Fabric"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Mycelia_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_GenericBiomass_C",
+        "amount": 5
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Fabric_C",
+        "amount": 1
+      }
+    ],
+    "duration": 4,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_FicsiteIngot_AL_C",
+    "name": {
+      "es": "Lingote de ficsita (aluminio)",
+      "en": "Ficsite Ingot (Aluminum)"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SAMIngot_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_AluminumIngot_C",
+        "amount": 4
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_FicsiteIngot_C",
+        "amount": 1
+      }
+    ],
+    "duration": 2,
+    "producedIn": "Build_Converter_C",
+    "variablePower": {
+      "min": 100,
+      "max": 400
+    }
+  },
+  {
+    "id": "Recipe_FicsiteIngot_CAT_C",
+    "name": {
+      "es": "Lingote de ficsita (caterio)",
+      "en": "Ficsite Ingot (Caterium)"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SAMIngot_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_GoldIngot_C",
+        "amount": 4
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_FicsiteIngot_C",
+        "amount": 1
+      }
+    ],
+    "duration": 4,
+    "producedIn": "Build_Converter_C",
+    "variablePower": {
+      "min": 100,
+      "max": 400
+    }
+  },
+  {
+    "id": "Recipe_FicsiteIngot_Iron_C",
+    "name": {
+      "es": "Lingote de ficsita (hierro)",
+      "en": "Ficsite Ingot (Iron)"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SAMIngot_C",
+        "amount": 4
+      },
+      {
+        "item": "Desc_IronIngot_C",
+        "amount": 24
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_FicsiteIngot_C",
+        "amount": 1
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_Converter_C",
+    "variablePower": {
+      "min": 100,
+      "max": 400
+    }
+  },
+  {
+    "id": "Recipe_FicsiteMesh_C",
+    "name": {
+      "es": "Trígono de ficsita",
+      "en": "Ficsite Trigon"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_FicsiteIngot_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_FicsiteMesh_C",
+        "amount": 3
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Ficsonium_C",
+    "name": {
+      "es": "Ficsonio",
+      "en": "Ficsonium"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_PlutoniumWaste_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_SingularityCell_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_DarkEnergy_C",
+        "amount": 20
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Ficsonium_C",
+        "amount": 1
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_HadronCollider_C",
+    "variablePower": {
+      "min": 500,
+      "max": 1500
+    }
+  },
+  {
+    "id": "Recipe_FicsoniumFuelRod_C",
+    "name": {
+      "es": "Barra de combustible de ficsonio",
+      "en": "Ficsonium Fuel Rod"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Ficsonium_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_ElectromagneticControlRod_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_FicsiteMesh_C",
+        "amount": 40
+      },
+      {
+        "item": "Desc_QuantumEnergy_C",
+        "amount": 20
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_FicsoniumFuelRod_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_DarkEnergy_C",
+        "amount": 20
+      }
+    ],
+    "duration": 24,
+    "producedIn": "Build_QuantumEncoder_C",
+    "variablePower": {
+      "min": 0,
+      "max": 2000
+    }
+  },
+  {
+    "id": "Recipe_FilterGasMask_C",
+    "name": {
+      "es": "Filtro de gas",
+      "en": "Gas Filter"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Fabric_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_Coal_C",
+        "amount": 4
+      },
+      {
+        "item": "Desc_IronPlate_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Filter_C",
+        "amount": 1
+      }
+    ],
+    "duration": 8,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_FilterHazmat_C",
+    "name": {
+      "es": "Filtro de yodo",
+      "en": "Iodine-Infused Filter"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Filter_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_HighSpeedWire_C",
+        "amount": 8
+      },
+      {
+        "item": "Desc_AluminumCasing_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_HazmatFilter_C",
+        "amount": 1
+      }
+    ],
+    "duration": 16,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Fireworks_01_C",
+    "name": {
+      "es": "Fuegos artificiales dulces",
+      "en": "Sweet Fireworks"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_XmasBranch_C",
+        "amount": 6
+      },
+      {
+        "item": "Desc_CandyCane_C",
+        "amount": 3
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Fireworks_Projectile_01_C",
+        "amount": 1
+      }
+    ],
+    "duration": 24,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Fireworks_02_C",
+    "name": {
+      "es": "Fuegos artificiales espectaculares",
+      "en": "Fancy Fireworks"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_XmasBranch_C",
+        "amount": 4
+      },
+      {
+        "item": "Desc_XmasBow_C",
+        "amount": 3
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Fireworks_Projectile_02_C",
+        "amount": 1
+      }
+    ],
+    "duration": 24,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Fireworks_03_C",
+    "name": {
+      "es": "Fuegos artificiales brillantes",
+      "en": "Sparkly Fireworks"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_XmasBranch_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_Snow_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Fireworks_Projectile_03_C",
+        "amount": 1
+      }
+    ],
+    "duration": 24,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_FluidCanister_C",
+    "name": {
+      "es": "Recipiente vacío",
+      "en": "Empty Canister"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Plastic_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_FluidCanister_C",
+        "amount": 4
+      }
+    ],
+    "duration": 4,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Fuel_C",
+    "name": {
+      "es": "Combustible envasado",
+      "en": "Packaged Fuel"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_LiquidFuel_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_FluidCanister_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Fuel_C",
+        "amount": 2
+      }
+    ],
+    "duration": 3,
+    "producedIn": "Build_Packager_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_FusedModularFrame_C",
+    "name": {
+      "es": "Armazón modular fusionado",
+      "en": "Fused Modular Frame"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_ModularFrameHeavy_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_AluminumCasing_C",
+        "amount": 50
+      },
+      {
+        "item": "Desc_NitrogenGas_C",
+        "amount": 25
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_ModularFrameFused_C",
+        "amount": 1
+      }
+    ],
+    "duration": 40,
+    "producedIn": "Build_Blender_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_GasTank_C",
+    "name": {
+      "es": "Bombona de fluidos vacía",
+      "en": "Empty Fluid Tank"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_AluminumIngot_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_GasTank_C",
+        "amount": 1
+      }
+    ],
+    "duration": 1,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Gunpowder_C",
+    "name": {
+      "es": "Pólvora",
+      "en": "Black Powder"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Coal_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_Sulfur_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Gunpowder_C",
+        "amount": 2
+      }
+    ],
+    "duration": 4,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_GunpowderMK2_C",
+    "name": {
+      "es": "Pólvora sin humo",
+      "en": "Smokeless Powder"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Gunpowder_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_HeavyOilResidue_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_GunpowderMK2_C",
+        "amount": 2
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_HeatSink_C",
+    "name": {
+      "es": "Disipador de calor",
+      "en": "Heat Sink"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_AluminumPlate_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_CopperSheet_C",
+        "amount": 3
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_AluminumPlateReinforced_C",
+        "amount": 1
+      }
+    ],
+    "duration": 8,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_HighSpeedConnector_C",
+    "name": {
+      "es": "Conector de alta velocidad",
+      "en": "High-Speed Connector"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_HighSpeedWire_C",
+        "amount": 56
+      },
+      {
+        "item": "Desc_Cable_C",
+        "amount": 10
+      },
+      {
+        "item": "Desc_CircuitBoard_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_HighSpeedConnector_C",
+        "amount": 1
+      }
+    ],
+    "duration": 16,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_IngotAluminum_C",
+    "name": {
+      "es": "Lingote de aluminio",
+      "en": "Aluminum Ingot"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_AluminumScrap_C",
+        "amount": 6
+      },
+      {
+        "item": "Desc_Silica_C",
+        "amount": 5
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_AluminumIngot_C",
+        "amount": 4
+      }
+    ],
+    "duration": 4,
+    "producedIn": "Build_FoundryMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_IngotCaterium_C",
+    "name": {
+      "es": "Lingote de caterio",
+      "en": "Caterium Ingot"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_OreGold_C",
+        "amount": 3
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_GoldIngot_C",
+        "amount": 1
+      }
+    ],
+    "duration": 4,
+    "producedIn": "Build_SmelterMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_IngotCopper_C",
+    "name": {
+      "es": "Lingote de cobre",
+      "en": "Copper Ingot"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_OreCopper_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_CopperIngot_C",
+        "amount": 1
+      }
+    ],
+    "duration": 2,
+    "producedIn": "Build_SmelterMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_IngotIron_C",
+    "name": {
+      "es": "Lingote de hierro",
+      "en": "Iron Ingot"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_OreIron_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_IronIngot_C",
+        "amount": 1
+      }
+    ],
+    "duration": 2,
+    "producedIn": "Build_SmelterMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_IngotSAM_C",
+    "name": {
+      "es": "MAR reanimada",
+      "en": "Reanimated SAM"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SAM_C",
+        "amount": 4
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SAMIngot_C",
+        "amount": 1
+      }
+    ],
+    "duration": 2,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_IngotSteel_C",
+    "name": {
+      "es": "Lingote de acero",
+      "en": "Steel Ingot"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_OreIron_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_Coal_C",
+        "amount": 3
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SteelIngot_C",
+        "amount": 3
+      }
+    ],
+    "duration": 4,
+    "producedIn": "Build_FoundryMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_IonizedFuel_C",
+    "name": {
+      "es": "Combustible ionizado",
+      "en": "Ionized Fuel"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_RocketFuel_C",
+        "amount": 16
+      },
+      {
+        "item": "Desc_CrystalShard_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_IonizedFuel_C",
+        "amount": 16
+      },
+      {
+        "item": "Desc_CompactedCoal_C",
+        "amount": 2
+      }
+    ],
+    "duration": 24,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Iron_Limestone_C",
+    "name": {
+      "es": "Mineral de hierro (caliza)",
+      "en": "Iron Ore (Limestone)"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SAMIngot_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_Stone_C",
+        "amount": 24
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_OreIron_C",
+        "amount": 12
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_Converter_C",
+    "variablePower": {
+      "min": 100,
+      "max": 400
+    }
+  },
+  {
+    "id": "Recipe_IronPlate_C",
+    "name": {
+      "es": "Plancha de hierro",
+      "en": "Iron Plate"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_IronIngot_C",
+        "amount": 3
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_IronPlate_C",
+        "amount": 2
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_IronPlateReinforced_C",
+    "name": {
+      "es": "Plancha de hierro reforzada",
+      "en": "Reinforced Iron Plate"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_IronPlate_C",
+        "amount": 6
+      },
+      {
+        "item": "Desc_IronScrew_C",
+        "amount": 12
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_IronPlateReinforced_C",
+        "amount": 1
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_IronRod_C",
+    "name": {
+      "es": "Barra de hierro",
+      "en": "Iron Rod"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_IronIngot_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_IronRod_C",
+        "amount": 1
+      }
+    ],
+    "duration": 4,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Limestone_Sulfur_C",
+    "name": {
+      "es": "Caliza (azufre)",
+      "en": "Limestone (Sulfur)"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SAMIngot_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_Sulfur_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Stone_C",
+        "amount": 12
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_Converter_C",
+    "variablePower": {
+      "min": 100,
+      "max": 400
+    }
+  },
+  {
+    "id": "Recipe_LiquidBiofuel_C",
+    "name": {
+      "es": "Biocombustible líquido",
+      "en": "Liquid Biofuel"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Biofuel_C",
+        "amount": 6
+      },
+      {
+        "item": "Desc_Water_C",
+        "amount": 3
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_LiquidBiofuel_C",
+        "amount": 4
+      }
+    ],
+    "duration": 4,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_LiquidFuel_C",
+    "name": {
+      "es": "Combustible",
+      "en": "Fuel"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_LiquidOil_C",
+        "amount": 6
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_LiquidFuel_C",
+        "amount": 4
+      },
+      {
+        "item": "Desc_PolymerResin_C",
+        "amount": 3
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_ModularFrame_C",
+    "name": {
+      "es": "Armazón modular",
+      "en": "Modular Frame"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_IronPlateReinforced_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_IronRod_C",
+        "amount": 12
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_ModularFrame_C",
+        "amount": 2
+      }
+    ],
+    "duration": 60,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_ModularFrameHeavy_C",
+    "name": {
+      "es": "Armazón modular pesado",
+      "en": "Heavy Modular Frame"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_ModularFrame_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_SteelPipe_C",
+        "amount": 20
+      },
+      {
+        "item": "Desc_SteelPlateReinforced_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_IronScrew_C",
+        "amount": 120
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_ModularFrameHeavy_C",
+        "amount": 1
+      }
+    ],
+    "duration": 30,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Motor_C",
+    "name": {
+      "es": "Motor",
+      "en": "Motor"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Rotor_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_Stator_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Motor_C",
+        "amount": 1
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_MotorTurbo_C",
+    "name": {
+      "es": "Motor turbo",
+      "en": "Turbo Motor"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_CoolingSystem_C",
+        "amount": 4
+      },
+      {
+        "item": "Desc_ModularFrameLightweight_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_Motor_C",
+        "amount": 4
+      },
+      {
+        "item": "Desc_Rubber_C",
+        "amount": 24
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_MotorLightweight_C",
+        "amount": 1
+      }
+    ],
+    "duration": 32,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_NitricAcid_C",
+    "name": {
+      "es": "Ácido nítrico",
+      "en": "Nitric Acid"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_NitrogenGas_C",
+        "amount": 12
+      },
+      {
+        "item": "Desc_Water_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_IronPlate_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_NitricAcid_C",
+        "amount": 3
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_Blender_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Nitrogen_Bauxite_C",
+    "name": {
+      "es": "Gas nitrógeno (bauxita)",
+      "en": "Nitrogen Gas (Bauxite)"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SAMIngot_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_OreBauxite_C",
+        "amount": 10
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_NitrogenGas_C",
+        "amount": 12
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_Converter_C",
+    "variablePower": {
+      "min": 100,
+      "max": 400
+    }
+  },
+  {
+    "id": "Recipe_Nitrogen_Caterium_C",
+    "name": {
+      "es": "Gas nitrógeno (caterio)",
+      "en": "Nitrogen Gas (Caterium)"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SAMIngot_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_OreGold_C",
+        "amount": 12
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_NitrogenGas_C",
+        "amount": 12
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_Converter_C",
+    "variablePower": {
+      "min": 100,
+      "max": 400
+    }
+  },
+  {
+    "id": "Recipe_Nobelisk_C",
+    "name": {
+      "es": "Nobelisco",
+      "en": "Nobelisk"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Gunpowder_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_SteelPipe_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_NobeliskExplosive_C",
+        "amount": 1
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_NobeliskCluster_C",
+    "name": {
+      "es": "Nobelisco de fragmentación",
+      "en": "Cluster Nobelisk"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_NobeliskExplosive_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_GunpowderMK2_C",
+        "amount": 4
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_NobeliskCluster_C",
+        "amount": 1
+      }
+    ],
+    "duration": 24,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_NobeliskGas_C",
+    "name": {
+      "es": "Nobelisco de gas",
+      "en": "Gas Nobelisk"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_NobeliskExplosive_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_GenericBiomass_C",
+        "amount": 10
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_NobeliskGas_C",
+        "amount": 1
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_NobeliskNuke_C",
+    "name": {
+      "es": "Nobelisco nuclear",
+      "en": "Nuke Nobelisk"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_NobeliskExplosive_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_UraniumCell_C",
+        "amount": 20
+      },
+      {
+        "item": "Desc_GunpowderMK2_C",
+        "amount": 10
+      },
+      {
+        "item": "Desc_CircuitBoardHighSpeed_C",
+        "amount": 6
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_NobeliskNuke_C",
+        "amount": 1
+      }
+    ],
+    "duration": 120,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_NobeliskShockwave_C",
+    "name": {
+      "es": "Nobelisco de pulso",
+      "en": "Pulse Nobelisk"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_NobeliskExplosive_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_CrystalOscillator_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_NobeliskShockwave_C",
+        "amount": 5
+      }
+    ],
+    "duration": 60,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_NonFissileUranium_C",
+    "name": {
+      "es": "Uranio no fisible",
+      "en": "Non-Fissile Uranium"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_NuclearWaste_C",
+        "amount": 15
+      },
+      {
+        "item": "Desc_Silica_C",
+        "amount": 10
+      },
+      {
+        "item": "Desc_NitricAcid_C",
+        "amount": 6
+      },
+      {
+        "item": "Desc_SulfuricAcid_C",
+        "amount": 6
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_NonFissibleUranium_C",
+        "amount": 20
+      },
+      {
+        "item": "Desc_Water_C",
+        "amount": 6
+      }
+    ],
+    "duration": 24,
+    "producedIn": "Build_Blender_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_NuclearFuelRod_C",
+    "name": {
+      "es": "Barra de combustible de uranio",
+      "en": "Uranium Fuel Rod"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_UraniumCell_C",
+        "amount": 50
+      },
+      {
+        "item": "Desc_SteelPlateReinforced_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_ElectromagneticControlRod_C",
+        "amount": 5
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_NuclearFuelRod_C",
+        "amount": 1
+      }
+    ],
+    "duration": 150,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_PackagedAlumina_C",
+    "name": {
+      "es": "Solución de alúmina envasada",
+      "en": "Packaged Alumina Solution"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_AluminaSolution_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_FluidCanister_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_PackagedAlumina_C",
+        "amount": 2
+      }
+    ],
+    "duration": 1,
+    "producedIn": "Build_Packager_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_PackagedBiofuel_C",
+    "name": {
+      "es": "Biocombustible líquido envasado",
+      "en": "Packaged Liquid Biofuel"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_LiquidBiofuel_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_FluidCanister_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_PackagedBiofuel_C",
+        "amount": 2
+      }
+    ],
+    "duration": 3,
+    "producedIn": "Build_Packager_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_PackagedCrudeOil_C",
+    "name": {
+      "es": "Petróleo envasado",
+      "en": "Packaged Oil"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_LiquidOil_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_FluidCanister_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_PackagedOil_C",
+        "amount": 2
+      }
+    ],
+    "duration": 4,
+    "producedIn": "Build_Packager_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_PackagedIonizedFuel_C",
+    "name": {
+      "es": "Combustible ionizado envasado",
+      "en": "Packaged Ionized Fuel"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_IonizedFuel_C",
+        "amount": 4
+      },
+      {
+        "item": "Desc_GasTank_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_PackagedIonizedFuel_C",
+        "amount": 2
+      }
+    ],
+    "duration": 3,
+    "producedIn": "Build_Packager_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_PackagedNitricAcid_C",
+    "name": {
+      "es": "Ácido nítrico envasado",
+      "en": "Packaged Nitric Acid"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_NitricAcid_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_GasTank_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_PackagedNitricAcid_C",
+        "amount": 1
+      }
+    ],
+    "duration": 2,
+    "producedIn": "Build_Packager_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_PackagedNitrogen_C",
+    "name": {
+      "es": "Gas nitrógeno envasado",
+      "en": "Packaged Nitrogen Gas"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_NitrogenGas_C",
+        "amount": 4
+      },
+      {
+        "item": "Desc_GasTank_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_PackagedNitrogenGas_C",
+        "amount": 1
+      }
+    ],
+    "duration": 1,
+    "producedIn": "Build_Packager_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_PackagedOilResidue_C",
+    "name": {
+      "es": "Residuo de petróleo pesado envasado",
+      "en": "Packaged Heavy Oil Residue"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_HeavyOilResidue_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_FluidCanister_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_PackagedOilResidue_C",
+        "amount": 2
+      }
+    ],
+    "duration": 4,
+    "producedIn": "Build_Packager_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_PackagedRocketFuel_C",
+    "name": {
+      "es": "Combustible de cohete envasado",
+      "en": "Packaged Rocket Fuel"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_RocketFuel_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_GasTank_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_PackagedRocketFuel_C",
+        "amount": 1
+      }
+    ],
+    "duration": 1,
+    "producedIn": "Build_Packager_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_PackagedSulfuricAcid_C",
+    "name": {
+      "es": "Ácido sulfúrico envasado",
+      "en": "Packaged Sulfuric Acid"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SulfuricAcid_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_FluidCanister_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_PackagedSulfuricAcid_C",
+        "amount": 2
+      }
+    ],
+    "duration": 3,
+    "producedIn": "Build_Packager_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_PackagedTurboFuel_C",
+    "name": {
+      "es": "Turbocombustible envasado",
+      "en": "Packaged Turbofuel"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_LiquidTurboFuel_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_FluidCanister_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_TurboFuel_C",
+        "amount": 2
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_Packager_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_PackagedWater_C",
+    "name": {
+      "es": "Agua envasada",
+      "en": "Packaged Water"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Water_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_FluidCanister_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_PackagedWater_C",
+        "amount": 2
+      }
+    ],
+    "duration": 2,
+    "producedIn": "Build_Packager_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_PetroleumCoke_C",
+    "name": {
+      "es": "Coque de petróleo",
+      "en": "Petroleum Coke"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_HeavyOilResidue_C",
+        "amount": 4
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_PetroleumCoke_C",
+        "amount": 12
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Plastic_C",
+    "name": {
+      "es": "Plástico",
+      "en": "Plastic"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_LiquidOil_C",
+        "amount": 3
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Plastic_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_HeavyOilResidue_C",
+        "amount": 1
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Plutonium_C",
+    "name": {
+      "es": "Gránulo de plutonio",
+      "en": "Plutonium Pellet"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_NonFissibleUranium_C",
+        "amount": 100
+      },
+      {
+        "item": "Desc_NuclearWaste_C",
+        "amount": 25
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_PlutoniumPellet_C",
+        "amount": 30
+      }
+    ],
+    "duration": 60,
+    "producedIn": "Build_HadronCollider_C",
+    "variablePower": {
+      "min": 250,
+      "max": 750
+    }
+  },
+  {
+    "id": "Recipe_PlutoniumCell_C",
+    "name": {
+      "es": "Célula de plutonio revestida",
+      "en": "Encased Plutonium Cell"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_PlutoniumPellet_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_Cement_C",
+        "amount": 4
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_PlutoniumCell_C",
+        "amount": 1
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_PlutoniumFuelRod_C",
+    "name": {
+      "es": "Barra de combustible de plutonio",
+      "en": "Plutonium Fuel Rod"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_PlutoniumCell_C",
+        "amount": 30
+      },
+      {
+        "item": "Desc_SteelPlate_C",
+        "amount": 18
+      },
+      {
+        "item": "Desc_ElectromagneticControlRod_C",
+        "amount": 6
+      },
+      {
+        "item": "Desc_AluminumPlateReinforced_C",
+        "amount": 10
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_PlutoniumFuelRod_C",
+        "amount": 1
+      }
+    ],
+    "duration": 240,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_PowerCrystalShard_1_C",
+    "name": {
+      "es": "Esquirla de energía (1)",
+      "en": "Power Shard (1)"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Crystal_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_CrystalShard_C",
+        "amount": 1
+      }
+    ],
+    "duration": 8,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_PowerCrystalShard_2_C",
+    "name": {
+      "es": "Esquirla de energía (2)",
+      "en": "Power Shard (2)"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Crystal_mk2_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_CrystalShard_C",
+        "amount": 2
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_PowerCrystalShard_3_C",
+    "name": {
+      "es": "Esquirla de energía (5)",
+      "en": "Power Shard (5)"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Crystal_mk3_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_CrystalShard_C",
+        "amount": 5
+      }
+    ],
+    "duration": 24,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_PressureConversionCube_C",
+    "name": {
+      "es": "Cubo conversor de presiones",
+      "en": "Pressure Conversion Cube"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_ModularFrameFused_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_ModularFrameLightweight_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_PressureConversionCube_C",
+        "amount": 1
+      }
+    ],
+    "duration": 60,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Protein_Crab_C",
+    "name": {
+      "es": "Proteína de incubador",
+      "en": "Hatcher Protein"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_HatcherParts_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_AlienProtein_C",
+        "amount": 1
+      }
+    ],
+    "duration": 3,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Protein_Hog_C",
+    "name": {
+      "es": "Proteína de jabalí",
+      "en": "Hog Protein"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_HogParts_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_AlienProtein_C",
+        "amount": 1
+      }
+    ],
+    "duration": 3,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Protein_Spitter_C",
+    "name": {
+      "es": "Proteína de escupidor",
+      "en": "Spitter Protein"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SpitterParts_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_AlienProtein_C",
+        "amount": 1
+      }
+    ],
+    "duration": 3,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Protein_Stinger_C",
+    "name": {
+      "es": "Proteína de picador",
+      "en": "Stinger Protein"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_StingerParts_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_AlienProtein_C",
+        "amount": 1
+      }
+    ],
+    "duration": 3,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_PureAluminumIngot_C",
+    "name": {
+      "es": "Alternativa: Lingote de aluminio puro",
+      "en": "Alternate: Pure Aluminum Ingot"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_AluminumScrap_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_AluminumIngot_C",
+        "amount": 1
+      }
+    ],
+    "duration": 2,
+    "producedIn": "Build_SmelterMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_QuantumEnergy_C",
+    "name": {
+      "es": "Materia fotónica excitada",
+      "en": "Excited Photonic Matter"
+    },
+    "alternate": false,
+    "ingredients": [],
+    "products": [
+      {
+        "item": "Desc_QuantumEnergy_C",
+        "amount": 10
+      }
+    ],
+    "duration": 3,
+    "producedIn": "Build_Converter_C",
+    "variablePower": {
+      "min": 100,
+      "max": 400
+    }
+  },
+  {
+    "id": "Recipe_Quartz_Bauxite_C",
+    "name": {
+      "es": "Cuarzo bruto (bauxita)",
+      "en": "Raw Quartz (Bauxite)"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SAMIngot_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_OreBauxite_C",
+        "amount": 10
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_RawQuartz_C",
+        "amount": 12
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_Converter_C",
+    "variablePower": {
+      "min": 100,
+      "max": 400
+    }
+  },
+  {
+    "id": "Recipe_Quartz_Coal_C",
+    "name": {
+      "es": "Cuarzo bruto (carbón)",
+      "en": "Raw Quartz (Coal)"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SAMIngot_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_Coal_C",
+        "amount": 24
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_RawQuartz_C",
+        "amount": 12
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_Converter_C",
+    "variablePower": {
+      "min": 100,
+      "max": 400
+    }
+  },
+  {
+    "id": "Recipe_QuartzCrystal_C",
+    "name": {
+      "es": "Cristal de cuarzo",
+      "en": "Quartz Crystal"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_RawQuartz_C",
+        "amount": 5
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_QuartzCrystal_C",
+        "amount": 3
+      }
+    ],
+    "duration": 8,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Quickwire_C",
+    "name": {
+      "es": "Turboalambre",
+      "en": "Quickwire"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_GoldIngot_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_HighSpeedWire_C",
+        "amount": 5
+      }
+    ],
+    "duration": 5,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_RadioControlUnit_C",
+    "name": {
+      "es": "Unidad de control por radio",
+      "en": "Radio Control Unit"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_AluminumCasing_C",
+        "amount": 32
+      },
+      {
+        "item": "Desc_CrystalOscillator_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_Computer_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_ModularFrameLightweight_C",
+        "amount": 2
+      }
+    ],
+    "duration": 48,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Rebar_Explosive_C",
+    "name": {
+      "es": "Varilla explosiva",
+      "en": "Explosive Rebar"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SpikedRebar_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_GunpowderMK2_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_SteelPipe_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Rebar_Explosive_C",
+        "amount": 1
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Rebar_Spreadshot_C",
+    "name": {
+      "es": "Varilla de fragmentación",
+      "en": "Shatter Rebar"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SpikedRebar_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_QuartzCrystal_C",
+        "amount": 3
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Rebar_Spreadshot_C",
+        "amount": 1
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Rebar_Stunshot_C",
+    "name": {
+      "es": "Varilla aturdidora",
+      "en": "Stun Rebar"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SpikedRebar_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_HighSpeedWire_C",
+        "amount": 5
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Rebar_Stunshot_C",
+        "amount": 1
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_ResidualFuel_C",
+    "name": {
+      "es": "Residuo de combustible",
+      "en": "Residual Fuel"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_HeavyOilResidue_C",
+        "amount": 6
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_LiquidFuel_C",
+        "amount": 4
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_ResidualPlastic_C",
+    "name": {
+      "es": "Plástico residual",
+      "en": "Residual Plastic"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_PolymerResin_C",
+        "amount": 6
+      },
+      {
+        "item": "Desc_Water_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Plastic_C",
+        "amount": 2
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_ResidualRubber_C",
+    "name": {
+      "es": "Caucho residual",
+      "en": "Residual Rubber"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_PolymerResin_C",
+        "amount": 4
+      },
+      {
+        "item": "Desc_Water_C",
+        "amount": 4
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Rubber_C",
+        "amount": 2
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_RocketFuel_C",
+    "name": {
+      "es": "Combustible de cohete",
+      "en": "Rocket Fuel"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_LiquidTurboFuel_C",
+        "amount": 6
+      },
+      {
+        "item": "Desc_NitricAcid_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_RocketFuel_C",
+        "amount": 10
+      },
+      {
+        "item": "Desc_CompactedCoal_C",
+        "amount": 1
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_Blender_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Rotor_C",
+    "name": {
+      "es": "Rotor",
+      "en": "Rotor"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_IronRod_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_IronScrew_C",
+        "amount": 25
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Rotor_C",
+        "amount": 1
+      }
+    ],
+    "duration": 15,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Rubber_C",
+    "name": {
+      "es": "Caucho",
+      "en": "Rubber"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_LiquidOil_C",
+        "amount": 3
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Rubber_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_HeavyOilResidue_C",
+        "amount": 2
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_SAMFluctuator_C",
+    "name": {
+      "es": "Fluctuador de MAR",
+      "en": "SAM Fluctuator"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SAMIngot_C",
+        "amount": 6
+      },
+      {
+        "item": "Desc_Wire_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_SteelPipe_C",
+        "amount": 3
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SAMFluctuator_C",
+        "amount": 1
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Screw_C",
+    "name": {
+      "es": "Tornillos",
+      "en": "Screws"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_IronRod_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_IronScrew_C",
+        "amount": 4
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Silica_C",
+    "name": {
+      "es": "Sílice",
+      "en": "Silica"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_RawQuartz_C",
+        "amount": 3
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Silica_C",
+        "amount": 5
+      }
+    ],
+    "duration": 8,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_SingularityCell_C",
+    "name": {
+      "es": "Célula de singularidad",
+      "en": "Singularity Cell"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SpaceElevatorPart_9_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_DarkMatter_C",
+        "amount": 20
+      },
+      {
+        "item": "Desc_IronPlate_C",
+        "amount": 100
+      },
+      {
+        "item": "Desc_Cement_C",
+        "amount": 200
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SingularityCell_C",
+        "amount": 10
+      }
+    ],
+    "duration": 60,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Snow_C",
+    "name": {
+      "es": "Nieve de verdad de FICSIVIDAD",
+      "en": "FICSMAS Actual Snow"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Gift_C",
+        "amount": 5
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Snow_C",
+        "amount": 2
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Snowball_C",
+    "name": {
+      "es": "Bola de nieve",
+      "en": "Snowball"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Snow_C",
+        "amount": 3
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SnowballProjectile_C",
+        "amount": 1
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_SpaceElevatorPart_1_C",
+    "name": {
+      "es": "Placas inteligentes",
+      "en": "Smart Plating"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_IronPlateReinforced_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_Rotor_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SpaceElevatorPart_1_C",
+        "amount": 1
+      }
+    ],
+    "duration": 30,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_SpaceElevatorPart_10_C",
+    "name": {
+      "es": "Escultor bioquímico",
+      "en": "Biochemical Sculptor"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SpaceElevatorPart_7_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_FicsiteMesh_C",
+        "amount": 80
+      },
+      {
+        "item": "Desc_Water_C",
+        "amount": 20
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SpaceElevatorPart_10_C",
+        "amount": 4
+      }
+    ],
+    "duration": 120,
+    "producedIn": "Build_Blender_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_SpaceElevatorPart_11_C",
+    "name": {
+      "es": "Unidad de deformación balística",
+      "en": "Ballistic Warp Drive"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SpaceElevatorPart_8_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_SingularityCell_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_QuantumOscillator_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_DarkMatter_C",
+        "amount": 40
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SpaceElevatorPart_11_C",
+        "amount": 1
+      }
+    ],
+    "duration": 60,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_SpaceElevatorPart_12_C",
+    "name": {
+      "es": "Servidor de expansión de IA",
+      "en": "AI Expansion Server"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SpaceElevatorPart_6_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_TemporalProcessor_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_QuantumOscillator_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_QuantumEnergy_C",
+        "amount": 25
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SpaceElevatorPart_12_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_DarkEnergy_C",
+        "amount": 25
+      }
+    ],
+    "duration": 15,
+    "producedIn": "Build_QuantumEncoder_C",
+    "variablePower": {
+      "min": 0,
+      "max": 2000
+    }
+  },
+  {
+    "id": "Recipe_SpaceElevatorPart_2_C",
+    "name": {
+      "es": "Estructura versátil",
+      "en": "Versatile Framework"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_ModularFrame_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_SteelPlate_C",
+        "amount": 12
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SpaceElevatorPart_2_C",
+        "amount": 2
+      }
+    ],
+    "duration": 24,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_SpaceElevatorPart_3_C",
+    "name": {
+      "es": "Cableado automatizado",
+      "en": "Automated Wiring"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Stator_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_Cable_C",
+        "amount": 20
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SpaceElevatorPart_3_C",
+        "amount": 1
+      }
+    ],
+    "duration": 24,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_SpaceElevatorPart_4_C",
+    "name": {
+      "es": "Motor modular",
+      "en": "Modular Engine"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Motor_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_Rubber_C",
+        "amount": 15
+      },
+      {
+        "item": "Desc_SpaceElevatorPart_1_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SpaceElevatorPart_4_C",
+        "amount": 1
+      }
+    ],
+    "duration": 60,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_SpaceElevatorPart_5_C",
+    "name": {
+      "es": "Unidad de control adaptativa",
+      "en": "Adaptive Control Unit"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SpaceElevatorPart_3_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_CircuitBoard_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_ModularFrameHeavy_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_Computer_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SpaceElevatorPart_5_C",
+        "amount": 1
+      }
+    ],
+    "duration": 60,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_SpaceElevatorPart_6_C",
+    "name": {
+      "es": "Generador de campos magnéticos",
+      "en": "Magnetic Field Generator"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SpaceElevatorPart_2_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_ElectromagneticControlRod_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SpaceElevatorPart_6_C",
+        "amount": 2
+      }
+    ],
+    "duration": 120,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_SpaceElevatorPart_7_C",
+    "name": {
+      "es": "Sistema director de montaje",
+      "en": "Assembly Director System"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SpaceElevatorPart_5_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_ComputerSuper_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SpaceElevatorPart_7_C",
+        "amount": 1
+      }
+    ],
+    "duration": 80,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_SpaceElevatorPart_8_C",
+    "name": {
+      "es": "Cohete de propulsión térmica",
+      "en": "Thermal Propulsion Rocket"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SpaceElevatorPart_4_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_MotorLightweight_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_CoolingSystem_C",
+        "amount": 6
+      },
+      {
+        "item": "Desc_ModularFrameFused_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SpaceElevatorPart_8_C",
+        "amount": 2
+      }
+    ],
+    "duration": 120,
+    "producedIn": "Build_ManufacturerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_SpaceElevatorPart_9_C",
+    "name": {
+      "es": "Pasta nuclear",
+      "en": "Nuclear Pasta"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_CopperDust_C",
+        "amount": 200
+      },
+      {
+        "item": "Desc_PressureConversionCube_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SpaceElevatorPart_9_C",
+        "amount": 1
+      }
+    ],
+    "duration": 120,
+    "producedIn": "Build_HadronCollider_C",
+    "variablePower": {
+      "min": 500,
+      "max": 1500
+    }
+  },
+  {
+    "id": "Recipe_SpikedRebar_C",
+    "name": {
+      "es": "Varilla de hierro",
+      "en": "Iron Rebar"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_IronRod_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SpikedRebar_C",
+        "amount": 1
+      }
+    ],
+    "duration": 4,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Stator_C",
+    "name": {
+      "es": "Estátor",
+      "en": "Stator"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SteelPipe_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_Wire_C",
+        "amount": 8
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Stator_C",
+        "amount": 1
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_SteelBeam_C",
+    "name": {
+      "es": "Viga de acero",
+      "en": "Steel Beam"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SteelIngot_C",
+        "amount": 4
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SteelPlate_C",
+        "amount": 1
+      }
+    ],
+    "duration": 4,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_SteelPipe_C",
+    "name": {
+      "es": "Tubería de acero",
+      "en": "Steel Pipe"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SteelIngot_C",
+        "amount": 3
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SteelPipe_C",
+        "amount": 2
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Sulfur_Coal_C",
+    "name": {
+      "es": "Azufre (carbón)",
+      "en": "Sulfur (Coal)"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SAMIngot_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_Coal_C",
+        "amount": 20
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Sulfur_C",
+        "amount": 12
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_Converter_C",
+    "variablePower": {
+      "min": 100,
+      "max": 400
+    }
+  },
+  {
+    "id": "Recipe_Sulfur_Iron_C",
+    "name": {
+      "es": "Azufre (hierro)",
+      "en": "Sulfur (Iron)"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SAMIngot_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_OreIron_C",
+        "amount": 30
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Sulfur_C",
+        "amount": 12
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_Converter_C",
+    "variablePower": {
+      "min": 100,
+      "max": 400
+    }
+  },
+  {
+    "id": "Recipe_SulfuricAcid_C",
+    "name": {
+      "es": "Ácido sulfúrico",
+      "en": "Sulfuric Acid"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Sulfur_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_Water_C",
+        "amount": 5
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SulfuricAcid_C",
+        "amount": 5
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_OilRefinery_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_SuperpositionOscillator_C",
+    "name": {
+      "es": "Oscilador de superposición",
+      "en": "Superposition Oscillator"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_DarkMatter_C",
+        "amount": 6
+      },
+      {
+        "item": "Desc_CrystalOscillator_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_AluminumPlate_C",
+        "amount": 9
+      },
+      {
+        "item": "Desc_QuantumEnergy_C",
+        "amount": 25
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_QuantumOscillator_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_DarkEnergy_C",
+        "amount": 25
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_QuantumEncoder_C",
+    "variablePower": {
+      "min": 0,
+      "max": 2000
+    }
+  },
+  {
+    "id": "Recipe_SyntheticPowerShard_C",
+    "name": {
+      "es": "Esquirla de energía sintética",
+      "en": "Synthetic Power Shard"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_TimeCrystal_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_DarkMatter_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_QuartzCrystal_C",
+        "amount": 12
+      },
+      {
+        "item": "Desc_QuantumEnergy_C",
+        "amount": 12
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_CrystalShard_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_DarkEnergy_C",
+        "amount": 12
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_QuantumEncoder_C",
+    "variablePower": {
+      "min": 0,
+      "max": 2000
+    }
+  },
+  {
+    "id": "Recipe_TemporalProcessor_C",
+    "name": {
+      "es": "Procesador neurocuántico",
+      "en": "Neural-Quantum Processor"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_TimeCrystal_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_ComputerSuper_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_FicsiteMesh_C",
+        "amount": 15
+      },
+      {
+        "item": "Desc_QuantumEnergy_C",
+        "amount": 25
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_TemporalProcessor_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_DarkEnergy_C",
+        "amount": 25
+      }
+    ],
+    "duration": 20,
+    "producedIn": "Build_QuantumEncoder_C",
+    "variablePower": {
+      "min": 0,
+      "max": 2000
+    }
+  },
+  {
+    "id": "Recipe_TimeCrystal_C",
+    "name": {
+      "es": "Cronocristales",
+      "en": "Time Crystal"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Diamond_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_TimeCrystal_C",
+        "amount": 1
+      }
+    ],
+    "duration": 10,
+    "producedIn": "Build_Converter_C",
+    "variablePower": {
+      "min": 100,
+      "max": 400
+    }
+  },
+  {
+    "id": "Recipe_UnpackageAlumina_C",
+    "name": {
+      "es": "Extraer solución de alúmina",
+      "en": "Unpackage Alumina Solution"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_PackagedAlumina_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_AluminaSolution_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_FluidCanister_C",
+        "amount": 2
+      }
+    ],
+    "duration": 1,
+    "producedIn": "Build_Packager_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_UnpackageBioFuel_C",
+    "name": {
+      "es": "Extraer biocombustible líquido",
+      "en": "Unpackage Liquid Biofuel"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_PackagedBiofuel_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_LiquidBiofuel_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_FluidCanister_C",
+        "amount": 2
+      }
+    ],
+    "duration": 2,
+    "producedIn": "Build_Packager_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_UnpackageFuel_C",
+    "name": {
+      "es": "Extraer combustible",
+      "en": "Unpackage Fuel"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Fuel_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_LiquidFuel_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_FluidCanister_C",
+        "amount": 2
+      }
+    ],
+    "duration": 2,
+    "producedIn": "Build_Packager_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_UnpackageIonizedFuel_C",
+    "name": {
+      "es": "Extraer combustible ionizado",
+      "en": "Unpackage Ionized Fuel"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_PackagedIonizedFuel_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_IonizedFuel_C",
+        "amount": 4
+      },
+      {
+        "item": "Desc_GasTank_C",
+        "amount": 2
+      }
+    ],
+    "duration": 3,
+    "producedIn": "Build_Packager_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_UnpackageNitricAcid_C",
+    "name": {
+      "es": "Extraer ácido nítrico",
+      "en": "Unpackage Nitric Acid"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_PackagedNitricAcid_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_NitricAcid_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_GasTank_C",
+        "amount": 1
+      }
+    ],
+    "duration": 3,
+    "producedIn": "Build_Packager_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_UnpackageNitrogen_C",
+    "name": {
+      "es": "Extraer gas nitrógeno",
+      "en": "Unpackage Nitrogen Gas"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_PackagedNitrogenGas_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_NitrogenGas_C",
+        "amount": 4
+      },
+      {
+        "item": "Desc_GasTank_C",
+        "amount": 1
+      }
+    ],
+    "duration": 1,
+    "producedIn": "Build_Packager_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_UnpackageOil_C",
+    "name": {
+      "es": "Extraer petróleo",
+      "en": "Unpackage Oil"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_PackagedOil_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_LiquidOil_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_FluidCanister_C",
+        "amount": 2
+      }
+    ],
+    "duration": 2,
+    "producedIn": "Build_Packager_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_UnpackageOilResidue_C",
+    "name": {
+      "es": "Extraer residuo de petróleo pesado",
+      "en": "Unpackage Heavy Oil Residue"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_PackagedOilResidue_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_HeavyOilResidue_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_FluidCanister_C",
+        "amount": 2
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_Packager_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_UnpackageRocketFuel_C",
+    "name": {
+      "es": "Extraer combustible para cohetes",
+      "en": "Unpackage Rocket Fuel"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_PackagedRocketFuel_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_RocketFuel_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_GasTank_C",
+        "amount": 1
+      }
+    ],
+    "duration": 1,
+    "producedIn": "Build_Packager_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_UnpackageSulfuricAcid_C",
+    "name": {
+      "es": "Extraer ácido sulfúrico",
+      "en": "Unpackage Sulfuric Acid"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_PackagedSulfuricAcid_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_SulfuricAcid_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_FluidCanister_C",
+        "amount": 1
+      }
+    ],
+    "duration": 1,
+    "producedIn": "Build_Packager_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_UnpackageTurboFuel_C",
+    "name": {
+      "es": "Extraer turbocombustible",
+      "en": "Unpackage Turbofuel"
+    },
+    "alternate": true,
+    "ingredients": [
+      {
+        "item": "Desc_TurboFuel_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_LiquidTurboFuel_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_FluidCanister_C",
+        "amount": 2
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_Packager_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_UnpackageWater_C",
+    "name": {
+      "es": "Extraer agua",
+      "en": "Unpackage Water"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_PackagedWater_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Water_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_FluidCanister_C",
+        "amount": 2
+      }
+    ],
+    "duration": 1,
+    "producedIn": "Build_Packager_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Uranium_Bauxite_C",
+    "name": {
+      "es": "Mineral de uranio (bauxita)",
+      "en": "Uranium Ore (Bauxite)"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_SAMIngot_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_OreBauxite_C",
+        "amount": 48
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_OreUranium_C",
+        "amount": 12
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_Converter_C",
+    "variablePower": {
+      "min": 100,
+      "max": 400
+    }
+  },
+  {
+    "id": "Recipe_UraniumCell_C",
+    "name": {
+      "es": "Célula de uranio revestida",
+      "en": "Encased Uranium Cell"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_OreUranium_C",
+        "amount": 10
+      },
+      {
+        "item": "Desc_Cement_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_SulfuricAcid_C",
+        "amount": 8
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_UraniumCell_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_SulfuricAcid_C",
+        "amount": 2
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_Blender_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_Wire_C",
+    "name": {
+      "es": "Alambre",
+      "en": "Wire"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_CopperIngot_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_Wire_C",
+        "amount": 2
+      }
+    ],
+    "duration": 4,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_XmasBall1_C",
+    "name": {
+      "es": "Adorno rojo de FICSIVIDAD",
+      "en": "Red FICSMAS Ornament"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Gift_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_XmasBall1_C",
+        "amount": 1
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_SmelterMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_XmasBall2_C",
+    "name": {
+      "es": "Adorno azul de FICSIVIDAD",
+      "en": "Blue FICSMAS Ornament"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Gift_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_XmasBall2_C",
+        "amount": 2
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_SmelterMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_XmasBall3_C",
+    "name": {
+      "es": "Adorno cobrizo de FICSIVIDAD",
+      "en": "Copper FICSMAS Ornament"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_XmasBall1_C",
+        "amount": 2
+      },
+      {
+        "item": "Desc_CopperIngot_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_XmasBall3_C",
+        "amount": 1
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_FoundryMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_XmasBall4_C",
+    "name": {
+      "es": "Adorno metálico de FICSIVIDAD",
+      "en": "Iron FICSMAS Ornament"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_XmasBall2_C",
+        "amount": 3
+      },
+      {
+        "item": "Desc_IronIngot_C",
+        "amount": 3
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_XmasBall4_C",
+        "amount": 1
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_FoundryMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_XmasBallCluster_C",
+    "name": {
+      "es": "Lote de decoraciones de FICSIVIDAD",
+      "en": "FICSMAS Ornament Bundle"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_XmasBall3_C",
+        "amount": 1
+      },
+      {
+        "item": "Desc_XmasBall4_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_XmasBallCluster_C",
+        "amount": 1
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_XmasBow_C",
+    "name": {
+      "es": "Lazo de FICSIVIDAD",
+      "en": "FICSMAS Bow"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Gift_C",
+        "amount": 2
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_XmasBow_C",
+        "amount": 1
+      }
+    ],
+    "duration": 12,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_XmasBranch_C",
+    "name": {
+      "es": "Rama de árbol de FICSIVIDAD",
+      "en": "FICSMAS Tree Branch"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_Gift_C",
+        "amount": 1
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_XmasBranch_C",
+        "amount": 1
+      }
+    ],
+    "duration": 6,
+    "producedIn": "Build_ConstructorMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_XmasStar_C",
+    "name": {
+      "es": "Estrella de FICSIVIDAD",
+      "en": "FICSMAS Wonder Star"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_XmasWreath_C",
+        "amount": 5
+      },
+      {
+        "item": "Desc_CandyCane_C",
+        "amount": 20
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_XmasStar_C",
+        "amount": 1
+      }
+    ],
+    "duration": 60,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  },
+  {
+    "id": "Recipe_XmasWreath_C",
+    "name": {
+      "es": "Corona de FICSIVIDAD",
+      "en": "FICSMAS Wreath"
+    },
+    "alternate": false,
+    "ingredients": [
+      {
+        "item": "Desc_XmasBranch_C",
+        "amount": 15
+      },
+      {
+        "item": "Desc_XmasBallCluster_C",
+        "amount": 6
+      }
+    ],
+    "products": [
+      {
+        "item": "Desc_XmasWreath_C",
+        "amount": 2
+      }
+    ],
+    "duration": 60,
+    "producedIn": "Build_AssemblerMk1_C",
+    "variablePower": null
+  }
+]
