@@ -3,6 +3,7 @@
   <button
     type="button"
     class="node-card__handle"
+    ngpButton
     cdkDragHandle
     [attr.aria-describedby]="n.id + '-move-help'"
     (keydown)="onHandleKeydown($event)"
@@ -15,6 +16,7 @@
   <button
     type="button"
     class="node-card__icon-button"
+    ngpButton
     [attr.aria-label]="'Eliminar nodo de ' + n.resource.name.es"
     (click)="remove()"
   >
@@ -33,39 +35,39 @@
 </header>
 
 <div class="node-card__body">
-  <label class="field">
-    <span class="field__label">Recurso</span>
-    <select class="field__control" (change)="setResource($event)">
+  <div class="field" ngpFormField>
+    <label class="field__label" ngpLabel>Recurso</label>
+    <select class="field__control" ngpNativeSelect (change)="setResource($event)">
       @for (resource of data.minableResources; track resource.id) {
         <option [value]="resource.id" [selected]="resource.id === n.resourceId">
           {{ resource.name.es }}
         </option>
       }
     </select>
-  </label>
+  </div>
 
   <div class="node-card__row">
-    <label class="field">
-      <span class="field__label">Pureza</span>
-      <select class="field__control" (change)="setPurity($event)">
+    <div class="field" ngpFormField>
+      <label class="field__label" ngpLabel>Pureza</label>
+      <select class="field__control" ngpNativeSelect (change)="setPurity($event)">
         @for (purity of purities; track purity.id) {
           <option [value]="purity.id" [selected]="purity.id === n.purity">
             {{ purity.label }} ×{{ purity.multiplier }}
           </option>
         }
       </select>
-    </label>
+    </div>
 
-    <label class="field">
-      <span class="field__label">Taladro</span>
-      <select class="field__control" (change)="setMiner($event)">
+    <div class="field" ngpFormField>
+      <label class="field__label" ngpLabel>Taladro</label>
+      <select class="field__control" ngpNativeSelect (change)="setMiner($event)">
         @for (miner of data.miners; track miner.id) {
           <option [value]="miner.id" [selected]="miner.id === n.minerId">
             {{ miner.name.es }}
           </option>
         }
       </select>
-    </label>
+    </div>
   </div>
 
   <dl class="node-card__stats">
@@ -84,6 +86,7 @@
   <button
     type="button"
     class="node-card__port"
+    ngpButton
     cdkDrag
     cdkDragBoundary=".planner-surface"
     [attr.aria-label]="'Sacar cinta transportadora del nodo de ' + n.resource.name.es"

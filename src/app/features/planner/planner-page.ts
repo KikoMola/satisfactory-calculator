@@ -9,6 +9,9 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import { NgpButton } from 'ng-primitives/button';
+import { NgpFormField, NgpLabel } from 'ng-primitives/form-field';
+import { NgpNativeSelect } from 'ng-primitives/select';
 import { GameDataService } from '../../core/game-data.service';
 import { beltCurve } from './planner.calc';
 import { arrowKeyDelta } from './keyboard';
@@ -18,7 +21,16 @@ import { ResourceNodeCard } from './resource-node-card/resource-node-card';
 
 @Component({
   selector: 'app-planner-page',
-  imports: [CdkDrag, DecimalPipe, PercentPipe, ResourceNodeCard],
+  imports: [
+    CdkDrag,
+    DecimalPipe,
+    PercentPipe,
+    NgpButton,
+    NgpFormField,
+    NgpLabel,
+    NgpNativeSelect,
+    ResourceNodeCard,
+  ],
   providers: [PlannerStore],
   templateUrl: './planner-page.html',
   styleUrl: './planner-page.css',

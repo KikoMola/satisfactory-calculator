@@ -49,7 +49,7 @@
   cursor: grabbing;
 }
 
-.node-card__handle:hover {
+.node-card__handle[data-hover] {
   background: var(--hover);
 }
 
@@ -113,7 +113,7 @@
   touch-action: none;
 }
 
-.node-card__port:hover {
+.node-card__port[data-hover] {
   transform: scale(1.15);
 }
 

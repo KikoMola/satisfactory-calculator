@@ -2,17 +2,17 @@
   <h1 class="toolbar__title">Planificador</h1>
 
   <form class="toolbar__add" (submit)="$event.preventDefault(); addNode()">
-    <label class="field field--inline">
-      <span class="field__label">Recurso</span>
-      <select class="field__control" (change)="selectResource($event)">
+    <div class="field field--inline" ngpFormField>
+      <label class="field__label" ngpLabel>Recurso</label>
+      <select class="field__control" ngpNativeSelect (change)="selectResource($event)">
         @for (resource of data.minableResources; track resource.id) {
           <option [value]="resource.id" [selected]="resource.id === selectedResource()">
             {{ resource.name.es }}
           </option>
         }
       </select>
-    </label>
-    <button type="submit" class="button button--primary">Añadir nodo</button>
+    </div>
+    <button type="submit" class="button button--primary" ngpButton>Añadir nodo</button>
   </form>
 </header>
 
@@ -65,18 +65,20 @@
           role="group"
           [attr.aria-label]="'Cinta de ' + belt.resource.name.es"
         >
-          <label class="sr-only" [for]="belt.id + '-tier'">Tipo de cinta</label>
-          <select
-            class="field__control field__control--compact"
-            [id]="belt.id + '-tier'"
-            (change)="setBeltTier(belt, $event)"
-          >
-            @for (tier of data.belts; track tier.id) {
-              <option [value]="tier.id" [selected]="tier.id === belt.transportId">
-                Mk.{{ tier.tier }} · {{ tier.ratePerMinute }}/min
-              </option>
-            }
-          </select>
+          <div ngpFormField>
+            <label class="sr-only" ngpLabel>Tipo de cinta</label>
+            <select
+              class="field__control field__control--compact"
+              ngpNativeSelect
+              (change)="setBeltTier(belt, $event)"
+            >
+              @for (tier of data.belts; track tier.id) {
+                <option [value]="tier.id" [selected]="tier.id === belt.transportId">
+                  Mk.{{ tier.tier }} · {{ tier.ratePerMinute }}/min
+                </option>
+              }
+            </select>
+          </div>
           <span class="belt-label__flow">
             {{ belt.flow.flow | number: '1.0-2' }} / {{ belt.flow.capacity }} /min
             <span class="sr-only">, uso {{ belt.flow.utilization | percent: '1.0-0' }}</span>
@@ -90,6 +92,7 @@
           <button
             type="button"
             class="belt-label__remove"
+            ngpButton
             [attr.aria-label]="'Eliminar cinta de ' + belt.resource.name.es"
             (click)="removeBelt(belt)"
           >
@@ -110,6 +113,7 @@
         <button
           type="button"
           class="belt-end"
+          ngpButton
           cdkDrag
           cdkDragBoundary=".planner-surface"
           [cdkDragFreeDragPosition]="belt.end"

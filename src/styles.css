@@ -30,9 +30,25 @@ body {
     sans-serif;
 }
 
+/*
+ * Interaction states come from Angular Primitives (ng-primitives) as data attributes:
+ * [data-hover], [data-press], [data-focus-visible], [data-disabled].
+ * :focus-visible stays as a fallback for elements that are not primitives.
+ */
+[data-focus-visible],
 :focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 2px;
+}
+
+[ngpButton][data-press] {
+  translate: 0 1px;
+}
+
+[ngpButton][data-disabled],
+[ngpNativeSelect][data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .sr-only {
@@ -73,6 +89,10 @@ body {
   font-size: 0.875rem;
 }
 
+.field__control[data-hover] {
+  border-color: var(--text-muted);
+}
+
 .field__control--compact {
   width: auto;
   height: 28px;
@@ -105,7 +125,7 @@ body {
   color: #1a1206;
 }
 
-.button--primary:hover {
+.button--primary[data-hover] {
   background: #ffa968;
 }
 
@@ -122,7 +142,7 @@ body {
   cursor: pointer;
 }
 
-.node-card__icon-button:hover {
+.node-card__icon-button[data-hover] {
   background: var(--hover);
   color: var(--text);
 }

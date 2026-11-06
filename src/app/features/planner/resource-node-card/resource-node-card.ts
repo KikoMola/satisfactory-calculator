@@ -1,6 +1,9 @@
 import { CdkDrag, CdkDragHandle, type CdkDragEnd, type CdkDragMove } from '@angular/cdk/drag-drop';
 import { DecimalPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
+import { NgpButton } from 'ng-primitives/button';
+import { NgpFormField, NgpLabel } from 'ng-primitives/form-field';
+import { NgpNativeSelect } from 'ng-primitives/select';
 import { GameDataService } from '../../../core/game-data.service';
 import { arrowKeyDelta } from '../keyboard';
 import { PURITIES, type Point, type Purity } from '../planner.model';
@@ -13,7 +16,15 @@ import { PlannerStore, type NodeView } from '../planner.store';
  */
 @Component({
   selector: 'app-resource-node-card',
-  imports: [CdkDragHandle, CdkDrag, DecimalPipe],
+  imports: [
+    CdkDragHandle,
+    CdkDrag,
+    DecimalPipe,
+    NgpButton,
+    NgpFormField,
+    NgpLabel,
+    NgpNativeSelect,
+  ],
   templateUrl: './resource-node-card.html',
   styleUrl: './resource-node-card.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

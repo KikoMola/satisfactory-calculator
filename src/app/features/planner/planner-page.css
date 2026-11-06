@@ -119,7 +119,7 @@
   cursor: pointer;
 }
 
-.belt-label__remove:hover {
+.belt-label__remove[data-hover] {
   background: var(--hover);
   color: var(--text);
 }
