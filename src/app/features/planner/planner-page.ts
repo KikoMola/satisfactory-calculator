@@ -4,8 +4,10 @@ import {
   afterNextRender,
   ChangeDetectionStrategy,
   Component,
+  computed,
   ElementRef,
   inject,
+  Injector,
   viewChild,
 } from '@angular/core';
 import { NgpContextMenuTrigger } from 'ng-primitives/context-menu';
@@ -20,7 +22,7 @@ import { CanvasMenu } from './canvas-menu/canvas-menu';
 import { GeneratorCard } from './generator-card/generator-card';
 import { LogisticCard } from './logistic-card/logistic-card';
 import { PlannerInteractions } from './planner-interactions';
-import { CANVAS } from './planner.model';
+import { CANVAS, clampZoom, ZOOM, type Point } from './planner.model';
 import { PlannerStore, type BeltView, type NodeView } from './planner.store';
 import { ResourceNodeCard } from './resource-node-card/resource-node-card';
 
@@ -56,6 +58,22 @@ export class PlannerPage {
   protected readonly store = inject(PlannerStore);
   protected readonly interactions = inject(PlannerInteractions);
   protected readonly canvas = CANVAS;
+  protected readonly zoomLimits = ZOOM;
+  private readonly injector = inject(Injector);
+
+  protected readonly zoomPercent = computed(() => Math.round(this.interactions.zoom() * 100));
+
+  /**
+   * Card positions for the CDK, which works in screen pixels inside a scaled container
+   * (`cdkDragScale`): canvas position × zoom. Stable objects, so the input doesn't change
+   * mid-drag.
+   */
+  protected readonly dragPositions = computed(() => {
+    const zoom = this.interactions.zoom();
+    return new Map(
+      this.store.nodes().map((n) => [n.id, { x: n.position.x * zoom, y: n.position.y * zoom }]),
+    );
+  });
 
   private readonly surface = viewChild.required<ElementRef<HTMLElement>>('surface');
   private readonly viewport = viewChild.required<ElementRef<HTMLElement>>('viewport');
@@ -67,11 +85,105 @@ export class PlannerPage {
     afterNextRender(() => this.interactions.registerSurface(this.surface().nativeElement));
   }
 
-  /** Copy / duplicate / paste / delete shortcuts. Focus goes back to the canvas on delete. */
+  /**
+   * Copy / duplicate / paste / delete shortcuts (focus goes back to the canvas on delete), and
+   * + / - / 0 to zoom while the canvas itself has focus.
+   */
   protected onKeydown(event: KeyboardEvent): void {
-    if (this.interactions.shortcut(event) === 'removed') {
-      this.viewport().nativeElement.focus();
+    const viewport = this.viewport().nativeElement;
+    if (event.target === viewport && !event.ctrlKey && !event.metaKey && !event.altKey) {
+      const zoom = {
+        '+': () => this.zoomIn(),
+        '=': () => this.zoomIn(),
+        '-': () => this.zoomOut(),
+        '0': () => this.resetZoom(),
+      }[event.key];
+      if (zoom) {
+        event.preventDefault();
+        zoom();
+        return;
+      }
     }
+    if (this.interactions.shortcut(event) === 'removed') {
+      viewport.focus();
+    }
+  }
+
+  // ---- Zoom ----------------------------------------------------------------------
+
+  /** Ctrl/⌘ + wheel (or trackpad pinch) zooms towards the pointer. */
+  protected onWheel(event: WheelEvent): void {
+    if (!event.ctrlKey && !event.metaKey) return;
+    event.preventDefault();
+    // Exponential so trackpads (small deltas) and mouse wheels (±100) both feel right.
+    const factor = Math.exp(-event.deltaY * 0.002);
+    this.zoomTo(this.interactions.zoom() * factor, { x: event.clientX, y: event.clientY });
+  }
+
+  protected zoomIn(): void {
+    this.zoomTo(this.interactions.zoom() * ZOOM.step);
+  }
+
+  protected zoomOut(): void {
+    this.zoomTo(this.interactions.zoom() / ZOOM.step);
+  }
+
+  protected resetZoom(): void {
+    this.zoomTo(1);
+  }
+
+  /** Zooms out (never in past 100 %) so every card fits in view, and scrolls to them. */
+  protected fitToContent(): void {
+    const viewport = this.viewport().nativeElement;
+    const nodes = this.store.nodes();
+    if (nodes.length === 0) {
+      this.setZoomAndScroll(1, { x: 0, y: 0 });
+      return;
+    }
+    const pad = 48;
+    const minX = Math.min(...nodes.map((n) => n.position.x));
+    const minY = Math.min(...nodes.map((n) => n.position.y));
+    const maxX = Math.max(...nodes.map((n) => n.position.x + CANVAS[n.kind].width));
+    const maxY = Math.max(...nodes.map((n) => n.position.y + CANVAS[n.kind].height));
+    const zoom = clampZoom(
+      Math.min(
+        viewport.clientWidth / (maxX - minX + pad * 2),
+        viewport.clientHeight / (maxY - minY + pad * 2),
+        1,
+      ),
+    );
+    this.setZoomAndScroll(zoom, { x: (minX - pad) * zoom, y: (minY - pad) * zoom });
+  }
+
+  /**
+   * Zooms keeping the canvas point under `anchor` (viewport coordinates; the centre of the
+   * view by default) where it is.
+   */
+  private zoomTo(target: number, anchor?: Point): void {
+    const viewport = this.viewport().nativeElement;
+    const previous = this.interactions.zoom();
+    const zoom = clampZoom(target);
+    if (zoom === previous) return;
+    const rect = viewport.getBoundingClientRect();
+    const ax = (anchor?.x ?? rect.left + viewport.clientWidth / 2) - rect.left;
+    const ay = (anchor?.y ?? rect.top + viewport.clientHeight / 2) - rect.top;
+    const world = {
+      x: (viewport.scrollLeft + ax) / previous,
+      y: (viewport.scrollTop + ay) / previous,
+    };
+    this.setZoomAndScroll(zoom, { x: world.x * zoom - ax, y: world.y * zoom - ay });
+  }
+
+  /** Applies the zoom, then scrolls once the resized canvas is rendered. */
+  private setZoomAndScroll(zoom: number, scroll: Point): void {
+    const viewport = this.viewport().nativeElement;
+    const apply = () => viewport.scrollTo({ left: scroll.x, top: scroll.y });
+    if (zoom === this.interactions.zoom()) {
+      apply();
+      return;
+    }
+    this.interactions.zoom.set(zoom);
+    afterNextRender(apply, { injector: this.injector });
   }
 
   /** Remember where the menu opened, and over which card, so it shows the right actions. */
@@ -82,11 +194,20 @@ export class PlannerPage {
   // ---- Card dragging ---------------------------------------------------------
 
   protected onNodeMoved(node: NodeView, event: CdkDragMove) {
-    this.store.setLiveNodePosition(node.id, event.source.getFreeDragPosition());
+    this.store.setLiveNodePosition(
+      node.id,
+      this.canvasPosition(event.source.getFreeDragPosition()),
+    );
   }
 
   protected onNodeEnded(node: NodeView, event: CdkDragEnd) {
-    this.store.moveNode(node.id, event.source.getFreeDragPosition());
+    this.store.moveNode(node.id, this.canvasPosition(event.source.getFreeDragPosition()));
+  }
+
+  /** CDK free-drag position (screen pixels) → canvas position. */
+  private canvasPosition(position: Point): Point {
+    const zoom = this.interactions.zoom();
+    return { x: position.x / zoom, y: position.y / zoom };
   }
 
   // ---- Belts -----------------------------------------------------------------

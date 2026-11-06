@@ -2,162 +2,228 @@
 <p id="canvas-help" class="sr-only">
   Haz clic derecho, o pulsa Mayúsculas+F10 con el lienzo enfocado, para añadir nodos de recurso,
   edificios, generadores, divisores y unificadores. Sobre una tarjeta, el mismo menú permite
-  copiarla, duplicarla o eliminarla; también con Ctrl+C, Ctrl+D, Ctrl+V y Supr.
+  copiarla, duplicarla o eliminarla; también con Ctrl+C, Ctrl+D, Ctrl+V y Supr. Para el zoom, usa
+  Ctrl+rueda del ratón, los botones de zoom, o las teclas más, menos y 0 con el lienzo enfocado.
 </p>
 
 <div
   class="grid h-full min-h-0 grid-cols-1 grid-rows-[1fr_auto] md:grid-cols-[1fr_300px] md:grid-rows-1"
 >
-  <main
-    #viewport
-    class="overflow-auto bg-canvas"
-    tabindex="0"
-    aria-label="Lienzo de la fábrica"
-    aria-describedby="canvas-help"
-    [ngpContextMenuTrigger]="canvasMenu"
-    (contextmenu)="onContextMenu($event)"
-  >
-    <div
-      #surface
-      class="planner-surface relative canvas-grid bg-canvas select-none"
-      [style.width.px]="canvas.width"
-      [style.height.px]="canvas.height"
+  <div class="relative min-h-0">
+    <main
+      #viewport
+      class="h-full overflow-auto bg-blueprint-deep"
+      tabindex="0"
+      aria-label="Lienzo de la fábrica"
+      aria-describedby="canvas-help"
+      [ngpContextMenuTrigger]="canvasMenu"
+      (contextmenu)="onContextMenu($event)"
+      (wheel)="onWheel($event)"
     >
-      <svg
-        class="pointer-events-none absolute inset-0"
-        [attr.width]="canvas.width"
-        [attr.height]="canvas.height"
-        aria-hidden="true"
+      <!-- Sized to the zoomed canvas so the scrollbars match what is visible. -->
+      <div
+        class="relative"
+        [style.width.px]="canvas.width * interactions.zoom()"
+        [style.height.px]="canvas.height * interactions.zoom()"
       >
-        @for (belt of store.beltViews(); track belt.id) {
-          <path
-            class="fill-none stroke-5 [stroke-linecap:round] [stroke-linejoin:round]"
-            [class.stroke-accent]="!belt.flow.bottleneck"
-            [class.stroke-danger]="belt.flow.bottleneck"
-            [attr.stroke-dasharray]="belt.flow.bottleneck ? '12 8' : null"
-            [attr.d]="belt.path"
-          />
-        }
-        @if (interactions.previewPath(); as path) {
-          <!-- Dashed while free, solid orange once snapped onto a compatible input. -->
-          <path
-            class="fill-none stroke-5 [stroke-linecap:round] [stroke-linejoin:round]"
-            [class.stroke-muted]="!interactions.previewSnapped()"
-            [class.stroke-accent]="interactions.previewSnapped()"
-            [attr.stroke-dasharray]="interactions.previewSnapped() ? null : '8 8'"
-            [attr.d]="path"
-          />
-        }
-      </svg>
-
-      @for (node of store.nodeViews(); track node.id) {
-        @if (node.kind === 'resource') {
-          <app-resource-node-card
-            cdkDrag
-            cdkDragBoundary=".planner-surface"
-            [cdkDragFreeDragPosition]="node.position"
-            [node]="node"
-            (cdkDragMoved)="onNodeMoved(node, $event)"
-            (cdkDragEnded)="onNodeEnded(node, $event)"
-          />
-        } @else if (node.kind === 'building') {
-          <app-building-card
-            cdkDrag
-            cdkDragBoundary=".planner-surface"
-            [cdkDragFreeDragPosition]="node.position"
-            [node]="node"
-            (cdkDragMoved)="onNodeMoved(node, $event)"
-            (cdkDragEnded)="onNodeEnded(node, $event)"
-          />
-        } @else if (node.kind === 'generator') {
-          <app-generator-card
-            cdkDrag
-            cdkDragBoundary=".planner-surface"
-            [cdkDragFreeDragPosition]="node.position"
-            [node]="node"
-            (cdkDragMoved)="onNodeMoved(node, $event)"
-            (cdkDragEnded)="onNodeEnded(node, $event)"
-          />
-        } @else {
-          <app-logistic-card
-            cdkDrag
-            cdkDragBoundary=".planner-surface"
-            [cdkDragFreeDragPosition]="node.position"
-            [node]="node"
-            (cdkDragMoved)="onNodeMoved(node, $event)"
-            (cdkDragEnded)="onNodeEnded(node, $event)"
-          />
-        }
-      }
-
-      <!-- Belt labels sit just above the middle of the route so the line stays visible. -->
-      @for (belt of store.beltViews(); track belt.id) {
         <div
-          class="absolute z-[5] flex w-max max-w-72 -translate-x-1/2 -translate-y-[calc(100%+8px)] flex-wrap items-center gap-x-1.5 gap-y-1 rounded-md border bg-panel py-1 pr-1 pl-1 text-xs whitespace-nowrap shadow-lg shadow-black/35"
-          [class.border-accent]="!belt.flow.bottleneck"
-          [class.border-danger]="belt.flow.bottleneck"
-          [style.left.px]="belt.mid.x"
-          [style.top.px]="belt.mid.y"
-          role="group"
-          [attr.aria-label]="
-            (belt.transport.kind === 'pipe' ? 'Tubería de ' : 'Cinta de ') +
-            (belt.item?.name?.es ?? 'material')
-          "
+          #surface
+          class="planner-surface absolute top-0 left-0 origin-top-left blueprint-grid select-none"
+          [style.width.px]="canvas.width"
+          [style.height.px]="canvas.height"
+          [style.transform]="'scale(' + interactions.zoom() + ')'"
         >
-          <div ngpFormField>
-            <span ngpLabel class="sr-only">
-              {{ belt.transport.kind === 'pipe' ? 'Tipo de tubería' : 'Tipo de cinta' }}
-            </span>
-            <app-select
-              class="w-20"
-              size="sm"
-              [options]="belt.options"
-              [value]="belt.transportId"
-              (valueChange)="setBeltTier(belt, $event)"
-            />
-          </div>
-          <span class="font-semibold tabular-nums">
-            {{ belt.flow.flow | number: '1.0-2' }} / {{ belt.flow.capacity }}
-            <span class="text-xs font-normal text-muted">
-              {{ belt.transport.kind === 'belt' ? '/min' : 'm³/min' }}
-            </span>
-            <span class="sr-only">, uso {{ belt.flow.utilization | percent: '1.0-0' }}</span>
-          </span>
-          <button
-            type="button"
-            appButton
-            variant="icon-sm"
-            class="ml-auto"
-            [attr.aria-label]="'Eliminar conexión de ' + (belt.item?.name?.es ?? 'material')"
-            (click)="removeBelt(belt)"
+          <svg
+            class="pointer-events-none absolute inset-0"
+            [attr.width]="canvas.width"
+            [attr.height]="canvas.height"
+            aria-hidden="true"
           >
-            <app-icon-close />
-          </button>
-          @if (belt.flow.bottleneck) {
-            <span class="basis-full font-semibold whitespace-normal text-danger">
-              Cuello de botella: sube el tier, el edificio necesita
-              {{ belt.flow.demand | number: '1.0-2' }}/min
-            </span>
+            @for (belt of store.beltViews(); track belt.id) {
+              <path
+                class="fill-none stroke-5 [stroke-linecap:round] [stroke-linejoin:round]"
+                [class.stroke-accent]="!belt.flow.bottleneck"
+                [class.stroke-danger]="belt.flow.bottleneck"
+                [attr.stroke-dasharray]="belt.flow.bottleneck ? '12 8' : null"
+                [attr.d]="belt.path"
+              />
+            }
+            @if (interactions.previewPath(); as path) {
+              <!-- Dashed while free, solid orange once snapped onto a compatible input. -->
+              <path
+                class="fill-none stroke-5 [stroke-linecap:round] [stroke-linejoin:round]"
+                [class.stroke-muted]="!interactions.previewSnapped()"
+                [class.stroke-accent]="interactions.previewSnapped()"
+                [attr.stroke-dasharray]="interactions.previewSnapped() ? null : '8 8'"
+                [attr.d]="path"
+              />
+            }
+          </svg>
+
+          @for (node of store.nodeViews(); track node.id) {
+            @if (node.kind === 'resource') {
+              <app-resource-node-card
+                cdkDrag
+                cdkDragBoundary=".planner-surface"
+                [cdkDragScale]="interactions.zoom()"
+                [cdkDragFreeDragPosition]="dragPositions().get(node.id)!"
+                [node]="node"
+                (cdkDragMoved)="onNodeMoved(node, $event)"
+                (cdkDragEnded)="onNodeEnded(node, $event)"
+              />
+            } @else if (node.kind === 'building') {
+              <app-building-card
+                cdkDrag
+                cdkDragBoundary=".planner-surface"
+                [cdkDragScale]="interactions.zoom()"
+                [cdkDragFreeDragPosition]="dragPositions().get(node.id)!"
+                [node]="node"
+                (cdkDragMoved)="onNodeMoved(node, $event)"
+                (cdkDragEnded)="onNodeEnded(node, $event)"
+              />
+            } @else if (node.kind === 'generator') {
+              <app-generator-card
+                cdkDrag
+                cdkDragBoundary=".planner-surface"
+                [cdkDragScale]="interactions.zoom()"
+                [cdkDragFreeDragPosition]="dragPositions().get(node.id)!"
+                [node]="node"
+                (cdkDragMoved)="onNodeMoved(node, $event)"
+                (cdkDragEnded)="onNodeEnded(node, $event)"
+              />
+            } @else {
+              <app-logistic-card
+                cdkDrag
+                cdkDragBoundary=".planner-surface"
+                [cdkDragScale]="interactions.zoom()"
+                [cdkDragFreeDragPosition]="dragPositions().get(node.id)!"
+                [node]="node"
+                (cdkDragMoved)="onNodeMoved(node, $event)"
+                (cdkDragEnded)="onNodeEnded(node, $event)"
+              />
+            }
+          }
+
+          <!-- Belt labels sit just above the middle of the route so the line stays visible. -->
+          @for (belt of store.beltViews(); track belt.id) {
+            <div
+              class="absolute z-[5] flex w-max max-w-72 -translate-x-1/2 -translate-y-[calc(100%+8px)] flex-wrap items-center gap-x-1.5 gap-y-1 rounded-md border bg-panel py-1 pr-1 pl-1 text-xs whitespace-nowrap shadow-lg shadow-black/35"
+              [class.border-accent]="!belt.flow.bottleneck"
+              [class.border-danger]="belt.flow.bottleneck"
+              [style.left.px]="belt.mid.x"
+              [style.top.px]="belt.mid.y"
+              role="group"
+              [attr.aria-label]="
+                (belt.transport.kind === 'pipe' ? 'Tubería de ' : 'Cinta de ') +
+                (belt.item?.name?.es ?? 'material')
+              "
+            >
+              <div ngpFormField>
+                <span ngpLabel class="sr-only">
+                  {{ belt.transport.kind === 'pipe' ? 'Tipo de tubería' : 'Tipo de cinta' }}
+                </span>
+                <app-select
+                  class="w-20"
+                  size="sm"
+                  [options]="belt.options"
+                  [value]="belt.transportId"
+                  (valueChange)="setBeltTier(belt, $event)"
+                />
+              </div>
+              <span class="font-semibold tabular-nums">
+                {{ belt.flow.flow | number: '1.0-2' }} / {{ belt.flow.capacity }}
+                <span class="text-xs font-normal text-muted">
+                  {{ belt.transport.kind === 'belt' ? '/min' : 'm³/min' }}
+                </span>
+                <span class="sr-only">, uso {{ belt.flow.utilization | percent: '1.0-0' }}</span>
+              </span>
+              <button
+                type="button"
+                appButton
+                variant="icon-sm"
+                class="ml-auto"
+                [attr.aria-label]="'Eliminar conexión de ' + (belt.item?.name?.es ?? 'material')"
+                (click)="removeBelt(belt)"
+              >
+                <app-icon-close />
+              </button>
+              @if (belt.flow.bottleneck) {
+                <span class="basis-full font-semibold whitespace-normal text-danger">
+                  Cuello de botella: sube el tier, el edificio necesita
+                  {{ belt.flow.demand | number: '1.0-2' }}/min
+                </span>
+              }
+            </div>
+          }
+
+          @if (store.nodes().length === 0) {
+            <div
+              class="absolute top-12 left-12 m-0 max-w-md rounded-lg border border-dashed border-line bg-panel px-5 py-4 leading-relaxed text-muted"
+            >
+              <p class="m-0">
+                Haz <strong class="text-fg">clic derecho</strong> en el lienzo para añadir nodos de
+                recurso, edificios, generadores, divisores y unificadores.
+              </p>
+              <p class="mt-2 mb-0">
+                Luego arrastra el punto naranja de una salida hasta una entrada (se engancha sola),
+                o haz clic en la salida y después en la entrada.
+              </p>
+            </div>
           }
         </div>
-      }
+      </div>
+    </main>
 
-      @if (store.nodes().length === 0) {
-        <div
-          class="absolute top-12 left-12 m-0 max-w-md rounded-lg border border-dashed border-line bg-panel px-5 py-4 leading-relaxed text-muted"
-        >
-          <p class="m-0">
-            Haz <strong class="text-fg">clic derecho</strong> en el lienzo para añadir nodos de
-            recurso, edificios, generadores, divisores y unificadores.
-          </p>
-          <p class="mt-2 mb-0">
-            Luego arrastra el punto naranja de una salida hasta una entrada (se engancha sola), o
-            haz clic en la salida y después en la entrada.
-          </p>
-        </div>
-      }
+    <div
+      role="toolbar"
+      aria-label="Zoom del lienzo"
+      class="absolute bottom-6 left-4 z-10 flex items-center gap-0.5 rounded-lg border border-line bg-panel p-1 text-sm shadow-lg shadow-black/35"
+    >
+      <button
+        type="button"
+        appButton
+        variant="icon"
+        aria-label="Alejar"
+        [disabled]="interactions.zoom() <= zoomLimits.min"
+        (click)="zoomOut()"
+      >
+        <span aria-hidden="true" class="text-lg leading-none">−</span>
+      </button>
+      <button
+        type="button"
+        appButton
+        variant="icon"
+        class="w-14 tabular-nums"
+        [attr.aria-label]="'Zoom ' + zoomPercent() + ' %. Restablecer al 100 %'"
+        title="Restablecer al 100 % (0)"
+        (click)="resetZoom()"
+      >
+        {{ zoomPercent() }} %
+      </button>
+      <button
+        type="button"
+        appButton
+        variant="icon"
+        aria-label="Acercar"
+        [disabled]="interactions.zoom() >= zoomLimits.max"
+        (click)="zoomIn()"
+      >
+        <span aria-hidden="true" class="text-lg leading-none">+</span>
+      </button>
+      <span class="mx-1 h-5 w-px bg-line" aria-hidden="true"></span>
+      <button
+        type="button"
+        appButton
+        variant="icon"
+        class="w-auto px-2"
+        aria-label="Ajustar a la vista"
+        title="Encajar todas las tarjetas en la vista"
+        (click)="fitToContent()"
+      >
+        Ajustar
+      </button>
     </div>
-  </main>
+  </div>
 
   <aside
     class="max-h-[40dvh] overflow-auto border-t border-line bg-panel px-5 py-4 md:max-h-none md:border-t-0 md:border-l"

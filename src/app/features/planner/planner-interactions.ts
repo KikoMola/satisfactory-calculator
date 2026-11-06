@@ -37,6 +37,8 @@ export class PlannerInteractions {
   readonly menuPosition = signal<Point | null>(null);
   /** Card the context menu was opened on (`null` over the empty canvas). */
   readonly menuTarget = signal<string | null>(null);
+  /** Canvas zoom (1 = 100 %). The surface is scaled with a CSS transform. */
+  readonly zoom = signal(1);
   /** Message for the screen-reader live region. */
   readonly announcement = signal('');
 
@@ -205,9 +207,11 @@ export class PlannerInteractions {
     this.announce(result === 'ok' ? 'Cinta conectada.' : REJECTIONS[result]);
   }
 
-  /** Viewport coordinates → canvas surface coordinates (accounts for scroll). */
+  /** Viewport coordinates → canvas surface coordinates (accounts for scroll and zoom). */
   private toSurface(point: Point): Point {
     const rect = this.surface?.getBoundingClientRect();
-    return rect ? { x: point.x - rect.left, y: point.y - rect.top } : point;
+    if (!rect) return point;
+    const zoom = this.zoom();
+    return { x: (point.x - rect.left) / zoom, y: (point.y - rect.top) / zoom };
   }
 }

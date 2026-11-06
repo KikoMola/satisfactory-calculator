@@ -108,8 +108,9 @@ export interface Belt {
  * Keep in sync with the card templates.
  */
 export const CANVAS = {
-  width: 3000,
-  height: 2000,
+  /** Plenty of room: zoom out to see it all. */
+  width: 6000,
+  height: 4000,
   /** Resource card: w-72. Its single output port sits in the header. */
   resource: { width: 288, height: 232, outputY: 36 },
   /** Building card: w-80. */
@@ -130,3 +131,11 @@ export const CANVAS = {
   /** How far a pasted or duplicated card lands from the original, in px. */
   pasteOffset: 32,
 } as const;
+
+/** Canvas zoom: 25 %–200 %, each step ×1.25. */
+export const ZOOM = { min: 0.25, max: 2, step: 1.25 } as const;
+
+/** Clamps a zoom level to the allowed range, rounded to avoid long decimals. */
+export function clampZoom(zoom: number): number {
+  return Math.round(Math.min(Math.max(zoom, ZOOM.min), ZOOM.max) * 1000) / 1000;
+}
