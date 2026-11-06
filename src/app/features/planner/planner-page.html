@@ -1,0 +1,177 @@
+<header class="toolbar">
+  <h1 class="toolbar__title">Planificador</h1>
+
+  <form class="toolbar__add" (submit)="$event.preventDefault(); addNode()">
+    <label class="field field--inline">
+      <span class="field__label">Recurso</span>
+      <select class="field__control" (change)="selectResource($event)">
+        @for (resource of data.minableResources; track resource.id) {
+          <option [value]="resource.id" [selected]="resource.id === selectedResource()">
+            {{ resource.name.es }}
+          </option>
+        }
+      </select>
+    </label>
+    <button type="submit" class="button button--primary">Añadir nodo</button>
+  </form>
+</header>
+
+<div class="planner">
+  <main class="planner-canvas" aria-label="Lienzo de la fábrica">
+    <div
+      #surface
+      class="planner-surface"
+      [style.width.px]="canvas.width"
+      [style.height.px]="canvas.height"
+    >
+      <svg
+        class="planner-belts"
+        [attr.width]="canvas.width"
+        [attr.height]="canvas.height"
+        aria-hidden="true"
+      >
+        @for (belt of store.beltViews(); track belt.id) {
+          <path
+            class="belt-line"
+            [class.belt-line--bottleneck]="belt.flow.bottleneck"
+            [attr.d]="belt.path"
+          />
+        }
+        @if (pendingBelt(); as pending) {
+          <path class="belt-line belt-line--pending" [attr.d]="pending.path" />
+        }
+      </svg>
+
+      @for (node of store.nodeViews(); track node.id) {
+        <app-resource-node-card
+          cdkDrag
+          cdkDragBoundary=".planner-surface"
+          [cdkDragFreeDragPosition]="node.position"
+          [node]="node"
+          (cdkDragMoved)="onNodeMoved(node, $event)"
+          (cdkDragEnded)="onNodeEnded(node, $event)"
+          (beltDragMoved)="onBeltDragMoved(node, $event)"
+          (beltDragEnded)="onBeltDragEnded(node, $event)"
+          (beltRequested)="onBeltRequested(node)"
+        />
+      }
+
+      @for (belt of store.beltViews(); track belt.id) {
+        <div
+          class="belt-label"
+          [class.belt-label--bottleneck]="belt.flow.bottleneck"
+          [style.left.px]="belt.mid.x"
+          [style.top.px]="belt.mid.y"
+          role="group"
+          [attr.aria-label]="'Cinta de ' + belt.resource.name.es"
+        >
+          <label class="sr-only" [for]="belt.id + '-tier'">Tipo de cinta</label>
+          <select
+            class="field__control field__control--compact"
+            [id]="belt.id + '-tier'"
+            (change)="setBeltTier(belt, $event)"
+          >
+            @for (tier of data.belts; track tier.id) {
+              <option [value]="tier.id" [selected]="tier.id === belt.transportId">
+                Mk.{{ tier.tier }} · {{ tier.ratePerMinute }}/min
+              </option>
+            }
+          </select>
+          <span class="belt-label__flow">
+            {{ belt.flow.flow | number: '1.0-2' }} / {{ belt.flow.capacity }} /min
+            <span class="sr-only">, uso {{ belt.flow.utilization | percent: '1.0-0' }}</span>
+          </span>
+          @if (belt.flow.bottleneck) {
+            <span class="belt-label__warning">
+              Cuello de botella: se pierden
+              {{ belt.flow.input - belt.flow.flow | number: '1.0-2' }}/min
+            </span>
+          }
+          <button
+            type="button"
+            class="belt-label__remove"
+            [attr.aria-label]="'Eliminar cinta de ' + belt.resource.name.es"
+            (click)="removeBelt(belt)"
+          >
+            <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+              <path
+                d="M6 6l12 12M18 6L6 18"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
+          </button>
+        </div>
+      }
+
+      <!-- Iterates the model (not the live views) so the CDK free-drag input stays stable mid-drag. -->
+      @for (belt of store.belts(); track belt.id) {
+        <button
+          type="button"
+          class="belt-end"
+          cdkDrag
+          cdkDragBoundary=".planner-surface"
+          [cdkDragFreeDragPosition]="belt.end"
+          [attr.aria-label]="
+            'Extremo de la cinta de ' +
+            beltResourceNames().get(belt.id) +
+            '. Arrastra o usa las flechas para moverlo.'
+          "
+          (cdkDragMoved)="onBeltEndMoved(belt, $event)"
+          (cdkDragEnded)="onBeltEndEnded(belt, $event)"
+          (keydown)="onBeltEndKeydown(belt, $event)"
+        ></button>
+      }
+
+      @if (store.nodes().length === 0) {
+        <p class="planner-empty">
+          Elige un recurso arriba y pulsa <strong>Añadir nodo</strong>. Después arrastra el punto
+          naranja del nodo para sacar una cinta transportadora.
+        </p>
+      }
+    </div>
+  </main>
+
+  <aside class="summary" aria-labelledby="summary-title">
+    <h2 id="summary-title" class="summary__title">Resumen</h2>
+    @if (store.totals().length === 0) {
+      <p class="summary__empty">Todavía no hay nodos.</p>
+    } @else {
+      <table class="summary__table">
+        <caption class="sr-only">
+          Producción por recurso
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">Recurso</th>
+            <th scope="col">Extraído</th>
+            <th scope="col">En cintas</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (total of store.totals(); track total.resource.id) {
+            <tr>
+              <th scope="row">
+                <span
+                  class="summary__dot"
+                  [style.background]="total.color"
+                  aria-hidden="true"
+                ></span>
+                {{ total.resource.name.es }}
+                <span class="summary__nodes">({{ total.nodes }})</span>
+              </th>
+              <td>{{ total.extracted | number: '1.0-2' }}/min</td>
+              <td>{{ total.transported | number: '1.0-2' }}/min</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+      <p class="summary__power">
+        Consumo total: <strong>{{ store.totalPowerMW() | number: '1.0-2' }} MW</strong>
+      </p>
+    }
+  </aside>
+</div>
+
+<p class="sr-only" aria-live="polite">{{ announcement() }}</p>

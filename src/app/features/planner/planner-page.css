@@ -1,0 +1,235 @@
+:host {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100dvh;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 24px;
+  padding: 12px 20px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+}
+
+.toolbar__title {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.toolbar__add {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.planner {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  min-height: 0;
+}
+
+.planner-canvas {
+  overflow: auto;
+  background: var(--bg);
+}
+
+.planner-surface {
+  position: relative;
+  user-select: none;
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.planner-belts {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.belt-line {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+
+.belt-line--bottleneck {
+  stroke: var(--danger);
+  stroke-dasharray: 14 8;
+}
+
+.belt-line--pending {
+  stroke: var(--text-muted);
+  stroke-dasharray: 8 8;
+}
+
+.belt-label {
+  position: absolute;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  width: max-content;
+  max-width: 320px;
+  white-space: nowrap;
+  padding: 6px 8px;
+  /* Sits just below the curve midpoint so it never covers the line or its end. */
+  transform: translate(-50%, 12px);
+  background: var(--panel);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.35);
+}
+
+.belt-label--bottleneck {
+  border-color: var(--danger);
+}
+
+.belt-label__flow {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.belt-label__warning {
+  flex-basis: 100%;
+  white-space: normal;
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.belt-label__remove {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  margin-left: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.belt-label__remove:hover {
+  background: var(--hover);
+  color: var(--text);
+}
+
+/* Free end of a belt. cdkDragFreeDragPosition is its centre, hence the negative margin. */
+.belt-end {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 6;
+  width: 24px;
+  height: 24px;
+  margin: -12px 0 0 -12px;
+  padding: 0;
+  border: 3px solid var(--accent);
+  border-radius: 4px;
+  background: var(--panel);
+  cursor: grab;
+  touch-action: none;
+}
+
+.belt-end.cdk-drag-dragging {
+  cursor: grabbing;
+}
+
+.planner-empty {
+  position: absolute;
+  top: 48px;
+  left: 48px;
+  max-width: 420px;
+  margin: 0;
+  padding: 16px 20px;
+  background: var(--panel);
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.planner-empty strong {
+  color: var(--text);
+}
+
+.summary {
+  overflow: auto;
+  padding: 16px 20px;
+  background: var(--panel);
+  border-left: 1px solid var(--border);
+}
+
+.summary__title {
+  margin: 0 0 12px;
+  font-size: 1rem;
+}
+
+.summary__empty {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.summary__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.summary__table th,
+.summary__table td {
+  padding: 6px 4px;
+  border-bottom: 1px solid var(--border);
+  text-align: right;
+}
+
+.summary__table th[scope='row'],
+.summary__table thead th:first-child {
+  text-align: left;
+  font-weight: 500;
+}
+
+.summary__table thead th {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.summary__dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 4px;
+  border-radius: 50%;
+}
+
+.summary__nodes {
+  color: var(--text-muted);
+}
+
+.summary__power {
+  margin: 16px 0 0;
+}
+
+@media (max-width: 800px) {
+  .planner {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+  }
+
+  .summary {
+    max-height: 40dvh;
+    border-left: 0;
+    border-top: 1px solid var(--border);
+  }
+}

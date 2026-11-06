@@ -8,7 +8,7 @@
  *   npm run data:extract -- "D:/path/to/Satisfactory"
  *   SATISFACTORY_DIR="D:/path/to/Satisfactory" npm run data:extract
  *
- * Output: src/app/data/{items,recipes,buildings}.json (types in game-data.model.ts).
+ * Output: src/app/data/{items,recipes,buildings,transport}.json (types in game-data.model.ts).
  */
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -204,6 +204,36 @@ for (const cls of es.values()) {
 const buildingIds = new Set(buildings.map((b) => b.id));
 
 // ---------------------------------------------------------------------------
+// Transport (belts and pipes)
+// ---------------------------------------------------------------------------
+
+/** Tier number from a display/class name such as "Mk.3" or "MK2". Mk.1 pipes have no suffix. */
+const tierOf = (cls) => Number((cls.mDisplayName ?? '').match(/Mk\.?\s*(\d+)/i)?.[1] ?? 1);
+
+const transport = [];
+for (const cls of es.values()) {
+  if (cls._native === 'FGBuildableConveyorBelt') {
+    transport.push({
+      id: cls.ClassName,
+      kind: 'belt',
+      name: localized(cls.ClassName, 'mDisplayName'),
+      tier: tierOf(cls),
+      // mSpeed is in cm/s; belts carry one item every 2 cm → items/min = mSpeed / 2.
+      ratePerMinute: num(cls.mSpeed) / 2,
+    });
+  } else if (cls._native === 'FGBuildablePipeline' && !cls.ClassName.includes('NoIndicator')) {
+    transport.push({
+      id: cls.ClassName,
+      kind: 'pipe',
+      name: localized(cls.ClassName, 'mDisplayName'),
+      tier: tierOf(cls),
+      // mFlowLimit is in m³/s.
+      ratePerMinute: num(cls.mFlowLimit) * 60,
+    });
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Items (lookup only; filtered to what recipes/buildings use at the end)
 // ---------------------------------------------------------------------------
 
@@ -306,11 +336,12 @@ for (const [file, data] of [
   ['items.json', items.sort(byId)],
   ['recipes.json', recipes.sort(byId)],
   ['buildings.json', buildings.sort(byId)],
+  ['transport.json', transport.sort((a, b) => a.kind.localeCompare(b.kind) || a.tier - b.tier)],
 ]) {
   writeFileSync(join(outDir, file), JSON.stringify(data, null, 2) + '\n', 'utf8');
 }
 
 const alternates = recipes.filter((r) => r.alternate).length;
 console.log(
-  `OK → ${items.length} items, ${recipes.length} recetas (${alternates} alternativas), ${buildings.length} edificios`,
+  `OK → ${items.length} items, ${recipes.length} recetas (${alternates} alternativas), ${buildings.length} edificios, ${transport.length} cintas/tuberías`,
 );

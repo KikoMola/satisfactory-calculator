@@ -1,0 +1,99 @@
+@let n = node();
+<header class="node-card__header">
+  <button
+    type="button"
+    class="node-card__handle"
+    cdkDragHandle
+    [attr.aria-describedby]="n.id + '-move-help'"
+    (keydown)="onHandleKeydown($event)"
+  >
+    <span class="node-card__dot" aria-hidden="true"></span>
+    <span class="node-card__title"
+      ><span class="sr-only">Nodo de </span>{{ n.resource.name.es }}</span
+    >
+  </button>
+  <button
+    type="button"
+    class="node-card__icon-button"
+    [attr.aria-label]="'Eliminar nodo de ' + n.resource.name.es"
+    (click)="remove()"
+  >
+    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+      <path
+        d="M6 6l12 12M18 6L6 18"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+      />
+    </svg>
+  </button>
+  <span [id]="n.id + '-move-help'" class="sr-only">
+    Arrastra para mover. Con el foco aquí, usa las flechas (Mayús para pasos grandes).
+  </span>
+</header>
+
+<div class="node-card__body">
+  <label class="field">
+    <span class="field__label">Recurso</span>
+    <select class="field__control" (change)="setResource($event)">
+      @for (resource of data.minableResources; track resource.id) {
+        <option [value]="resource.id" [selected]="resource.id === n.resourceId">
+          {{ resource.name.es }}
+        </option>
+      }
+    </select>
+  </label>
+
+  <div class="node-card__row">
+    <label class="field">
+      <span class="field__label">Pureza</span>
+      <select class="field__control" (change)="setPurity($event)">
+        @for (purity of purities; track purity.id) {
+          <option [value]="purity.id" [selected]="purity.id === n.purity">
+            {{ purity.label }} ×{{ purity.multiplier }}
+          </option>
+        }
+      </select>
+    </label>
+
+    <label class="field">
+      <span class="field__label">Taladro</span>
+      <select class="field__control" (change)="setMiner($event)">
+        @for (miner of data.miners; track miner.id) {
+          <option [value]="miner.id" [selected]="miner.id === n.minerId">
+            {{ miner.name.es }}
+          </option>
+        }
+      </select>
+    </label>
+  </div>
+
+  <dl class="node-card__stats">
+    <div>
+      <dt>Producción</dt>
+      <dd>{{ n.rate | number: '1.0-2' }} /min</dd>
+    </div>
+    <div>
+      <dt>Consumo</dt>
+      <dd>{{ n.powerMW | number: '1.0-2' }} MW</dd>
+    </div>
+  </dl>
+</div>
+
+@if (!n.hasBelt) {
+  <button
+    type="button"
+    class="node-card__port"
+    cdkDrag
+    cdkDragBoundary=".planner-surface"
+    [attr.aria-label]="'Sacar cinta transportadora del nodo de ' + n.resource.name.es"
+    title="Arrastra para sacar una cinta transportadora"
+    (pointerdown)="onPortPointerDown()"
+    (cdkDragStarted)="onPortDragStarted()"
+    (cdkDragMoved)="onPortDragMoved($event)"
+    (cdkDragEnded)="onPortDragEnded($event)"
+    (click)="onPortClick()"
+  ></button>
+} @else {
+  <span class="node-card__port node-card__port--connected" aria-hidden="true"></span>
+}

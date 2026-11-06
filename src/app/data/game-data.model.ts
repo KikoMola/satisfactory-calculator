@@ -123,5 +123,15 @@ export interface PressurizerBuilding extends BuildingBase {
   allowedResources: string[];
 }
 
+export interface Transport {
+  /** Game class name, e.g. `Build_ConveyorBeltMk1_C`. */
+  id: string;
+  kind: 'belt' | 'pipe';
+  name: LocalizedText;
+  tier: number;
+  /** Max throughput: items/min for belts, m³/min for pipes. */
+  ratePerMinute: number;
+}
+
 export type Building =
   ManufacturerBuilding | ExtractorBuilding | GeneratorBuilding | PressurizerBuilding;

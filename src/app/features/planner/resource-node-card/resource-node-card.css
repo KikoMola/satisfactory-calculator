@@ -1,0 +1,127 @@
+:host {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* Keep in sync with CANVAS.nodeWidth / portOffset in planner.model.ts */
+  box-sizing: border-box;
+  width: 288px;
+  min-height: 200px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--resource-color);
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgb(0 0 0 / 0.35);
+  color: var(--text);
+}
+
+:host.cdk-drag-dragging {
+  box-shadow: 0 12px 32px rgb(0 0 0 / 0.5);
+  z-index: 10;
+}
+
+.node-card__header {
+  display: flex;
+  align-items: center;
+  height: 52px;
+  padding-inline: 4px 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.node-card__handle {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  height: 40px;
+  padding-inline: 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  cursor: grab;
+}
+
+:host.cdk-drag-dragging .node-card__handle {
+  cursor: grabbing;
+}
+
+.node-card__handle:hover {
+  background: var(--hover);
+}
+
+.node-card__dot {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--resource-color);
+}
+
+.node-card__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.node-card__body {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+}
+
+.node-card__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.node-card__stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 0;
+}
+
+.node-card__stats dt {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.node-card__stats dd {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Output port: centred on (288, 28) relative to the card's outer top-left (border included). */
+.node-card__port {
+  position: absolute;
+  top: 12px;
+  right: -13px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 3px solid var(--panel);
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.node-card__port:hover {
+  transform: scale(1.15);
+}
+
+.node-card__port.cdk-drag-dragging {
+  box-shadow: 0 0 0 4px rgb(250 149 73 / 0.35);
+}
+
+.node-card__port--connected {
+  background: var(--text-muted);
+  cursor: default;
+}
