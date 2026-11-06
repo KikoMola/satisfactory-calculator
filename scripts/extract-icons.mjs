@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /**
  * Copies the item and building icons the app uses from a folder of textures exported with
- * FModel ("Export Folder → Textures" on the game's .utoc), resized to 64×64 PNG.
+ * FModel ("Export Folder → Textures" on the game's .utoc), resized to PNG: 64 px for
+ * items, 128 px for buildings (shown larger in the card headers).
  * Resizing uses System.Drawing through PowerShell, so this script runs on Windows only.
  *
  * Usage:
@@ -26,7 +27,8 @@ const exportDir = resolve(
 );
 const dataDir = join(root, 'src', 'app', 'data');
 const iconsDir = join(root, 'public', 'icons');
-const SIZE = 64;
+/** Items show at 16–20 px; buildings up to 44 px in card headers, so they get more pixels. */
+const SIZES = { item: 64, building: 128 };
 
 if (!existsSync(join(exportDir, 'FactoryGame', 'Content'))) {
   console.error(
@@ -37,7 +39,10 @@ if (!existsSync(join(exportDir, 'FactoryGame', 'Content'))) {
 }
 
 const load = (file) => JSON.parse(readFileSync(join(dataDir, file), 'utf8'));
-const entries = [...load('items.json'), ...load('buildings.json')].filter((e) => e.iconPath);
+const entries = [
+  ...load('items.json').map((e) => ({ ...e, size: SIZES.item })),
+  ...load('buildings.json').map((e) => ({ ...e, size: SIZES.building })),
+].filter((e) => e.iconPath);
 
 /** '/Game/FactoryGame/X/IconDesc_Y_256' → '<exportDir>/FactoryGame/Content/FactoryGame/X/IconDesc_Y_256.png' */
 const sourceOf = (iconPath) =>
@@ -48,7 +53,7 @@ const found = [];
 const missing = [];
 for (const entry of entries) {
   const source = sourceOf(entry.iconPath);
-  (existsSync(source) ? found : missing).push({ id: entry.id, source });
+  (existsSync(source) ? found : missing).push({ id: entry.id, source, size: entry.size });
 }
 
 // public/icons only holds generated files: start clean so removed items don't linger.
@@ -57,37 +62,52 @@ for (const file of readdirSync(iconsDir)) {
   if (file.endsWith('.png')) rmSync(join(iconsDir, file));
 }
 
-const listFile = join(tmpdir(), `satisfactory-icons-${process.pid}.txt`);
-writeFileSync(
-  listFile,
-  found.map(({ id, source }) => `${source}\t${join(iconsDir, `${id}.png`)}`).join('\n'),
-  'utf8',
-);
-const result = spawnSync(
-  'powershell.exe',
-  [
-    '-NoProfile',
-    '-ExecutionPolicy',
-    'Bypass',
-    '-File',
-    join(root, 'scripts', 'resize-icons.ps1'),
-    '-List',
+/** Resizes a batch of icons to `size`×`size` with System.Drawing (resize-icons.ps1). */
+function resize(batch, size) {
+  if (batch.length === 0) return;
+  const listFile = join(tmpdir(), `satisfactory-icons-${process.pid}-${size}.txt`);
+  writeFileSync(
     listFile,
-    '-Size',
-    String(SIZE),
-  ],
-  { encoding: 'utf8' },
-);
-rmSync(listFile, { force: true });
-if (result.status !== 0) {
-  console.error(result.stderr || result.error?.message || 'PowerShell falló');
-  process.exit(1);
+    batch.map(({ id, source }) => `${source}\t${join(iconsDir, `${id}.png`)}`).join('\n'),
+    'utf8',
+  );
+  const result = spawnSync(
+    'powershell.exe',
+    [
+      '-NoProfile',
+      '-ExecutionPolicy',
+      'Bypass',
+      '-File',
+      join(root, 'scripts', 'resize-icons.ps1'),
+      '-List',
+      listFile,
+      '-Size',
+      String(size),
+    ],
+    { encoding: 'utf8' },
+  );
+  rmSync(listFile, { force: true });
+  if (result.status !== 0) {
+    console.error(result.stderr || result.error?.message || 'PowerShell falló');
+    process.exit(1);
+  }
+}
+
+for (const size of new Set(Object.values(SIZES))) {
+  resize(
+    found.filter((f) => f.size === size),
+    size,
+  );
 }
 
 const ids = found.map((f) => f.id).sort();
 writeFileSync(join(dataDir, 'icons.json'), JSON.stringify(ids, null, 2) + '\n', 'utf8');
 
-console.log(`OK → ${found.length} iconos (${SIZE}×${SIZE}) en public/icons`);
+const buildings = found.filter((f) => f.size === SIZES.building).length;
+console.log(
+  `OK → ${found.length - buildings} iconos de items (${SIZES.item} px) y ${buildings} de ` +
+    `edificios (${SIZES.building} px) en public/icons`,
+);
 if (missing.length > 0) {
   console.warn(`Faltan ${missing.length} (expórtalos con FModel y vuelve a ejecutar):`);
   for (const m of missing) console.warn(`  ${m.id}  ←  ${m.source}`);

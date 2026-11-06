@@ -41,7 +41,7 @@ import { PlannerStore } from '../planner.store';
       <hr class="my-1 border-line" aria-hidden="true" />
       @for (logistic of beltLogistics; track logistic.id) {
         <button appMenuItem (click)="add(logistic.id)">
-          <app-item-icon [src]="data.icon(logistic.id)" />
+          <app-item-icon [src]="data.icon(logistic.id)" [size]="24" />
           <span class="flex-1">{{ logistic.role === 'merger' ? 'Unificador' : 'Divisor' }}</span>
           <span class="text-xs text-muted">{{
             logistic.role === 'merger' ? '3 → 1' : '1 → 3'
@@ -50,12 +50,12 @@ import { PlannerStore } from '../planner.store';
       }
       @if (junction; as junction) {
         <button appMenuItem (click)="addJunction(junction.id, 'merger')">
-          <app-item-icon [src]="data.icon(junction.id)" color="var(--color-focus)" />
+          <app-item-icon [src]="data.icon(junction.id)" color="var(--color-focus)" [size]="24" />
           <span class="flex-1">Unificador de fluidos</span>
           <span class="text-xs text-muted">3 → 1</span>
         </button>
         <button appMenuItem (click)="addJunction(junction.id, 'splitter')">
-          <app-item-icon [src]="data.icon(junction.id)" color="var(--color-focus)" />
+          <app-item-icon [src]="data.icon(junction.id)" color="var(--color-focus)" [size]="24" />
           <span class="flex-1">Divisor de fluidos</span>
           <span class="text-xs text-muted">1 → 3</span>
         </button>
@@ -77,7 +77,7 @@ import { PlannerStore } from '../planner.store';
       <app-context-menu aria-label="Edificios">
         @for (building of data.manufacturers; track building.id) {
           <button appMenuItem (click)="add(building.id)">
-            <app-item-icon [src]="data.icon(building.id)" color="var(--color-accent)" />
+            <app-item-icon [src]="data.icon(building.id)" color="var(--color-accent)" [size]="24" />
             {{ building.name.es }}
           </button>
         }
@@ -88,7 +88,7 @@ import { PlannerStore } from '../planner.store';
       <app-context-menu aria-label="Generadores">
         @for (generator of data.generators; track generator.id) {
           <button appMenuItem (click)="add(generator.id)">
-            <app-item-icon [src]="data.icon(generator.id)" color="var(--color-shard)" />
+            <app-item-icon [src]="data.icon(generator.id)" color="var(--color-shard)" [size]="24" />
             <span class="flex-1">{{ generator.name.es }}</span>
             @if (generator.powerProductionMW > 0) {
               <span class="text-xs text-muted">{{ generator.powerProductionMW }} MW</span>

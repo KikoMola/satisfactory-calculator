@@ -1,14 +1,14 @@
 @let n = node();
-<header class="flex h-13 items-center gap-1 border-b border-line pr-2 pl-1">
+<header class="flex h-16 items-center gap-1 border-b border-line pr-2 pl-1">
   <button
     type="button"
     ngpButton
     cdkDragHandle
-    class="flex h-10 min-w-0 flex-1 cursor-grab items-center gap-2 rounded-md px-2 text-left font-semibold data-hover:bg-hover group-[.cdk-drag-dragging]/card:cursor-grabbing"
+    class="flex h-14 min-w-0 flex-1 cursor-grab items-center gap-2 rounded-md px-2 text-left font-semibold data-hover:bg-hover group-[.cdk-drag-dragging]/card:cursor-grabbing"
     [attr.aria-describedby]="n.id + '-move-help'"
     (keydown)="onHandleKeydown($event)"
   >
-    <app-item-icon [src]="n.icon" [color]="n.color" [size]="28" />
+    <app-item-icon [src]="n.icon" [color]="n.color" [size]="44" />
     <span class="truncate"><span class="sr-only">Nodo de </span>{{ n.resource.name.es }}</span>
   </button>
   <button
@@ -82,9 +82,10 @@
   }
 </div>
 
-<!-- Output port, centred on (CANVAS.resource.width, outputY) = (288, 28) from the outer corner. -->
+<!-- Output port, centred on (CANVAS.resource.width, outputY) = (288, 36) from the outer corner:
+     4px top border + half of the 64px header. -->
 <app-output-port
-  class="top-3 -right-[13px]"
+  class="top-5 -right-[13px]"
   [label]="'Salida de ' + n.resource.name.es"
   [connected]="n.outputs[0].connected"
   [active]="connecting()"
