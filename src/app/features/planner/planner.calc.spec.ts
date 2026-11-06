@@ -6,7 +6,27 @@ import {
   orthogonalPoints,
   recipeRate,
   roundedPath,
+  waterfill,
 } from './planner.calc';
+
+describe('waterfill', () => {
+  it('splits evenly when nothing is full', () => {
+    expect(waterfill(90, [60, 60, 60])).toEqual([30, 30, 30]);
+  });
+
+  it('gives the overflow of a saturated output to the others', () => {
+    // Splitter with 120/min in; one output only accepts 20.
+    expect(waterfill(120, [20, 60, 60])).toEqual([20, 50, 50]);
+  });
+
+  it('ignores outputs that accept nothing (unconnected)', () => {
+    expect(waterfill(60, [0, 60, 60])).toEqual([0, 30, 30]);
+  });
+
+  it('never gives more than the limits allow', () => {
+    expect(waterfill(500, [60, 60])).toEqual([60, 60]);
+  });
+});
 
 describe('extractionRate', () => {
   it('applies the in-game purity multipliers', () => {

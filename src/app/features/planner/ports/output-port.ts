@@ -12,11 +12,12 @@ import type { Point } from '../planner.model';
   selector: 'app-output-port',
   imports: [CdkDrag, NgpButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'absolute size-6', '[style.--port-color]': 'color()' },
+  host: { class: 'absolute size-6' },
   template: `
     @if (connected()) {
+      <!-- Connected: a socket in the belt colour so the line visibly plugs into it. -->
       <span
-        class="block size-6 rounded-full border-3 border-panel bg-(--port-color)"
+        class="block size-6 rounded-full border-4 border-accent bg-canvas"
         aria-hidden="true"
       ></span>
     } @else {
@@ -27,7 +28,7 @@ import type { Point } from '../planner.model';
         cdkDragBoundary=".planner-surface"
         class="block size-6 cursor-crosshair touch-none rounded-full border-3 border-panel
           bg-accent p-0 transition-[scale] data-hover:scale-115
-          [&.cdk-drag-dragging]:ring-4 [&.cdk-drag-dragging]:ring-accent/35"
+          [&.cdk-drag-dragging]:opacity-0"
         [class.ring-4]="active()"
         [class.ring-focus]="active()"
         [attr.aria-pressed]="active()"
@@ -48,8 +49,6 @@ export class OutputPort {
   readonly connected = input(false);
   /** True while this port is the source of a click-to-connect. */
   readonly active = input(false);
-  /** Colour of the item, shown on the dot once connected. */
-  readonly color = input('#c8c8c8');
 
   readonly dragStarted = output<void>();
   /** Pointer position (viewport coordinates) while dragging. */

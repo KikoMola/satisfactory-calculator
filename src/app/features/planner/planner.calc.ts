@@ -48,6 +48,28 @@ export function beltFlow(
 }
 
 /**
+ * Splits `total` as evenly as possible among slots with individual limits, giving what a full
+ * slot can't take to the others — how splitters (and the round-robin of mergers) behave.
+ */
+export function waterfill(total: number, limits: readonly number[]): number[] {
+  const result = limits.map(() => 0);
+  let remaining = total;
+  let open = limits.map((_, i) => i).filter((i) => limits[i] > 0);
+  while (remaining > 1e-9 && open.length > 0) {
+    const share = remaining / open.length;
+    const stillOpen: number[] = [];
+    for (const i of open) {
+      const give = Math.min(share, limits[i] - result[i]);
+      result[i] += give;
+      remaining -= give;
+      if (limits[i] - result[i] > 1e-9) stillOpen.push(i);
+    }
+    open = stillOpen;
+  }
+  return result;
+}
+
+/**
  * Orthogonal route (horizontal → vertical → horizontal) between an output port on the left and
  * an input port on the right. When the target is behind the source the route goes around.
  */

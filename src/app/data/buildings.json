@@ -79,6 +79,42 @@
     }
   },
   {
+    "id": "Build_ConveyorAttachmentMerger_C",
+    "name": {
+      "es": "Unión de cintas transportadoras",
+      "en": "Conveyor Merger"
+    },
+    "description": {
+      "es": "Fusiona hasta tres cintas transportadoras en una.",
+      "en": "Merges up to three Conveyor Belts into one."
+    },
+    "powerMW": 0,
+    "powerExponent": 0,
+    "canOverclock": false,
+    "kind": "logistic",
+    "role": "merger",
+    "inputs": 3,
+    "outputs": 1
+  },
+  {
+    "id": "Build_ConveyorAttachmentSplitter_C",
+    "name": {
+      "es": "Divisor de cinta transportadora",
+      "en": "Conveyor Splitter"
+    },
+    "description": {
+      "es": "Divide una cinta transportadora en dos o tres. \nÚtil para desviar piezas y recursos de cintas transportadoras retrasadas.",
+      "en": "Splits one Conveyor Belt into two or three. \r\nUseful for diverting parts and resources away from backlogged Conveyor Belts."
+    },
+    "powerMW": 0,
+    "powerExponent": 0,
+    "canOverclock": false,
+    "kind": "logistic",
+    "role": "splitter",
+    "inputs": 1,
+    "outputs": 3
+  },
+  {
     "id": "Build_FoundryMk1_C",
     "name": {
       "es": "Fundición",

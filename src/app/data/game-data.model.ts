@@ -125,6 +125,14 @@ export interface PressurizerBuilding extends BuildingBase {
   allowedResources: string[];
 }
 
+/** Conveyor merger (3 in → 1 out) or splitter (1 in → 3 out). Belts only, any item. */
+export interface LogisticBuilding extends BuildingBase {
+  kind: 'logistic';
+  role: 'merger' | 'splitter';
+  inputs: number;
+  outputs: number;
+}
+
 export interface Transport {
   /** Game class name, e.g. `Build_ConveyorBeltMk1_C`. */
   id: string;
@@ -136,4 +144,8 @@ export interface Transport {
 }
 
 export type Building =
-  ManufacturerBuilding | ExtractorBuilding | GeneratorBuilding | PressurizerBuilding;
+  | ManufacturerBuilding
+  | ExtractorBuilding
+  | GeneratorBuilding
+  | PressurizerBuilding
+  | LogisticBuilding;

@@ -115,6 +115,11 @@ const GENERATORS = [
   'FGBuildableGeneratorGeoThermal',
 ];
 const PRESSURIZERS = ['FGBuildableFrackingActivator'];
+/** Basic belt logistics. Smart/programmable splitters and priority mergers come later. */
+const LOGISTICS = {
+  FGBuildableAttachmentMerger: { role: 'merger', inputs: 3, outputs: 1 },
+  FGBuildableAttachmentSplitter: { role: 'splitter', inputs: 1, outputs: 3 },
+};
 
 /** Items referenced by buildings (fuels, extractable resources) are kept in items.json. */
 const referencedItems = new Set();
@@ -192,6 +197,8 @@ for (const cls of es.values()) {
           }
         : null,
     });
+  } else if (LOGISTICS[native]) {
+    buildings.push({ ...buildingBase(cls), kind: 'logistic', ...LOGISTICS[native] });
   } else if (PRESSURIZERS.includes(native)) {
     buildings.push({
       ...buildingBase(cls),

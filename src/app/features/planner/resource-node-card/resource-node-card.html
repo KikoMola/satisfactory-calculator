@@ -78,7 +78,6 @@
   class="top-3 -right-[13px]"
   [label]="'Salida de ' + n.resource.name.es"
   [connected]="n.outputs[0].connected"
-  [color]="n.color"
   [active]="connecting()"
   (dragStarted)="interactions.portDragStarted(output())"
   (dragMoved)="interactions.portDragMoved(output(), $event)"

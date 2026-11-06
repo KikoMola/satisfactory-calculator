@@ -52,9 +52,12 @@
           />
         }
         @if (interactions.previewPath(); as path) {
+          <!-- Dashed while free, solid orange once snapped onto a compatible input. -->
           <path
-            class="fill-none stroke-muted stroke-5 [stroke-linecap:round]"
-            stroke-dasharray="8 8"
+            class="fill-none stroke-5 [stroke-linecap:round] [stroke-linejoin:round]"
+            [class.stroke-muted]="!interactions.previewSnapped()"
+            [class.stroke-accent]="interactions.previewSnapped()"
+            [attr.stroke-dasharray]="interactions.previewSnapped() ? null : '8 8'"
             [attr.d]="path"
           />
         }
@@ -70,8 +73,17 @@
             (cdkDragMoved)="onNodeMoved(node, $event)"
             (cdkDragEnded)="onNodeEnded(node, $event)"
           />
-        } @else {
+        } @else if (node.kind === 'building') {
           <app-building-card
+            cdkDrag
+            cdkDragBoundary=".planner-surface"
+            [cdkDragFreeDragPosition]="node.position"
+            [node]="node"
+            (cdkDragMoved)="onNodeMoved(node, $event)"
+            (cdkDragEnded)="onNodeEnded(node, $event)"
+          />
+        } @else {
+          <app-logistic-card
             cdkDrag
             cdkDragBoundary=".planner-surface"
             [cdkDragFreeDragPosition]="node.position"
@@ -92,7 +104,8 @@
           [style.top.px]="belt.mid.y"
           role="group"
           [attr.aria-label]="
-            (belt.transport.kind === 'pipe' ? 'Tubería de ' : 'Cinta de ') + belt.item.name.es
+            (belt.transport.kind === 'pipe' ? 'Tubería de ' : 'Cinta de ') +
+            (belt.item?.name?.es ?? 'material')
           "
         >
           <div ngpFormField>
@@ -110,7 +123,7 @@
           <span class="font-semibold tabular-nums">
             {{ belt.flow.flow | number: '1.0-2' }} / {{ belt.flow.capacity }}
             <span class="text-xs font-normal text-muted">
-              {{ belt.item.form === 'solid' ? '/min' : 'm³/min' }}
+              {{ belt.transport.kind === 'belt' ? '/min' : 'm³/min' }}
             </span>
             <span class="sr-only">, uso {{ belt.flow.utilization | percent: '1.0-0' }}</span>
           </span>
@@ -119,7 +132,7 @@
             appButton
             variant="icon-sm"
             class="ml-auto"
-            [attr.aria-label]="'Eliminar conexión de ' + belt.item.name.es"
+            [attr.aria-label]="'Eliminar conexión de ' + (belt.item?.name?.es ?? 'material')"
             (click)="removeBelt(belt)"
           >
             <app-icon-close />

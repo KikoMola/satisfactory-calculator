@@ -1,0 +1,79 @@
+@let n = node();
+<header class="flex h-13 items-center gap-1 border-b border-line pr-2 pl-1">
+  <button
+    type="button"
+    ngpButton
+    cdkDragHandle
+    class="flex h-10 min-w-0 flex-1 cursor-grab items-center gap-2 rounded-md px-2 text-left font-semibold data-hover:bg-hover group-[.cdk-drag-dragging]/card:cursor-grabbing"
+    [attr.aria-describedby]="n.id + '-move-help'"
+    (keydown)="onHandleKeydown($event)"
+  >
+    <span class="truncate">{{ title() }}</span>
+    <span class="text-xs font-normal text-muted">
+      {{ n.building.role === 'merger' ? '3 → 1' : '1 → 3' }}
+    </span>
+  </button>
+  <button
+    type="button"
+    appButton
+    variant="icon"
+    [attr.aria-label]="'Eliminar ' + title()"
+    (click)="remove()"
+  >
+    <app-icon-close />
+  </button>
+  <span [id]="n.id + '-move-help'" class="sr-only">
+    Arrastra para mover. Con el foco aquí, usa las flechas (Mayús para pasos grandes).
+  </span>
+</header>
+
+<!-- Three port rows: 32px each starting 64px from the card's outer top (CANVAS.rows). -->
+<ul class="m-0 list-none border-b border-line p-0 pt-2 pb-2" aria-label="Entradas y salidas">
+  @for (row of rows(); track $index) {
+    <li class="relative flex h-8 items-center justify-between gap-2 px-5 text-sm tabular-nums">
+      @if (row.input; as input) {
+        <app-input-port
+          class="top-1 -left-[13px]"
+          [label]="'Conectar a la entrada ' + (input.index + 1) + ' del ' + title()"
+          [connected]="input.port.connected"
+          [valid]="isValidTarget(input.index)"
+          [snapped]="isSnapped(input.index)"
+          (picked)="pickInput(input.index)"
+        />
+        <span [class.text-muted]="!input.port.connected">
+          <span class="sr-only">Entrada {{ input.index + 1 }}: </span>
+          {{ input.port.connected ? (input.port.actual | number: '1.0-2') + '/min' : '—' }}
+        </span>
+      } @else {
+        <span></span>
+      }
+
+      @if (row.output; as output) {
+        <span class="font-semibold" [class.text-muted]="!output.port.connected">
+          <span class="sr-only">Salida {{ output.index + 1 }}: </span>
+          {{ output.port.connected ? (output.port.actual | number: '1.0-2') + '/min' : '—' }}
+        </span>
+        <app-output-port
+          class="top-1 -right-[13px]"
+          [label]="'Salida ' + (output.index + 1) + ' del ' + title()"
+          [connected]="output.port.connected"
+          [active]="connectingIndex() === output.index"
+          (dragStarted)="interactions.portDragStarted(outputRef(output.index))"
+          (dragMoved)="interactions.portDragMoved(outputRef(output.index), $event)"
+          (dragEnded)="interactions.portDragEnded(outputRef(output.index), $event)"
+          (activated)="interactions.portActivated(outputRef(output.index))"
+        />
+      }
+    </li>
+  }
+</ul>
+
+<p class="m-0 flex items-center gap-2 px-3 py-2 text-xs">
+  <span class="size-2.5 shrink-0 rounded-full bg-(--item-color)" aria-hidden="true"></span>
+  @if (n.item; as item) {
+    <span class="min-w-0 flex-1 truncate">{{ item.name.es }}</span>
+    <span class="font-semibold tabular-nums">{{ n.throughput | number: '1.0-2' }}/min</span>
+  } @else {
+    <span class="text-muted">Vacío: conecta una cinta</span>
+  }
+</p>

@@ -7,6 +7,7 @@ const REJECTIONS: Record<Exclude<ConnectResult, 'ok'>, string> = {
   'item-mismatch': 'Esa entrada necesita otro material.',
   occupied: 'Esa entrada ya tiene una cinta conectada.',
   'same-node': 'No puedes conectar un edificio consigo mismo.',
+  'fluid-logistics': 'Los divisores y unificadores solo admiten cintas, no fluidos.',
   invalid: 'Conexión no válida.',
 };
 
@@ -21,6 +22,8 @@ export class PlannerInteractions {
 
   /** Route preview while a belt is being dragged out of a port. */
   readonly previewPath = signal<string | null>(null);
+  /** True when the preview is snapped onto a compatible input. */
+  readonly previewSnapped = signal(false);
   /** Message for the screen-reader live region. */
   readonly announcement = signal('');
 
@@ -40,18 +43,34 @@ export class PlannerInteractions {
 
   portDragMoved(from: PortRef, pointer: Point) {
     const start = this.store.outputPortOf(from);
-    if (start) this.previewPath.set(beltRoute(start, this.toSurface(pointer)).path);
+    if (!start) return;
+    const point = this.toSurface(pointer);
+    // Snap the end of the belt onto the closest compatible input.
+    const snap = this.store.snapTargetFor(from, point);
+    this.store.snapTarget.set(snap);
+    this.previewSnapped.set(!!snap);
+    const end = (snap && this.store.inputPortOf(snap)) ?? point;
+    this.previewPath.set(beltRoute(start, end).path);
   }
 
   portDragEnded(from: PortRef, drop: Point) {
+    const point = this.toSurface(drop);
+    const target = this.store.snapTarget() ?? this.store.snapTargetFor(from, point);
     this.previewPath.set(null);
+    this.previewSnapped.set(false);
+    this.store.snapTarget.set(null);
     this.store.connectingFrom.set(null);
-    const to = this.store.inputPortAt(this.toSurface(drop));
-    if (to) {
-      this.finishConnection(from, to);
-    } else {
-      this.announce('Suelta la cinta sobre la entrada de un edificio.');
+
+    if (target) {
+      this.finishConnection(from, target);
+      return;
     }
+    const near = this.store.inputPortAt(point);
+    this.announce(
+      near
+        ? REJECTIONS[this.store.checkConnection(from, near) as Exclude<ConnectResult, 'ok'>]
+        : 'Suelta la cinta sobre una entrada compatible.',
+    );
   }
 
   // ---- Click / keyboard: pick the output, then the input -----------------------
@@ -64,10 +83,11 @@ export class PlannerInteractions {
     }
     this.store.connectingFrom.set(from);
     const count = this.store.validTargets().size;
+    const what = this.store.connectingItem()?.name.es ?? 'esta salida';
     this.announce(
       count > 0
-        ? `Elige una entrada para ${this.store.connectingItem()?.name.es}: ${count} disponible${count === 1 ? '' : 's'}. Escape para cancelar.`
-        : `Ningún edificio necesita ${this.store.connectingItem()?.name.es}. Añade uno con esa receta.`,
+        ? `Elige una entrada para ${what}: ${count} disponible${count === 1 ? '' : 's'}. Escape para cancelar.`
+        : `No hay ninguna entrada compatible con ${what}.`,
     );
   }
 
@@ -81,6 +101,7 @@ export class PlannerInteractions {
   cancel() {
     if (!this.store.connectingFrom()) return;
     this.store.connectingFrom.set(null);
+    this.store.snapTarget.set(null);
     this.announce('Conexión cancelada.');
   }
 

@@ -35,7 +35,16 @@ export interface BuildingNode {
   position: Point;
 }
 
-export type PlannerNode = ResourceNode | BuildingNode;
+/** A conveyor merger (3 inputs → 1 output) or splitter (1 input → 3 outputs). */
+export interface LogisticNode {
+  kind: 'logistic';
+  id: string;
+  /** Build_ConveyorAttachmentMerger_C or Build_ConveyorAttachmentSplitter_C. */
+  buildingId: string;
+  position: Point;
+}
+
+export type PlannerNode = ResourceNode | BuildingNode | LogisticNode;
 
 /** A port on a node: output ports for the belt source, input ports for its target. */
 export interface PortRef {
@@ -61,11 +70,17 @@ export const CANVAS = {
   height: 2000,
   /** Resource card: w-72. Its single output port sits in the header. */
   resource: { width: 288, height: 220, outputY: 28 },
+  /** Building card: w-80. */
+  building: { width: 320, height: 320 },
+  /** Merger / splitter card: w-56, three port rows. */
+  logistic: { width: 224, height: 180 },
   /**
-   * Building card: w-80. Port rows start right below the header
+   * Port rows (buildings and logistics) start right below the header
    * (4px top border + 52px header + 8px padding) and are 32px tall; ports sit at row centre.
    */
-  building: { width: 320, height: 320, rowsTop: 64, rowHeight: 32 },
+  rows: { top: 64, height: 32 },
+  /** Distance in px within which a dragged belt snaps to a compatible input. */
+  snapRadius: 48,
   /** Keyboard nudge step in px (Shift multiplies by 4). */
   nudge: 16,
 } as const;

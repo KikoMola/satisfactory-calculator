@@ -10,6 +10,7 @@ import { arrowKeyDelta } from '../keyboard';
 import { PlannerInteractions } from '../planner-interactions';
 import type { PortRef } from '../planner.model';
 import { PlannerStore, type BuildingNodeView } from '../planner.store';
+import { InputPort } from '../ports/input-port';
 import { OutputPort } from '../ports/output-port';
 
 /**
@@ -29,6 +30,7 @@ import { OutputPort } from '../ports/output-port';
     Button,
     IconClose,
     Select,
+    InputPort,
     OutputPort,
   ],
   templateUrl: './building-card.html',
@@ -63,6 +65,11 @@ export class BuildingCard {
 
   protected isValidTarget(index: number): boolean {
     return this.store.validTargets().has(`${this.node().id}:${index}`);
+  }
+
+  protected isSnapped(index: number): boolean {
+    const snap = this.store.snapTarget();
+    return snap?.nodeId === this.node().id && snap.index === index;
   }
 
   protected pickInput(index: number) {

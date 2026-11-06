@@ -4,6 +4,7 @@ import type {
   Building,
   ExtractorBuilding,
   Item,
+  LogisticBuilding,
   ManufacturerBuilding,
   Recipe,
   Transport,
@@ -55,6 +56,11 @@ export class GameDataService {
   readonly manufacturers: ManufacturerBuilding[] = BUILDINGS.filter(
     (b): b is ManufacturerBuilding => b.kind === 'manufacturer',
   ).sort((a, b) => MANUFACTURER_ORDER.indexOf(a.id) - MANUFACTURER_ORDER.indexOf(b.id));
+
+  /** Conveyor merger and splitter. */
+  readonly logistics: LogisticBuilding[] = BUILDINGS.filter(
+    (b): b is LogisticBuilding => b.kind === 'logistic',
+  ).sort((a, b) => a.role.localeCompare(b.role));
 
   /** Pipelines Mk.1 → Mk.2. */
   readonly pipes: Transport[] = TRANSPORT.filter((t) => t.kind === 'pipe').sort(

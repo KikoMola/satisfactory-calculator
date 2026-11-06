@@ -25,27 +25,18 @@
   </span>
 </header>
 
-<!-- Port rows: 32px each starting 64px from the card's outer top (CANVAS.building). -->
+<!-- Port rows: 32px each starting 64px from the card's outer top (CANVAS.rows). -->
 <ul class="m-0 list-none border-b border-line p-0 pt-2 pb-2" aria-label="Entradas y salidas">
   @for (input of n.inputs; track $index) {
     <li class="relative flex h-8 items-center gap-2 pr-3 pl-5 text-sm">
-      @if (input.connected) {
-        <span
-          class="absolute top-1 -left-[13px] size-6 rounded-full border-3 border-panel"
-          [style.background]="input.color"
-          aria-hidden="true"
-        ></span>
-      } @else {
-        <button
-          type="button"
-          ngpButton
-          class="absolute top-1 -left-[13px] size-6 rounded-full border-3 border-panel bg-line p-0 data-disabled:cursor-default"
-          [class]="isValidTarget($index) ? 'cursor-pointer bg-focus ring-4 ring-focus/40' : ''"
-          [disabled]="!isValidTarget($index)"
-          [attr.aria-label]="'Conectar a la entrada de ' + input.item.name.es"
-          (click)="pickInput($index)"
-        ></button>
-      }
+      <app-input-port
+        class="top-1 -left-[13px]"
+        [label]="'Conectar a la entrada de ' + (input.item?.name?.es ?? '')"
+        [connected]="input.connected"
+        [valid]="isValidTarget($index)"
+        [snapped]="isSnapped($index)"
+        (picked)="pickInput($index)"
+      />
       <span class="text-xs text-muted" aria-hidden="true">→</span>
       <span
         class="size-2.5 shrink-0 rounded-full"
@@ -53,12 +44,12 @@
         aria-hidden="true"
       ></span>
       <span class="min-w-0 flex-1 truncate">
-        <span class="sr-only">Entrada: </span>{{ input.item.name.es }}
+        <span class="sr-only">Entrada: </span>{{ input.item?.name?.es }}
       </span>
       <span class="shrink-0 tabular-nums" [class.text-danger]="input.actual < input.rate - 1e-9">
         {{ input.actual | number: '1.0-2' }}/{{ input.rate | number: '1.0-2' }}
         <span class="text-xs text-muted">{{
-          input.item.form === 'solid' ? '/min' : 'm³/min'
+          input.item?.form !== 'liquid' && input.item?.form !== 'gas' ? '/min' : 'm³/min'
         }}</span>
       </span>
     </li>
@@ -71,20 +62,19 @@
         aria-hidden="true"
       ></span>
       <span class="min-w-0 flex-1 truncate">
-        <span class="sr-only">Salida: </span>{{ output.item.name.es }}
+        <span class="sr-only">Salida: </span>{{ output.item?.name?.es }}
       </span>
       <span class="shrink-0 font-semibold tabular-nums">
         {{ output.actual | number: '1.0-2' }}
         <span class="text-xs font-normal text-muted">{{
-          output.item.form === 'solid' ? '/min' : 'm³/min'
+          output.item?.form !== 'liquid' && output.item?.form !== 'gas' ? '/min' : 'm³/min'
         }}</span>
       </span>
       <span class="text-xs text-muted" aria-hidden="true">→</span>
       <app-output-port
         class="top-1 -right-[13px]"
-        [label]="'Salida de ' + output.item.name.es + ' de ' + n.building.name.es"
+        [label]="'Salida de ' + output.item?.name?.es + ' de ' + n.building.name.es"
         [connected]="output.connected"
-        [color]="output.color"
         [active]="connectingIndex() === $index"
         (dragStarted)="interactions.portDragStarted(outputRef($index))"
         (dragMoved)="interactions.portDragMoved(outputRef($index), $event)"
@@ -100,7 +90,7 @@
     <span ngpLabel class="text-xs text-muted">Edificio</span>
     <app-select
       class="w-full"
-      [options]="store.buildingOptions"
+      [options]="store.manufacturerOptions"
       [value]="n.buildingId"
       (valueChange)="setBuilding($event)"
     />

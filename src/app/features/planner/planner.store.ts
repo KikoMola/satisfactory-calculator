@@ -3,6 +3,7 @@ import { GameDataService } from '../../core/game-data.service';
 import type {
   ExtractorBuilding,
   Item,
+  LogisticBuilding,
   ManufacturerBuilding,
   Recipe,
   Transport,
@@ -14,6 +15,7 @@ import {
   clampPoint,
   extractionRate,
   recipeRate,
+  waterfill,
   type BeltFlow,
 } from './planner.calc';
 import {
@@ -21,6 +23,7 @@ import {
   PURITIES,
   type Belt,
   type BuildingNode,
+  type LogisticNode,
   type PlannerNode,
   type Point,
   type PortRef,
@@ -44,9 +47,10 @@ const DEFAULT_ITEM_COLOR = '#c8c8c8';
 
 /** One ingredient (input) or product (output) of a node. */
 export interface PortView {
-  item: Item;
+  /** `null` on an empty merger/splitter (nothing connected yet). */
+  item: Item | null;
   color: string;
-  /** Items/min at 100% (demand for inputs, production for outputs). */
+  /** Items/min at 100% (demand for inputs, production for outputs). 0 for logistics. */
   rate: number;
   /** Items/min actually flowing given the current connections. */
   actual: number;
@@ -73,10 +77,19 @@ export interface BuildingNodeView extends BuildingNode, NodeViewBase {
   productivity: number;
 }
 
-export type NodeView = ResourceNodeView | BuildingNodeView;
+export interface LogisticNodeView extends LogisticNode, NodeViewBase {
+  building: LogisticBuilding;
+  /** Item travelling through (from upstream, or what downstream expects). */
+  item: Item | null;
+  color: string;
+  /** Items/min passing through. */
+  throughput: number;
+}
+
+export type NodeView = ResourceNodeView | BuildingNodeView | LogisticNodeView;
 
 export interface BeltView extends Belt {
-  item: Item;
+  item: Item | null;
   color: string;
   transport: Transport;
   options: readonly SelectOption[];
@@ -100,13 +113,23 @@ export interface ProductTotal {
   rate: number;
 }
 
-export type ConnectResult = 'ok' | 'item-mismatch' | 'occupied' | 'same-node' | 'invalid';
+export type ConnectResult =
+  'ok' | 'item-mismatch' | 'occupied' | 'same-node' | 'fluid-logistics' | 'invalid';
 
-/** Static per-node info (ports and nominal rates), independent of the belts. */
+/** Static port info: item (null for logistics until connected), nominal rate and row. */
+interface PortInfo {
+  item: Item | null;
+  rate: number;
+  /** Row on the card (port vertical position). Unused for resource nodes. */
+  row: number;
+}
+
+/** Static per-node info, independent of the belts. */
 interface NodeInfo {
   node: PlannerNode;
-  inputs: { item: Item; rate: number }[];
-  outputs: { item: Item; rate: number }[];
+  width: number;
+  inputs: PortInfo[];
+  outputs: PortInfo[];
 }
 
 const portKey = (port: PortRef) => `${port.nodeId}:${port.index}`;
@@ -122,6 +145,8 @@ export class PlannerStore {
 
   /** Output port a belt is being pulled from (drag in progress or click-to-connect mode). */
   readonly connectingFrom = signal<PortRef | null>(null);
+  /** Input the dragged belt is currently snapped to. */
+  readonly snapTarget = signal<PortRef | null>(null);
 
   /**
    * Positions of cards currently being dragged. Kept apart from the model so that the CDK's
@@ -149,7 +174,18 @@ export class PlannerStore {
     hint: `${m.ratePerMinute}/min`,
   }));
 
-  readonly buildingOptions: readonly SelectOption[] = this.data.manufacturers.map((b) => ({
+  /** Production buildings plus belt logistics, for the "add building" select. */
+  readonly buildingOptions: readonly SelectOption[] = [
+    ...this.data.manufacturers.map((b) => ({ value: b.id, label: b.name.es })),
+    ...this.data.logistics.map((b) => ({
+      value: b.id,
+      label: b.role === 'merger' ? 'Unificador' : 'Divisor',
+      hint: b.role === 'merger' ? '3 → 1' : '1 → 3',
+    })),
+  ];
+
+  /** Production buildings only, for changing the type of an existing building card. */
+  readonly manufacturerOptions: readonly SelectOption[] = this.data.manufacturers.map((b) => ({
     value: b.id,
     label: b.name.es,
   }));
@@ -171,136 +207,337 @@ export class PlannerStore {
     return options;
   }
 
-  // ---- Derived state --------------------------------------------------------
+  // ---- Static node info -----------------------------------------------------
 
   private readonly nodeInfos = computed(() => {
     const infos = new Map<string, NodeInfo>();
     for (const node of this.nodes()) {
-      if (node.kind === 'resource') {
+      infos.set(node.id, this.infoOf(node));
+    }
+    return infos;
+  });
+
+  private infoOf(node: PlannerNode): NodeInfo {
+    switch (node.kind) {
+      case 'resource': {
         const miner = this.data.building(node.minerId) as ExtractorBuilding;
-        infos.set(node.id, {
+        return {
           node,
+          width: CANVAS.resource.width,
           inputs: [],
           outputs: [
             {
               item: this.data.item(node.resourceId),
               rate: extractionRate(miner.ratePerMinute, node.purity),
+              row: 0,
             },
           ],
-        });
-      } else {
+        };
+      }
+      case 'building': {
         const recipe = this.data.recipe(node.recipeId);
-        const toPorts = (list: Recipe['ingredients']) =>
-          list.map(({ item, amount }) => ({
+        const ports = (list: Recipe['ingredients'], firstRow: number) =>
+          list.map(({ item, amount }, i) => ({
             item: this.data.item(item),
             rate: recipeRate(amount, recipe.duration),
+            row: firstRow + i,
           }));
-        infos.set(node.id, {
+        const inputs = ports(recipe.ingredients, 0);
+        return {
           node,
-          inputs: toPorts(recipe.ingredients),
-          outputs: toPorts(recipe.products),
-        });
+          width: CANVAS.building.width,
+          inputs,
+          outputs: ports(recipe.products, inputs.length),
+        };
+      }
+      case 'logistic': {
+        const building = this.data.building(node.buildingId) as LogisticBuilding;
+        const port = (row: number): PortInfo => ({ item: null, rate: 0, row });
+        // Merger: 3 inputs, output on the middle row. Splitter: input on the middle row, 3 outputs.
+        return building.role === 'merger'
+          ? { node, width: CANVAS.logistic.width, inputs: [0, 1, 2].map(port), outputs: [port(1)] }
+          : { node, width: CANVAS.logistic.width, inputs: [port(1)], outputs: [0, 1, 2].map(port) };
       }
     }
-    return infos;
-  });
+  }
+
+  // ---- Items through mergers/splitters ----------------------------------------
 
   /**
-   * Building productivity and belt flows. Supply propagates forward from the resource nodes;
-   * the loop repeats until stable so chains of any depth settle (cycles without an outside
-   * supply stay at 0, as they would in game).
+   * Item carried by each merger/splitter: taken from what flows in, or — if nothing is
+   * connected upstream yet — from the building input it feeds. Mixed belts aren't supported.
+   */
+  private readonly logisticItems = computed(() => {
+    const infos = this.nodeInfos();
+    const belts = this.belts();
+    const items = new Map<string, Item | null>();
+
+    const outputItem = (port: PortRef, seen: Set<string>): Item | null => {
+      const info = infos.get(port.nodeId);
+      if (!info) return null;
+      return info.node.kind === 'logistic'
+        ? upstream(port.nodeId, seen)
+        : (info.outputs[port.index]?.item ?? null);
+    };
+    const upstream = (nodeId: string, seen: Set<string>): Item | null => {
+      if (seen.has(nodeId)) return null;
+      seen.add(nodeId);
+      for (const belt of belts) {
+        if (belt.to.nodeId !== nodeId) continue;
+        const item = outputItem(belt.from, seen);
+        if (item) return item;
+      }
+      return null;
+    };
+    const downstream = (nodeId: string, seen: Set<string>): Item | null => {
+      if (seen.has(nodeId)) return null;
+      seen.add(nodeId);
+      for (const belt of belts) {
+        if (belt.from.nodeId !== nodeId) continue;
+        const target = infos.get(belt.to.nodeId);
+        const item =
+          target?.node.kind === 'logistic'
+            ? downstream(belt.to.nodeId, seen)
+            : (target?.inputs[belt.to.index]?.item ?? null);
+        if (item) return item;
+      }
+      return null;
+    };
+
+    for (const info of infos.values()) {
+      if (info.node.kind !== 'logistic') continue;
+      items.set(
+        info.node.id,
+        upstream(info.node.id, new Set()) ?? downstream(info.node.id, new Set()),
+      );
+    }
+    return items;
+  });
+
+  private outputItemOf(port: PortRef): Item | null {
+    const info = this.nodeInfos().get(port.nodeId);
+    if (!info) return null;
+    return info.node.kind === 'logistic'
+      ? (this.logisticItems().get(port.nodeId) ?? null)
+      : (info.outputs[port.index]?.item ?? null);
+  }
+
+  private inputItemOf(port: PortRef): Item | null {
+    const info = this.nodeInfos().get(port.nodeId);
+    if (!info) return null;
+    return info.node.kind === 'logistic'
+      ? (this.logisticItems().get(port.nodeId) ?? null)
+      : (info.inputs[port.index]?.item ?? null);
+  }
+
+  // ---- Flows ----------------------------------------------------------------
+
+  /**
+   * Building productivity and belt flows.
+   * - `accept`: the most a port's consumer can take (buildings: their demand at 100%;
+   *   mergers/splitters: what their output belts can pass on).
+   * - Supply then propagates forward from the resource nodes, repeating until stable so
+   *   chains of any depth settle. Splitters share evenly with overflow (waterfill); merger
+   *   inputs share the output capacity the same way (round-robin).
    */
   private readonly flows = computed(() => {
     const infos = this.nodeInfos();
     const belts = this.belts();
-    const incoming = new Map(belts.map((b) => [portKey(b.to), b]));
-    const productivity = new Map<string, number>();
+    const beltFrom = new Map(belts.map((b) => [portKey(b.from), b]));
+    const beltTo = new Map(belts.map((b) => [portKey(b.to), b]));
+    const capacity = (belt: Belt) => this.data.transport(belt.transportId).ratePerMinute;
+    const isMerger = (info: NodeInfo) =>
+      info.node.kind === 'logistic' &&
+      (this.data.building(info.node.buildingId) as LogisticBuilding).role === 'merger';
 
-    const offered = (from: PortRef) => {
+    const acceptMemo = new Map<string, number>();
+    const accept = (to: PortRef, seen: Set<string>): number => {
+      const key = portKey(to);
+      const memo = acceptMemo.get(key);
+      if (memo !== undefined) return memo;
+      if (seen.has(to.nodeId)) return 0; // loop without a consumer
+      const info = infos.get(to.nodeId);
+      let value = 0;
+      if (info?.node.kind === 'building') {
+        value = info.inputs[to.index]?.rate ?? 0;
+      } else if (info?.node.kind === 'logistic') {
+        const next = new Set(seen).add(to.nodeId);
+        value = info.outputs.reduce((sum, _, index) => {
+          const out = beltFrom.get(portKey({ nodeId: to.nodeId, index }));
+          return out ? sum + Math.min(capacity(out), accept(out.to, next)) : sum;
+        }, 0);
+      }
+      acceptMemo.set(key, value);
+      return value;
+    };
+
+    const productivity = new Map<string, number>();
+    let flowById = new Map<string, number>(belts.map((b) => [b.id, 0]));
+
+    const inflow = (nodeId: string, info: NodeInfo) =>
+      info.inputs.reduce((sum, _, index) => {
+        const belt = beltTo.get(portKey({ nodeId, index }));
+        return sum + (belt ? (flowById.get(belt.id) ?? 0) : 0);
+      }, 0);
+
+    /** What each output of a splitter can take (0 when unconnected). */
+    const splitterLimits = (nodeId: string, info: NodeInfo) =>
+      info.outputs.map((_, index) => {
+        const out = beltFrom.get(portKey({ nodeId, index }));
+        return out ? Math.min(capacity(out), accept(out.to, new Set([nodeId]))) : 0;
+      });
+
+    const offered = (from: PortRef): number => {
       const info = infos.get(from.nodeId);
       const output = info?.outputs[from.index];
       if (!info || !output) return 0;
-      return info.node.kind === 'resource'
-        ? output.rate
-        : (productivity.get(from.nodeId) ?? 0) * output.rate;
+      switch (info.node.kind) {
+        case 'resource':
+          return output.rate;
+        case 'building':
+          return (productivity.get(from.nodeId) ?? 0) * output.rate;
+        case 'logistic':
+          return isMerger(info)
+            ? inflow(from.nodeId, info)
+            : waterfill(inflow(from.nodeId, info), splitterLimits(from.nodeId, info))[from.index];
+      }
     };
-    const capacity = (belt: Belt) => this.data.transport(belt.transportId).ratePerMinute;
+    const supply = (belt: Belt) => Math.min(offered(belt.from), capacity(belt));
 
-    for (let pass = 0; pass <= infos.size; pass++) {
-      let changed = false;
+    for (let pass = 0; pass <= infos.size * 2 + 2; pass++) {
+      // Buildings run as fast as their scarcest input allows.
       for (const info of infos.values()) {
         if (info.node.kind !== 'building') continue;
         let p = 1;
         info.inputs.forEach((input, index) => {
-          const belt = incoming.get(portKey({ nodeId: info.node.id, index }));
-          const supplied = belt ? Math.min(offered(belt.from), capacity(belt), input.rate) : 0;
-          p = Math.min(p, supplied / input.rate);
+          const belt = beltTo.get(portKey({ nodeId: info.node.id, index }));
+          p = Math.min(p, belt ? supply(belt) / input.rate : 0);
         });
-        if (Math.abs(p - (productivity.get(info.node.id) ?? 0)) > 1e-9) changed = true;
         productivity.set(info.node.id, p);
       }
-      if (!changed) break;
+
+      const next = new Map<string, number>();
+      for (const belt of belts) {
+        const target = infos.get(belt.to.nodeId);
+        if (!target) continue;
+        if (target.node.kind === 'building') {
+          const demand = target.inputs[belt.to.index]?.rate ?? 0;
+          const consumed = (productivity.get(belt.to.nodeId) ?? 0) * demand;
+          next.set(belt.id, Math.min(supply(belt), consumed));
+        } else if (isMerger(target)) {
+          const inputs = target.inputs.map((_, index) =>
+            beltTo.get(portKey({ nodeId: belt.to.nodeId, index })),
+          );
+          const shares = waterfill(
+            accept(belt.to, new Set()),
+            inputs.map((b) => (b ? supply(b) : 0)),
+          );
+          next.set(belt.id, shares[belt.to.index]);
+        } else {
+          next.set(belt.id, Math.min(supply(belt), accept(belt.to, new Set())));
+        }
+      }
+
+      const stable = belts.every(
+        (b) => Math.abs((next.get(b.id) ?? 0) - (flowById.get(b.id) ?? 0)) < 1e-9,
+      );
+      flowById = next;
+      if (stable && pass > 0) break;
     }
 
     const beltFlows = new Map<string, BeltFlow>();
     for (const belt of belts) {
-      const demand = infos.get(belt.to.nodeId)?.inputs[belt.to.index]?.rate ?? 0;
-      const consumed = (productivity.get(belt.to.nodeId) ?? 0) * demand;
-      beltFlows.set(belt.id, beltFlow(offered(belt.from), capacity(belt), demand, consumed));
+      beltFlows.set(
+        belt.id,
+        beltFlow(
+          offered(belt.from),
+          capacity(belt),
+          accept(belt.to, new Set()),
+          flowById.get(belt.id) ?? 0,
+        ),
+      );
     }
-    return { productivity, beltFlows };
+    return { productivity, beltFlows, offered };
   });
+
+  // ---- Views ----------------------------------------------------------------
 
   readonly nodeViews = computed<NodeView[]>(() => {
     const infos = this.nodeInfos();
-    const { productivity, beltFlows } = this.flows();
+    const { productivity, beltFlows, offered } = this.flows();
     const beltsByOutput = new Map(this.belts().map((b) => [portKey(b.from), b]));
     const beltsByInput = new Map(this.belts().map((b) => [portKey(b.to), b]));
 
     return this.nodes().map((node): NodeView => {
       const info = infos.get(node.id)!;
-      const p = node.kind === 'resource' ? 1 : (productivity.get(node.id) ?? 0);
-      const port = (
-        { item, rate }: { item: Item; rate: number },
-        index: number,
-        belts: Map<string, Belt>,
-        actual: (belt: Belt | undefined) => number,
-      ): PortView => {
-        const belt = belts.get(portKey({ nodeId: node.id, index }));
-        return { item, rate, color: this.colorOf(item), actual: actual(belt), connected: !!belt };
-      };
-      const inputs = info.inputs.map((input, i) =>
-        port(input, i, beltsByInput, (belt) => (belt ? (beltFlows.get(belt.id)?.flow ?? 0) : 0)),
-      );
-      const outputs = info.outputs.map((output, i) =>
-        port(output, i, beltsByOutput, () => output.rate * p),
-      );
-
-      if (node.kind === 'resource') {
-        const miner = this.data.building(node.minerId) as ExtractorBuilding;
+      const inputs = info.inputs.map((input, index): PortView => {
+        const belt = beltsByInput.get(portKey({ nodeId: node.id, index }));
+        const item = input.item ?? this.inputItemOf({ nodeId: node.id, index });
         return {
-          ...node,
-          resource: info.outputs[0].item,
-          miner,
-          color: this.colorOf(info.outputs[0].item),
-          inputs,
-          outputs,
-          powerMW: miner.powerMW,
+          item,
+          rate: input.rate,
+          color: this.colorOf(item),
+          actual: belt ? (beltFlows.get(belt.id)?.flow ?? 0) : 0,
+          connected: !!belt,
         };
+      });
+      const outputs = info.outputs.map((output, index): PortView => {
+        const ref = { nodeId: node.id, index };
+        const belt = beltsByOutput.get(portKey(ref));
+        const item = output.item ?? this.outputItemOf(ref);
+        // Logistics only move what actually leaves on a belt.
+        const actual =
+          node.kind === 'logistic'
+            ? belt
+              ? (beltFlows.get(belt.id)?.flow ?? 0)
+              : 0
+            : offered(ref);
+        return { item, rate: output.rate, color: this.colorOf(item), actual, connected: !!belt };
+      });
+
+      switch (node.kind) {
+        case 'resource': {
+          const miner = this.data.building(node.minerId) as ExtractorBuilding;
+          const resource = info.outputs[0].item!;
+          return {
+            ...node,
+            resource,
+            miner,
+            color: this.colorOf(resource),
+            inputs,
+            outputs,
+            powerMW: miner.powerMW,
+          };
+        }
+        case 'building': {
+          const building = this.data.building(node.buildingId) as ManufacturerBuilding;
+          const recipe = this.data.recipe(node.recipeId);
+          const variable = recipe.variablePower ?? building.variablePower;
+          return {
+            ...node,
+            building,
+            recipe,
+            productivity: productivity.get(node.id) ?? 0,
+            inputs,
+            outputs,
+            // Variable power buildings oscillate between min and max: show the average.
+            powerMW: variable ? (variable.min + variable.max) / 2 : building.powerMW,
+          };
+        }
+        case 'logistic': {
+          const item = this.logisticItems().get(node.id) ?? null;
+          return {
+            ...node,
+            building: this.data.building(node.buildingId) as LogisticBuilding,
+            item,
+            color: this.colorOf(item),
+            throughput: inputs.reduce((sum, input) => sum + input.actual, 0),
+            inputs,
+            outputs,
+            powerMW: 0,
+          };
+        }
       }
-      const building = this.data.building(node.buildingId) as ManufacturerBuilding;
-      const recipe = this.data.recipe(node.recipeId);
-      const variable = recipe.variablePower ?? building.variablePower;
-      return {
-        ...node,
-        building,
-        recipe,
-        productivity: p,
-        inputs,
-        outputs,
-        // Variable power buildings oscillate between min and max: show the average.
-        powerMW: variable ? (variable.min + variable.max) / 2 : building.powerMW,
-      };
     });
   });
 
@@ -311,19 +548,21 @@ export class PlannerStore {
     return this.belts().flatMap((belt) => {
       const source = infos.get(belt.from.nodeId);
       const target = infos.get(belt.to.nodeId);
-      const output = source?.outputs[belt.from.index];
-      if (!source || !target || !output) return [];
-      const from = this.outputPortPoint(source, belt.from.index, live[source.node.id]);
-      const to = this.inputPortPoint(target, belt.to.index, live[target.node.id]);
+      if (!source || !target) return [];
+      const item = this.outputItemOf(belt.from) ?? this.inputItemOf(belt.to);
+      const transport = this.data.transport(belt.transportId);
       return [
         {
           ...belt,
-          item: output.item,
-          color: this.colorOf(output.item),
-          transport: this.data.transport(belt.transportId),
-          options: output.item.form === 'solid' ? this.beltOptions : this.pipeOptions,
+          item,
+          color: this.colorOf(item),
+          transport,
+          options: transport.kind === 'belt' ? this.beltOptions : this.pipeOptions,
           flow: beltFlows.get(belt.id)!,
-          ...beltRoute(from, to),
+          ...beltRoute(
+            this.portPoint(source, 'out', belt.from.index, live[source.node.id]),
+            this.portPoint(target, 'in', belt.to.index, live[target.node.id]),
+          ),
         },
       ];
     });
@@ -343,13 +582,15 @@ export class PlannerStore {
     return targets;
   });
 
-  /** Item carried by the belt being connected, if any. */
+  /** Item carried by the belt currently being connected, if known. */
   readonly connectingItem = computed(() => {
     const from = this.connectingFrom();
-    return from ? (this.nodeInfos().get(from.nodeId)?.outputs[from.index]?.item ?? null) : null;
+    return from ? this.outputItemOf(from) : null;
   });
 
   readonly resourceTotals = computed<ResourceTotal[]>(() => {
+    const { beltFlows } = this.flows();
+    const beltsByOutput = new Map(this.belts().map((b) => [portKey(b.from), b]));
     const totals = new Map<string, ResourceTotal>();
     for (const node of this.nodeViews()) {
       if (node.kind !== 'resource') continue;
@@ -360,11 +601,10 @@ export class PlannerStore {
         extracted: 0,
         transported: 0,
       };
+      const belt = beltsByOutput.get(portKey({ nodeId: node.id, index: 0 }));
       total.nodes += 1;
       total.extracted += node.outputs[0].rate;
-      total.transported += node.outputs[0].connected
-        ? (this.beltViews().find((b) => b.from.nodeId === node.id)?.flow.flow ?? 0)
-        : 0;
+      total.transported += belt ? (beltFlows.get(belt.id)?.flow ?? 0) : 0;
       totals.set(node.resourceId, total);
     }
     return [...totals.values()].sort((a, b) =>
@@ -378,7 +618,7 @@ export class PlannerStore {
     for (const node of this.nodeViews()) {
       if (node.kind !== 'building') continue;
       for (const output of node.outputs) {
-        if (output.connected || output.actual <= 0) continue;
+        if (!output.item || output.connected || output.actual <= 0) continue;
         const total = totals.get(output.item.id) ?? {
           item: output.item,
           color: output.color,
@@ -408,14 +648,20 @@ export class PlannerStore {
     return node;
   }
 
-  addBuilding(buildingId: string): BuildingNode {
-    const node: BuildingNode = {
-      kind: 'building',
-      id: `building-${this.nextId++}`,
-      buildingId,
-      recipeId: this.data.recipesFor(buildingId)[0].id,
-      position: this.nextSlot(),
-    };
+  /** Adds a production building, or a merger/splitter if `buildingId` is a logistic one. */
+  addBuilding(buildingId: string): BuildingNode | LogisticNode {
+    const id = `building-${this.nextId++}`;
+    const position = this.nextSlot();
+    const node: BuildingNode | LogisticNode =
+      this.data.building(buildingId).kind === 'logistic'
+        ? { kind: 'logistic', id, buildingId, position }
+        : {
+            kind: 'building',
+            id,
+            buildingId,
+            recipeId: this.defaultRecipe(buildingId).id,
+            position,
+          };
     this.nodes.update((nodes) => [...nodes, node]);
     return node;
   }
@@ -428,7 +674,7 @@ export class PlannerStore {
   }
 
   setBuildingType(id: string, buildingId: string) {
-    const recipeId = this.data.recipesFor(buildingId)[0].id;
+    const recipeId = this.defaultRecipe(buildingId).id;
     this.patchNode(id, (n) => (n.kind === 'building' ? { ...n, buildingId, recipeId } : n));
   }
 
@@ -461,6 +707,7 @@ export class PlannerStore {
     this.nodes.update((nodes) => nodes.filter((n) => n.id !== id));
     this.belts.update((belts) => belts.filter((b) => b.from.nodeId !== id && b.to.nodeId !== id));
     if (this.connectingFrom()?.nodeId === id) this.connectingFrom.set(null);
+    if (this.snapTarget()?.nodeId === id) this.snapTarget.set(null);
   }
 
   // ---- Belts --------------------------------------------------------------
@@ -468,35 +715,45 @@ export class PlannerStore {
   /** Output port centre in canvas coordinates (uses the model position). */
   outputPortOf(from: PortRef): Point | null {
     const info = this.nodeInfos().get(from.nodeId);
-    return info ? this.outputPortPoint(info, from.index) : null;
+    return info ? this.portPoint(info, 'out', from.index) : null;
   }
 
-  /** Input port whose centre is within `radius` px of the point, if any. */
-  inputPortAt(point: Point, radius = 24): PortRef | null {
-    let best: { port: PortRef; distance: number } | null = null;
-    for (const info of this.nodeInfos().values()) {
-      info.inputs.forEach((_, index) => {
-        const p = this.inputPortPoint(info, index);
-        const distance = Math.hypot(p.x - point.x, p.y - point.y);
-        if (distance <= radius && (!best || distance < best.distance)) {
-          best = { port: { nodeId: info.node.id, index }, distance };
-        }
-      });
-    }
-    return (best as { port: PortRef } | null)?.port ?? null;
+  /** Input port centre in canvas coordinates (uses the model position). */
+  inputPortOf(to: PortRef): Point | null {
+    const info = this.nodeInfos().get(to.nodeId);
+    return info ? this.portPoint(info, 'in', to.index) : null;
+  }
+
+  /**
+   * Closest input within the snap radius that can accept a belt from `from`.
+   * Incompatible inputs are skipped, so the belt never snaps to something it can't connect to.
+   */
+  snapTargetFor(from: PortRef, point: Point, radius: number = CANVAS.snapRadius): PortRef | null {
+    return this.closestInput(point, radius, (to) => this.checkConnection(from, to) === 'ok');
+  }
+
+  /** Closest input within the radius regardless of compatibility (to explain rejections). */
+  inputPortAt(point: Point, radius: number = CANVAS.snapRadius): PortRef | null {
+    return this.closestInput(point, radius, () => true);
   }
 
   checkConnection(from: PortRef, to: PortRef): ConnectResult {
     const infos = this.nodeInfos();
-    const output = infos.get(from.nodeId)?.outputs[from.index];
-    const input = infos.get(to.nodeId)?.inputs[to.index];
-    if (!output || !input) return 'invalid';
+    const source = infos.get(from.nodeId);
+    const target = infos.get(to.nodeId);
+    if (!source?.outputs[from.index] || !target?.inputs[to.index]) return 'invalid';
     if (from.nodeId === to.nodeId) return 'same-node';
-    if (output.item.id !== input.item.id) return 'item-mismatch';
-    const belts = this.belts();
-    if (belts.some((b) => portKey(b.to) === portKey(to) || portKey(b.from) === portKey(from))) {
+    if (
+      this.belts().some((b) => portKey(b.to) === portKey(to) || portKey(b.from) === portKey(from))
+    ) {
       return 'occupied';
     }
+    const sourceItem = this.outputItemOf(from);
+    const targetItem = this.inputItemOf(to);
+    const touchesLogistics = source.node.kind === 'logistic' || target.node.kind === 'logistic';
+    const item = sourceItem ?? targetItem;
+    if (touchesLogistics && item && item.form !== 'solid') return 'fluid-logistics';
+    if (sourceItem && targetItem && sourceItem.id !== targetItem.id) return 'item-mismatch';
     return 'ok';
   }
 
@@ -504,8 +761,8 @@ export class PlannerStore {
   connect(from: PortRef, to: PortRef): ConnectResult {
     const result = this.checkConnection(from, to);
     if (result !== 'ok') return result;
-    const item = this.nodeInfos().get(from.nodeId)!.outputs[from.index].item;
-    const transport = item.form === 'solid' ? this.data.belts[0] : this.data.pipes[0];
+    const item = this.outputItemOf(from) ?? this.inputItemOf(to);
+    const transport = item && item.form !== 'solid' ? this.data.pipes[0] : this.data.belts[0];
     this.belts.update((belts) => [
       ...belts,
       { id: `belt-${this.nextId++}`, from, to, transportId: transport.id },
@@ -528,33 +785,68 @@ export class PlannerStore {
     this.pruneBelts();
   }
 
-  /** Drops belts whose ports disappeared or no longer carry the same item (recipe changes). */
+  /**
+   * Drops belts whose ports disappeared or whose items no longer match (recipe or resource
+   * changes). Repeats because removing a belt can change what a merger/splitter carries.
+   */
   private pruneBelts() {
-    const infos = this.nodeInfos();
-    this.belts.update((belts) =>
-      belts.filter((b) => {
-        const output = infos.get(b.from.nodeId)?.outputs[b.from.index];
-        const input = infos.get(b.to.nodeId)?.inputs[b.to.index];
-        return !!output && !!input && output.item.id === input.item.id;
-      }),
-    );
+    for (let i = 0; i < 10; i++) {
+      const infos = this.nodeInfos();
+      const belts = this.belts();
+      const valid = belts.filter((b) => {
+        if (!infos.get(b.from.nodeId)?.outputs[b.from.index]) return false;
+        if (!infos.get(b.to.nodeId)?.inputs[b.to.index]) return false;
+        const a = this.outputItemOf(b.from);
+        const c = this.inputItemOf(b.to);
+        return !a || !c || a.id === c.id;
+      });
+      if (valid.length === belts.length) return;
+      this.belts.set(valid);
+    }
   }
 
-  private outputPortPoint(info: NodeInfo, index: number, position = info.node.position): Point {
+  private closestInput(
+    point: Point,
+    radius: number,
+    accept: (to: PortRef) => boolean,
+  ): PortRef | null {
+    let best: PortRef | null = null;
+    let bestDistance = radius;
+    for (const info of this.nodeInfos().values()) {
+      info.inputs.forEach((_, index) => {
+        const to = { nodeId: info.node.id, index };
+        const p = this.portPoint(info, 'in', index);
+        const distance = Math.hypot(p.x - point.x, p.y - point.y);
+        if (distance <= bestDistance && accept(to)) {
+          best = to;
+          bestDistance = distance;
+        }
+      });
+    }
+    return best;
+  }
+
+  /** Port centre in canvas coordinates. */
+  private portPoint(
+    info: NodeInfo,
+    side: 'in' | 'out',
+    index: number,
+    position: Point = info.node.position,
+  ): Point {
     if (info.node.kind === 'resource') {
       return { x: position.x + CANVAS.resource.width, y: position.y + CANVAS.resource.outputY };
     }
-    const row = info.inputs.length + index;
-    return { x: position.x + CANVAS.building.width, y: position.y + this.rowCentre(row) };
+    const row = (side === 'in' ? info.inputs : info.outputs)[index]?.row ?? 0;
+    return {
+      x: side === 'in' ? position.x : position.x + info.width,
+      y: position.y + CANVAS.rows.top + row * CANVAS.rows.height + CANVAS.rows.height / 2,
+    };
   }
 
-  private inputPortPoint(info: NodeInfo, index: number, position = info.node.position): Point {
-    return { x: position.x, y: position.y + this.rowCentre(index) };
-  }
-
-  private rowCentre(row: number) {
-    const { rowsTop, rowHeight } = CANVAS.building;
-    return rowsTop + row * rowHeight + rowHeight / 2;
+  /** First standard, non-event recipe (alphabetical within the building). */
+  private defaultRecipe(buildingId: string): Recipe {
+    const recipes = this.data.recipesFor(buildingId);
+    return recipes.find((r) => !r.alternate && !r.event) ?? recipes[0];
   }
 
   /** Lays new cards out on a grid, leaving room between columns for the belts. */
@@ -563,7 +855,8 @@ export class PlannerStore {
     return { x: 32 + (index % 4) * 640, y: 48 + Math.floor(index / 4) * 400 };
   }
 
-  private colorOf(item: Item): string {
+  private colorOf(item: Item | null): string {
+    if (!item) return DEFAULT_ITEM_COLOR;
     return RESOURCE_COLORS[item.id] ?? item.fluidColor ?? DEFAULT_ITEM_COLOR;
   }
 

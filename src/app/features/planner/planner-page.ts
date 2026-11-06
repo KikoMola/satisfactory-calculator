@@ -15,6 +15,7 @@ import { Button } from '../../ui/button/button';
 import { IconClose } from '../../ui/icons';
 import { Select } from '../../ui/select/select';
 import { BuildingCard } from './building-card/building-card';
+import { LogisticCard } from './logistic-card/logistic-card';
 import { PlannerInteractions } from './planner-interactions';
 import { CANVAS } from './planner.model';
 import { PlannerStore, type BeltView, type NodeView } from './planner.store';
@@ -32,6 +33,7 @@ import { ResourceNodeCard } from './resource-node-card/resource-node-card';
     IconClose,
     Select,
     BuildingCard,
+    LogisticCard,
     ResourceNodeCard,
   ],
   providers: [PlannerStore, PlannerInteractions],
@@ -85,6 +87,6 @@ export class PlannerPage {
 
   protected removeBelt(belt: BeltView) {
     this.store.removeBelt(belt.id);
-    this.interactions.announce(`Cinta de ${belt.item.name.es} eliminada.`);
+    this.interactions.announce(`Cinta de ${belt.item?.name.es ?? 'material'} eliminada.`);
   }
 }
