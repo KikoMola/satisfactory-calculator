@@ -49,6 +49,16 @@
                 [attr.stroke-dasharray]="belt.flow.bottleneck ? '12 8' : null"
                 [attr.d]="belt.path"
               />
+              <!-- Moving items (belts) or pulses (pipes); speed follows the belt's usage. -->
+              @if (belt.flow.flow > 1e-9) {
+                <path
+                  class="fill-none motion-reduce:hidden"
+                  [class.belt-items]="belt.transport.kind === 'belt'"
+                  [class.pipe-pulses]="belt.transport.kind === 'pipe'"
+                  [style.animation-duration.s]="flowDuration(belt)"
+                  [attr.d]="belt.path"
+                />
+              }
             }
             @if (interactions.previewPath(); as path) {
               <!-- Dashed while free, solid orange once snapped onto a compatible input. -->
