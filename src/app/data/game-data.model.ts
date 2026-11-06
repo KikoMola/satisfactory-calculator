@@ -32,7 +32,7 @@ export interface Item {
   radioactiveDecay: number;
   /** Fluid colour as `#rrggbb`, `null` for solids. */
   fluidColor: string | null;
-  /** Unreal texture path of the big icon, used later to map extracted icons. */
+  /** Unreal texture path of the big icon (see `npm run icons:extract`). */
   iconPath: string | null;
 }
 
@@ -72,6 +72,8 @@ interface BuildingBase {
   /** Exponent applied to clock speed when computing power: power = base * clock^exponent. */
   powerExponent: number;
   canOverclock: boolean;
+  /** Unreal texture path of the descriptor's big icon (see `npm run icons:extract`). */
+  iconPath: string | null;
 }
 
 export interface ManufacturerBuilding extends BuildingBase {

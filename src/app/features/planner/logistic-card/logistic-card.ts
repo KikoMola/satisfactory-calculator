@@ -4,6 +4,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, input } from '@an
 import { NgpButton } from 'ng-primitives/button';
 import { Button } from '../../../ui/button/button';
 import { IconClose } from '../../../ui/icons';
+import { ItemIcon } from '../../../ui/item-icon/item-icon';
 import { arrowKeyDelta } from '../keyboard';
 import { PlannerInteractions } from '../planner-interactions';
 import type { PortRef } from '../planner.model';
@@ -22,7 +23,16 @@ interface Row {
  */
 @Component({
   selector: 'app-logistic-card',
-  imports: [CdkDragHandle, DecimalPipe, NgpButton, Button, IconClose, InputPort, OutputPort],
+  imports: [
+    CdkDragHandle,
+    DecimalPipe,
+    NgpButton,
+    Button,
+    IconClose,
+    ItemIcon,
+    InputPort,
+    OutputPort,
+  ],
   templateUrl: './logistic-card.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {

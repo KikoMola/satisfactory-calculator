@@ -5,6 +5,7 @@ import { NgpButton } from 'ng-primitives/button';
 import { NgpFormField, NgpLabel } from 'ng-primitives/form-field';
 import { Button } from '../../../ui/button/button';
 import { IconClose } from '../../../ui/icons';
+import { ItemIcon } from '../../../ui/item-icon/item-icon';
 import { Select } from '../../../ui/select/select';
 import { arrowKeyDelta } from '../keyboard';
 import { PlannerInteractions } from '../planner-interactions';
@@ -31,6 +32,7 @@ import { OutputPort } from '../ports/output-port';
     Select,
     Button,
     IconClose,
+    ItemIcon,
     InputPort,
     OutputPort,
     OverclockPanel,

@@ -5,6 +5,7 @@ import { NgpButton } from 'ng-primitives/button';
 import { NgpFormField, NgpLabel } from 'ng-primitives/form-field';
 import { Button } from '../../../ui/button/button';
 import { IconClose } from '../../../ui/icons';
+import { ItemIcon } from '../../../ui/item-icon/item-icon';
 import { Select } from '../../../ui/select/select';
 import { arrowKeyDelta } from '../keyboard';
 import { PlannerInteractions } from '../planner-interactions';
@@ -14,7 +15,7 @@ import { OverclockPanel } from '../overclock-panel/overclock-panel';
 import { OutputPort } from '../ports/output-port';
 
 /**
- * A resource node with a miner on it. The card itself is made draggable by the parent
+ * A resource node with an extractor on it (miner, oil/water extractor or resource well). The card itself is made draggable by the parent
  * (`cdkDrag` on the host); this component provides the drag handle and the output port.
  */
 @Component({
@@ -27,6 +28,7 @@ import { OutputPort } from '../ports/output-port';
     NgpLabel,
     Button,
     IconClose,
+    ItemIcon,
     Select,
     OutputPort,
     OverclockPanel,
@@ -55,7 +57,7 @@ export class ResourceNodeCard {
   });
 
   protected setPurity(purity: string) {
-    this.store.updateResourceNode(this.node().id, { purity: purity as Purity });
+    this.store.setPurity(this.node().id, purity as Purity);
   }
 
   protected setMiner(minerId: string) {

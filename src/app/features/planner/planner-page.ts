@@ -13,9 +13,11 @@ import { NgpFormField, NgpLabel } from 'ng-primitives/form-field';
 import { GameDataService } from '../../core/game-data.service';
 import { Button } from '../../ui/button/button';
 import { IconClose } from '../../ui/icons';
+import { ItemIcon } from '../../ui/item-icon/item-icon';
 import { Select } from '../../ui/select/select';
 import { AddMenu } from './add-menu/add-menu';
 import { BuildingCard } from './building-card/building-card';
+import { GeneratorCard } from './generator-card/generator-card';
 import { LogisticCard } from './logistic-card/logistic-card';
 import { PlannerInteractions } from './planner-interactions';
 import { CANVAS } from './planner.model';
@@ -33,8 +35,10 @@ import { ResourceNodeCard } from './resource-node-card/resource-node-card';
     NgpLabel,
     Button,
     IconClose,
+    ItemIcon,
     Select,
     BuildingCard,
+    GeneratorCard,
     LogisticCard,
     ResourceNodeCard,
   ],

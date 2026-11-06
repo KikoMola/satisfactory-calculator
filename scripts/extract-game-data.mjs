@@ -132,7 +132,14 @@ function buildingBase(cls) {
     powerMW: num(cls.mPowerConsumption),
     powerExponent: num(cls.mPowerConsumptionExponent),
     canOverclock: bool(cls.mCanChangePotential),
+    iconPath: buildingIcon(cls),
   };
+}
+
+/** Buildings take their icon from their descriptor: `Build_X_C` → `Desc_X_C`. */
+function buildingIcon(cls) {
+  const descriptor = es.get(cls.ClassName.replace(/^Build_/, 'Desc_'));
+  return parseTexture(descriptor?.mPersistentBigIcon);
 }
 
 const buildings = [];

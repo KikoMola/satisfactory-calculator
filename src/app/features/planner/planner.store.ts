@@ -2,6 +2,7 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { GameDataService } from '../../core/game-data.service';
 import type {
   ExtractorBuilding,
+  GeneratorBuilding,
   Item,
   LogisticBuilding,
   ManufacturerBuilding,
@@ -14,11 +15,14 @@ import {
   beltRoute,
   clampPoint,
   extractionRate,
+  fuelRate,
+  geothermalPower,
   MAX_POWER_SHARDS,
   maxClock,
   powerUsage,
   recipeRate,
   somersloopBoost,
+  supplementalRate,
   waterfill,
   type BeltFlow,
 } from './planner.calc';
@@ -27,12 +31,25 @@ import {
   PURITIES,
   type Belt,
   type BuildingNode,
+  type GeneratorNode,
   type LogisticNode,
   type PlannerNode,
   type Point,
   type PortRef,
+  type Purity,
   type ResourceNode,
 } from './planner.model';
+
+/** The Water Extractor is placed on any body of water: there is no node, so no purity. */
+const NO_PURITY_EXTRACTORS = new Set(['Build_WaterPump_C']);
+/** Resource Well Extractor: its power is drawn by the well's Pressurizer, not by itself. */
+const WELL_EXTRACTOR = 'Build_FrackingExtractor_C';
+
+const purityMultiplier = (purity: Purity) => PURITIES.find((p) => p.id === purity)?.multiplier ?? 1;
+
+/** Rate unit for an item: m³/min for liquids and gases, /min for solids. */
+export const rateUnit = (item: Item | null | undefined) =>
+  item && item.form !== 'solid' ? 'm³/min' : '/min';
 
 /** Accent colour per raw resource, used for card stripes, port dots and legends. */
 const RESOURCE_COLORS: Record<string, string> = {
@@ -54,6 +71,10 @@ export interface PortView {
   /** `null` on an empty merger/splitter (nothing connected yet). */
   item: Item | null;
   color: string;
+  /** Item icon URL, `null` when there is none (a colour dot is shown instead). */
+  icon: string | null;
+  /** '/min' or 'm³/min'. */
+  unit: string;
   /** Items/min at 100% (demand for inputs, production for outputs). 0 for logistics. */
   rate: number;
   /** Items/min actually flowing given the current connections. */
@@ -82,25 +103,56 @@ export interface ResourceNodeView extends ResourceNode, NodeViewBase, ClockView 
   resource: Item;
   miner: ExtractorBuilding;
   color: string;
+  /** Resource icon URL. */
+  icon: string | null;
+  /** '/min' or 'm³/min'. */
+  unit: string;
+  /** False for the Water Extractor (no node, so no purity). */
+  hasPurity: boolean;
+  /** True for a Resource Well Extractor (its Pressurizer's power is not included). */
+  wellExtractor: boolean;
+  /** Extractors that can work this resource. */
+  extractorOptions: readonly SelectOption[];
 }
 
 export interface BuildingNodeView extends BuildingNode, NodeViewBase, ClockView {
   building: ManufacturerBuilding;
   recipe: Recipe;
+  /** Building icon URL. */
+  icon: string | null;
   /** 0–1: how fast the building runs given what reaches its inputs. */
   productivity: number;
 }
 
 export interface LogisticNodeView extends LogisticNode, NodeViewBase {
   building: LogisticBuilding;
+  /** Building icon URL. */
+  icon: string | null;
   /** Item travelling through (from upstream, or what downstream expects). */
   item: Item | null;
+  /** Icon of the item travelling through. */
+  itemIcon: string | null;
   color: string;
   /** Items/min passing through. */
   throughput: number;
 }
 
-export type NodeView = ResourceNodeView | BuildingNodeView | LogisticNodeView;
+export interface GeneratorNodeView extends GeneratorNode, NodeViewBase, ClockView {
+  building: GeneratorBuilding;
+  /** Building icon URL. */
+  icon: string | null;
+  fuel: Item | null;
+  /** True for the geothermal generator: no fuel, power depends on the geyser's purity. */
+  geothermal: boolean;
+  /** 0–1: how fast the generator runs given the fuel (and water) reaching it. */
+  productivity: number;
+  /** Power at the current clock speed if fully supplied (MW). */
+  nominalMW: number;
+  /** Power actually produced: nominal × productivity (MW). */
+  generatedMW: number;
+}
+
+export type NodeView = ResourceNodeView | BuildingNodeView | LogisticNodeView | GeneratorNodeView;
 
 export interface BeltView extends Belt {
   item: Item | null;
@@ -116,6 +168,8 @@ export interface BeltView extends Belt {
 export interface ResourceTotal {
   resource: Item;
   color: string;
+  icon: string | null;
+  unit: string;
   nodes: number;
   extracted: number;
   transported: number;
@@ -124,6 +178,8 @@ export interface ResourceTotal {
 export interface ProductTotal {
   item: Item;
   color: string;
+  icon: string | null;
+  unit: string;
   rate: number;
 }
 
@@ -170,10 +226,11 @@ export class PlannerStore {
 
   // ---- Options for the selects --------------------------------------------
 
-  readonly resourceOptions: readonly SelectOption[] = this.data.minableResources.map((r) => ({
+  readonly resourceOptions: readonly SelectOption[] = this.data.extractableResources.map((r) => ({
     value: r.id,
     label: r.name.es,
-    color: RESOURCE_COLORS[r.id],
+    color: this.colorOf(r),
+    icon: this.data.icon(r.id),
   }));
 
   readonly purityOptions: readonly SelectOption[] = PURITIES.map((p) => ({
@@ -182,15 +239,11 @@ export class PlannerStore {
     hint: `×${p.multiplier}`,
   }));
 
-  readonly minerOptions: readonly SelectOption[] = this.data.miners.map((m) => ({
-    value: m.id,
-    label: m.name.es.replace('Taladro ', ''),
-    hint: `${m.ratePerMinute}/min`,
-  }));
-
   private readonly beltOptions = this.transportOptions(this.data.belts);
   private readonly pipeOptions = this.transportOptions(this.data.pipes);
   private readonly recipeOptionsCache = new Map<string, readonly SelectOption[]>();
+  private readonly extractorOptionsCache = new Map<string, readonly SelectOption[]>();
+  private readonly fuelOptionsCache = new Map<string, readonly SelectOption[]>();
 
   recipeOptions(buildingId: string): readonly SelectOption[] {
     let options = this.recipeOptionsCache.get(buildingId);
@@ -199,8 +252,46 @@ export class PlannerStore {
         value: r.id,
         label: r.name.es.replace(/^Alternativa: /, ''),
         hint: r.event ? 'Evento' : r.alternate ? 'Alt.' : undefined,
+        icon: this.data.icon(r.products[0]?.item),
       }));
       this.recipeOptionsCache.set(buildingId, options);
+    }
+    return options;
+  }
+
+  /** Extractors for a resource, with their rate on a normal node at 100%. */
+  extractorOptions(resourceId: string): readonly SelectOption[] {
+    let options = this.extractorOptionsCache.get(resourceId);
+    if (!options) {
+      const unit = rateUnit(this.data.item(resourceId));
+      options = this.data.extractorsFor(resourceId).map((e) => ({
+        value: e.id,
+        label: e.name.es.replace(/^Taladro /, ''),
+        hint: `${e.ratePerMinute} ${unit}`,
+        icon: this.data.icon(e.id),
+      }));
+      this.extractorOptionsCache.set(resourceId, options);
+    }
+    return options;
+  }
+
+  /** Fuels a generator can burn, with how much it burns at 100%. */
+  fuelOptions(buildingId: string): readonly SelectOption[] {
+    let options = this.fuelOptionsCache.get(buildingId);
+    if (!options) {
+      const generator = this.data.building(buildingId) as GeneratorBuilding;
+      options = generator.fuels.map(({ fuel }) => {
+        const item = this.data.item(fuel);
+        const rate = fuelRate(generator.powerProductionMW, item.energyMJ);
+        return {
+          value: fuel,
+          label: item.name.es,
+          hint: `${Math.round(rate * 100) / 100} ${rateUnit(item)}`,
+          icon: this.data.icon(fuel),
+          color: this.colorOf(item),
+        };
+      });
+      this.fuelOptionsCache.set(buildingId, options);
     }
     return options;
   }
@@ -219,6 +310,7 @@ export class PlannerStore {
     switch (node.kind) {
       case 'resource': {
         const miner = this.data.building(node.minerId) as ExtractorBuilding;
+        const purity = NO_PURITY_EXTRACTORS.has(miner.id) ? 'normal' : node.purity;
         return {
           node,
           width: CANVAS.resource.width,
@@ -226,11 +318,38 @@ export class PlannerStore {
           outputs: [
             {
               item: this.data.item(node.resourceId),
-              rate: extractionRate(miner.ratePerMinute, node.purity) * node.clock,
+              rate: extractionRate(miner.ratePerMinute, purity) * node.clock,
               row: 0,
             },
           ],
         };
+      }
+      case 'generator': {
+        const generator = this.data.building(node.buildingId) as GeneratorBuilding;
+        const power = this.nominalPower(node, generator);
+        const fuel = generator.fuels.find((f) => f.fuel === node.fuelId);
+        const inputs: PortInfo[] = [];
+        const outputs: PortInfo[] = [];
+        if (fuel) {
+          const item = this.data.item(fuel.fuel);
+          const burn = fuelRate(power, item.energyMJ);
+          inputs.push({ item, rate: burn, row: 0 });
+          if (fuel.supplemental) {
+            inputs.push({
+              item: this.data.item(fuel.supplemental),
+              rate: supplementalRate(power, generator.supplementalToPowerRatio),
+              row: 1,
+            });
+          }
+          if (fuel.byproduct) {
+            outputs.push({
+              item: this.data.item(fuel.byproduct.item),
+              rate: burn * fuel.byproduct.amount,
+              row: inputs.length,
+            });
+          }
+        }
+        return { node, width: CANVAS.generator.width, inputs, outputs };
       }
       case 'building': {
         const recipe = this.data.recipe(node.recipeId);
@@ -350,6 +469,9 @@ export class PlannerStore {
     const isMerger = (info: NodeInfo) =>
       info.node.kind === 'logistic' &&
       (this.data.building(info.node.buildingId) as LogisticBuilding).role === 'merger';
+    /** Buildings and generators consume what reaches them, limited by their scarcest input. */
+    const isConsumer = (info: NodeInfo | undefined) =>
+      info?.node.kind === 'building' || info?.node.kind === 'generator';
 
     const acceptMemo = new Map<string, number>();
     const accept = (to: PortRef, seen: Set<string>): number => {
@@ -359,8 +481,8 @@ export class PlannerStore {
       if (seen.has(to.nodeId)) return 0; // loop without a consumer
       const info = infos.get(to.nodeId);
       let value = 0;
-      if (info?.node.kind === 'building') {
-        value = info.inputs[to.index]?.rate ?? 0;
+      if (isConsumer(info)) {
+        value = info!.inputs[to.index]?.rate ?? 0;
       } else if (info?.node.kind === 'logistic') {
         const next = new Set(seen).add(to.nodeId);
         value = info.outputs.reduce((sum, _, index) => {
@@ -396,6 +518,7 @@ export class PlannerStore {
         case 'resource':
           return output.rate;
         case 'building':
+        case 'generator':
           return (productivity.get(from.nodeId) ?? 0) * output.rate;
         case 'logistic':
           return isMerger(info)
@@ -406,9 +529,9 @@ export class PlannerStore {
     const supply = (belt: Belt) => Math.min(offered(belt.from), capacity(belt));
 
     for (let pass = 0; pass <= infos.size * 2 + 2; pass++) {
-      // Buildings run as fast as their scarcest input allows.
+      // Buildings and generators run as fast as their scarcest input allows.
       for (const info of infos.values()) {
-        if (info.node.kind !== 'building') continue;
+        if (!isConsumer(info)) continue;
         let p = 1;
         info.inputs.forEach((input, index) => {
           const belt = beltTo.get(portKey({ nodeId: info.node.id, index }));
@@ -421,7 +544,7 @@ export class PlannerStore {
       for (const belt of belts) {
         const target = infos.get(belt.to.nodeId);
         if (!target) continue;
-        if (target.node.kind === 'building') {
+        if (isConsumer(target)) {
           const demand = target.inputs[belt.to.index]?.rate ?? 0;
           const consumed = (productivity.get(belt.to.nodeId) ?? 0) * demand;
           next.set(belt.id, Math.min(supply(belt), consumed));
@@ -478,6 +601,8 @@ export class PlannerStore {
           item,
           rate: input.rate,
           color: this.colorOf(item),
+          icon: this.data.icon(item?.id),
+          unit: rateUnit(item),
           actual: belt ? (beltFlows.get(belt.id)?.flow ?? 0) : 0,
           connected: !!belt,
         };
@@ -493,7 +618,15 @@ export class PlannerStore {
               ? (beltFlows.get(belt.id)?.flow ?? 0)
               : 0
             : offered(ref);
-        return { item, rate: output.rate, color: this.colorOf(item), actual, connected: !!belt };
+        return {
+          item,
+          rate: output.rate,
+          color: this.colorOf(item),
+          icon: this.data.icon(item?.id),
+          unit: rateUnit(item),
+          actual,
+          connected: !!belt,
+        };
       });
 
       switch (node.kind) {
@@ -505,6 +638,11 @@ export class PlannerStore {
             resource,
             miner,
             color: this.colorOf(resource),
+            icon: this.data.icon(resource.id),
+            unit: rateUnit(resource),
+            hasPurity: !NO_PURITY_EXTRACTORS.has(miner.id),
+            wellExtractor: miner.id === WELL_EXTRACTOR,
+            extractorOptions: this.extractorOptions(resource.id),
             inputs,
             outputs,
             maxClock: maxClock(node.shards),
@@ -524,6 +662,7 @@ export class PlannerStore {
             ...node,
             building,
             recipe,
+            icon: this.data.icon(building.id),
             productivity: productivity.get(node.id) ?? 0,
             inputs,
             outputs,
@@ -544,11 +683,34 @@ export class PlannerStore {
           return {
             ...node,
             building: this.data.building(node.buildingId) as LogisticBuilding,
+            icon: this.data.icon(node.buildingId),
             item,
+            itemIcon: this.data.icon(item?.id),
             color: this.colorOf(item),
             throughput: inputs.reduce((sum, input) => sum + input.actual, 0),
             inputs,
             outputs,
+            powerMW: 0,
+          };
+        }
+        case 'generator': {
+          const building = this.data.building(node.buildingId) as GeneratorBuilding;
+          const nominalMW = this.nominalPower(node, building);
+          const p = productivity.get(node.id) ?? 0;
+          return {
+            ...node,
+            building,
+            icon: this.data.icon(building.id),
+            fuel: node.fuelId ? this.data.item(node.fuelId) : null,
+            geothermal: building.variablePowerProduction !== null,
+            productivity: p,
+            nominalMW,
+            generatedMW: nominalMW * p,
+            inputs,
+            outputs,
+            maxClock: maxClock(node.shards),
+            somersloopSlots: 0,
+            boost: 1,
             powerMW: 0,
           };
         }
@@ -612,6 +774,8 @@ export class PlannerStore {
       const total = totals.get(node.resourceId) ?? {
         resource: node.resource,
         color: node.color,
+        icon: node.icon,
+        unit: node.unit,
         nodes: 0,
         extracted: 0,
         transported: 0,
@@ -627,16 +791,18 @@ export class PlannerStore {
     );
   });
 
-  /** What leaves the factory: building outputs that are not connected to anything. */
+  /** What leaves the factory: building (and generator waste) outputs not connected to anything. */
   readonly productTotals = computed<ProductTotal[]>(() => {
     const totals = new Map<string, ProductTotal>();
     for (const node of this.nodeViews()) {
-      if (node.kind !== 'building') continue;
+      if (node.kind !== 'building' && node.kind !== 'generator') continue;
       for (const output of node.outputs) {
         if (!output.item || output.connected || output.actual <= 0) continue;
         const total = totals.get(output.item.id) ?? {
           item: output.item,
           color: output.color,
+          icon: output.icon,
+          unit: output.unit,
           rate: 0,
         };
         total.rate += output.actual;
@@ -646,7 +812,13 @@ export class PlannerStore {
     return [...totals.values()].sort((a, b) => a.item.name.es.localeCompare(b.item.name.es, 'es'));
   });
 
+  /** Power drawn by extractors and buildings (MW). */
   readonly totalPowerMW = computed(() => this.nodeViews().reduce((sum, n) => sum + n.powerMW, 0));
+
+  /** Power produced by generators (MW). */
+  readonly totalGeneratedMW = computed(() =>
+    this.nodeViews().reduce((sum, n) => sum + (n.kind === 'generator' ? n.generatedMW : 0), 0),
+  );
 
   // ---- Nodes --------------------------------------------------------------
 
@@ -657,7 +829,7 @@ export class PlannerStore {
       id: `node-${this.nextId++}`,
       resourceId,
       purity: 'normal',
-      minerId: this.data.miners[0].id,
+      minerId: this.defaultExtractor(resourceId).id,
       clock: 1,
       shards: 0,
       position: this.placeAt('resource', position),
@@ -667,43 +839,79 @@ export class PlannerStore {
   }
 
   /**
-   * Adds a production building running `recipeId` (or its default recipe), or a
-   * merger/splitter if `buildingId` is a logistic one.
+   * Adds a production building running `recipeId` (or its default recipe), a power generator
+   * burning its first fuel, or a merger/splitter, depending on what `buildingId` is.
    */
   addBuilding(
     buildingId: string,
     position?: Point | null,
     recipeId?: string,
-  ): BuildingNode | LogisticNode {
+  ): BuildingNode | LogisticNode | GeneratorNode {
     const id = `building-${this.nextId++}`;
-    const node: BuildingNode | LogisticNode =
-      this.data.building(buildingId).kind === 'logistic'
-        ? { kind: 'logistic', id, buildingId, position: this.placeAt('logistic', position) }
-        : {
-            kind: 'building',
-            id,
-            buildingId,
-            recipeId: recipeId ?? this.defaultRecipe(buildingId).id,
-            clock: 1,
-            shards: 0,
-            somersloops: 0,
-            position: this.placeAt('building', position),
-          };
+    const building = this.data.building(buildingId);
+    let node: BuildingNode | LogisticNode | GeneratorNode;
+    if (building.kind === 'logistic') {
+      node = { kind: 'logistic', id, buildingId, position: this.placeAt('logistic', position) };
+    } else if (building.kind === 'generator') {
+      node = {
+        kind: 'generator',
+        id,
+        buildingId,
+        fuelId: building.fuels[0]?.fuel ?? null,
+        purity: 'normal',
+        clock: 1,
+        shards: 0,
+        position: this.placeAt('generator', position),
+      };
+    } else {
+      node = {
+        kind: 'building',
+        id,
+        buildingId,
+        recipeId: recipeId ?? this.defaultRecipe(buildingId).id,
+        clock: 1,
+        shards: 0,
+        somersloops: 0,
+        position: this.placeAt('building', position),
+      };
+    }
     this.nodes.update((nodes) => [...nodes, node]);
     return node;
   }
 
+  /** Changes a resource node. Switching resource keeps the extractor only if it still fits. */
   updateResourceNode(
     id: string,
     patch: Partial<Pick<ResourceNode, 'resourceId' | 'purity' | 'minerId'>>,
   ) {
-    this.patchNode(id, (n) => (n.kind === 'resource' ? { ...n, ...patch } : n));
+    this.patchNode(id, (n) => {
+      if (n.kind !== 'resource') return n;
+      const next = { ...n, ...patch };
+      const fits = this.data.extractorsFor(next.resourceId).some((e) => e.id === next.minerId);
+      return fits ? next : { ...next, minerId: this.defaultExtractor(next.resourceId).id };
+    });
+  }
+
+  /** Node purity (resource nodes) or geyser purity (geothermal generators). */
+  setPurity(id: string, purity: Purity) {
+    this.patchNode(id, (n) =>
+      n.kind === 'resource' || n.kind === 'generator' ? { ...n, purity } : n,
+    );
+  }
+
+  /** Fuel burnt by a generator (must be one it accepts). */
+  setFuel(id: string, fuelId: string) {
+    this.patchNode(id, (n) => {
+      if (n.kind !== 'generator') return n;
+      const generator = this.data.building(n.buildingId) as GeneratorBuilding;
+      return generator.fuels.some((f) => f.fuel === fuelId) ? { ...n, fuelId } : n;
+    });
   }
 
   /** Sets the clock speed (1 = 100%), limited by the shards installed. */
   setClock(id: string, clock: number) {
     this.patchNode(id, (n) => {
-      if (n.kind === 'logistic') return n;
+      if (!this.canOverclock(n)) return n;
       const value = Math.min(Math.max(clock, 0.01), maxClock(n.shards));
       return { ...n, clock: Math.round(value * 10000) / 10000 };
     });
@@ -716,7 +924,7 @@ export class PlannerStore {
    */
   setShards(id: string, shards: number) {
     this.patchNode(id, (n) => {
-      if (n.kind === 'logistic') return n;
+      if (!this.canOverclock(n)) return n;
       const count = Math.min(Math.max(Math.round(shards), 0), MAX_POWER_SHARDS);
       const wasAtLimit = n.clock >= maxClock(n.shards) - 1e-9;
       const clock = wasAtLimit ? maxClock(count) : Math.min(n.clock, maxClock(count));
@@ -896,6 +1104,32 @@ export class PlannerStore {
       x: side === 'in' ? position.x : position.x + info.width,
       y: position.y + CANVAS.rows.top + row * CANVAS.rows.height + CANVAS.rows.height / 2,
     };
+  }
+
+  /** Logistics and the geothermal generator have no clock speed. */
+  private canOverclock(n: PlannerNode): n is ResourceNode | BuildingNode | GeneratorNode {
+    if (n.kind === 'logistic') return false;
+    return this.data.building(n.kind === 'resource' ? n.minerId : n.buildingId).canOverclock;
+  }
+
+  /**
+   * Power of a generator at its clock speed when fully supplied. Generators scale linearly
+   * with clock speed; geothermal ones can't be overclocked and depend on the geyser's purity.
+   */
+  private nominalPower(node: GeneratorNode, generator: GeneratorBuilding): number {
+    const variable = generator.variablePowerProduction;
+    return variable
+      ? geothermalPower(variable.constant, variable.factor, purityMultiplier(node.purity))
+      : generator.powerProductionMW * node.clock;
+  }
+
+  /**
+   * Default extractor for a resource: the slowest miner for ores, the dedicated Oil/Water
+   * Extractor for those fluids, and the Resource Well Extractor for nitrogen.
+   */
+  private defaultExtractor(resourceId: string): ExtractorBuilding {
+    const extractors = this.data.extractorsFor(resourceId);
+    return extractors.find((e) => e.id !== WELL_EXTRACTOR) ?? extractors[0];
   }
 
   /** First standard, non-event recipe (alphabetical within the building). */

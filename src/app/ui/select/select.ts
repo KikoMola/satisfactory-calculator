@@ -6,12 +6,15 @@ import {
   NgpSelectOption,
   NgpSelectPortal,
 } from 'ng-primitives/select';
+import { ItemIcon } from '../item-icon/item-icon';
 
 export interface SelectOption {
   value: string;
   label: string;
-  /** Optional colour dot shown before the label. */
+  /** Optional colour dot shown before the label (fallback when there is no icon). */
   color?: string;
+  /** Optional game icon URL shown before the label. */
+  icon?: string | null;
   /** Optional secondary text shown on the right (e.g. "60/min"). */
   hint?: string;
 }
@@ -22,7 +25,7 @@ export interface SelectOption {
  */
 @Component({
   selector: 'app-select',
-  imports: [NgpSelectDropdown, NgpSelectOption, NgpSelectPortal],
+  imports: [ItemIcon, NgpSelectDropdown, NgpSelectOption, NgpSelectPortal],
   hostDirectives: [
     {
       directive: NgpSelect,
@@ -45,12 +48,12 @@ export interface SelectOption {
   template: `
     <span class="flex min-w-0 flex-1 items-center gap-2">
       @if (selected(); as option) {
-        @if (option.color) {
-          <span
-            class="size-2.5 shrink-0 rounded-full"
-            [style.background]="option.color"
-            aria-hidden="true"
-          ></span>
+        @if (option.icon || option.color) {
+          <app-item-icon
+            [src]="option.icon"
+            [color]="option.color ?? ''"
+            [size]="size() === 'sm' ? 16 : 20"
+          />
         }
         <span class="truncate">{{ option.label }}</span>
         @if (option.hint && showHint()) {
@@ -89,12 +92,8 @@ export interface SelectOption {
           class="flex h-8 cursor-pointer items-center gap-2 rounded-md px-2
             data-active:bg-hover data-press:bg-hover data-selected:font-semibold"
         >
-          @if (option.color) {
-            <span
-              class="size-2.5 shrink-0 rounded-full"
-              [style.background]="option.color"
-              aria-hidden="true"
-            ></span>
+          @if (option.icon || option.color) {
+            <app-item-icon [src]="option.icon" [color]="option.color ?? ''" />
           }
           <span class="truncate">{{ option.label }}</span>
           @if (option.hint) {

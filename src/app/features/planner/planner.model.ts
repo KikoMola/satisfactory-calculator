@@ -15,12 +15,18 @@ export const PURITIES: readonly { id: Purity; label: string; multiplier: number 
   { id: 'pure', label: 'Puro', multiplier: 2 },
 ];
 
-/** A resource node on the map with a miner placed on it. One output, no inputs. */
+/**
+ * A resource node with an extractor on it: a miner on an ore node, an Oil Extractor on an oil
+ * node, a Water Extractor anywhere on water, or a Resource Well Extractor on a well's satellite
+ * node. One output, no inputs.
+ */
 export interface ResourceNode {
   kind: 'resource';
   id: string;
   resourceId: string;
+  /** Ignored by the Water Extractor, which has no node. */
   purity: Purity;
+  /** Extractor building ID (kept as `minerId` for compatibility). */
   minerId: string;
   /** Clock speed, 1 = 100% (0.01–2.5). */
   clock: number;
@@ -54,7 +60,26 @@ export interface LogisticNode {
   position: Point;
 }
 
-export type PlannerNode = ResourceNode | BuildingNode | LogisticNode;
+/**
+ * A power generator burning a fuel (inputs: fuel, plus water for coal/nuclear; output: waste
+ * for nuclear), or a geothermal generator on a geyser (no inputs, power depends on purity).
+ */
+export interface GeneratorNode {
+  kind: 'generator';
+  id: string;
+  buildingId: string;
+  /** Fuel item burnt; `null` for the geothermal generator. */
+  fuelId: string | null;
+  /** Geyser purity (geothermal only). */
+  purity: Purity;
+  /** Clock speed, 1 = 100% (0.01–2.5). */
+  clock: number;
+  /** Power shards installed (0–3); each one allows +50% clock. */
+  shards: number;
+  position: Point;
+}
+
+export type PlannerNode = ResourceNode | BuildingNode | LogisticNode | GeneratorNode;
 
 /** A port on a node: output ports for the belt source, input ports for its target. */
 export interface PortRef {
@@ -82,6 +107,8 @@ export const CANVAS = {
   resource: { width: 288, height: 220, outputY: 28 },
   /** Building card: w-80. */
   building: { width: 320, height: 320 },
+  /** Generator card: w-80, same port rows as buildings. */
+  generator: { width: 320, height: 300 },
   /** Merger / splitter card: w-56, three port rows. */
   logistic: { width: 224, height: 180 },
   /**
