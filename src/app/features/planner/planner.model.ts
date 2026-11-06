@@ -108,9 +108,14 @@ export interface Belt {
  * Keep in sync with the card templates.
  */
 export const CANVAS = {
-  /** Plenty of room: zoom out to see it all. */
-  width: 6000,
-  height: 4000,
+  /**
+   * Largest the canvas can grow. It is shown only as big as the view and the cards need
+   * (see `growMargin`), so this is just a hard limit for positions.
+   */
+  width: 20000,
+  height: 20000,
+  /** Free room kept to the right of and below the furthest card, so it can be dragged further. */
+  growMargin: 640,
   /** Resource card: w-72. Its single output port sits in the header. */
   resource: { width: 288, height: 232, outputY: 36 },
   /** Building card: w-80. */

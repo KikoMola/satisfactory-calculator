@@ -5,9 +5,11 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  DestroyRef,
   ElementRef,
   inject,
   Injector,
+  signal,
   viewChild,
 } from '@angular/core';
 import { NgpContextMenuTrigger } from 'ng-primitives/context-menu';
@@ -81,8 +83,41 @@ export class PlannerPage {
   /** Component shown by the right-click menu of the canvas (card actions or add menu). */
   protected readonly canvasMenu = CanvasMenu;
 
+  /** Visible size of the canvas viewport, in screen pixels. */
+  private readonly viewportSize = signal({ width: 0, height: 0 });
+
+  /**
+   * Canvas size (canvas units): always fills the view at the current zoom, and grows right or
+   * down only when cards get close to the edge, leaving `CANVAS.growMargin` of room to keep
+   * dragging. Never larger than `CANVAS.width × CANVAS.height`.
+   */
+  protected readonly surfaceSize = computed(() => {
+    const zoom = this.interactions.zoom();
+    const view = this.viewportSize();
+    let width = view.width / zoom;
+    let height = view.height / zoom;
+    for (const node of this.store.nodes()) {
+      const size = CANVAS[node.kind];
+      width = Math.max(width, node.position.x + size.width + CANVAS.growMargin);
+      height = Math.max(height, node.position.y + size.height + CANVAS.growMargin);
+    }
+    return {
+      width: Math.ceil(Math.min(width, CANVAS.width)),
+      height: Math.ceil(Math.min(height, CANVAS.height)),
+    };
+  });
+
   constructor() {
-    afterNextRender(() => this.interactions.registerSurface(this.surface().nativeElement));
+    const destroyRef = inject(DestroyRef);
+    afterNextRender(() => {
+      this.interactions.registerSurface(this.surface().nativeElement);
+      const viewport = this.viewport().nativeElement;
+      const observer = new ResizeObserver(() =>
+        this.viewportSize.set({ width: viewport.clientWidth, height: viewport.clientHeight }),
+      );
+      observer.observe(viewport);
+      destroyRef.onDestroy(() => observer.disconnect());
+    });
   }
 
   /**

@@ -14,7 +14,6 @@
    * keep ≥ 3:1 against it; text on the canvas always sits on a panel.
    */
   --color-blueprint: #173d63;
-  --color-blueprint-deep: #0f2943;
   --color-blueprint-minor: rgb(255 255 255 / 0.07);
   --color-blueprint-major: rgb(255 255 255 / 0.17);
   --color-fg: #ecebe8;
@@ -54,11 +53,13 @@
 }
 
 /*
- * Blueprint paper: fine lines every 32px (the nudge/card grid) and stronger ones every 160px.
- * Applied to the canvas surface, so it scales with the zoom like the cards do.
+ * Blueprint paper: fine lines every 32px and stronger ones every 160px. Applied to the
+ * scrolling viewport, not the scaled canvas, so it looks the same at any zoom; `local` makes
+ * it scroll with the content.
  */
 @utility blueprint-grid {
   background-color: var(--color-blueprint);
+  background-attachment: local;
   background-image:
     linear-gradient(var(--color-blueprint-major) 1px, transparent 1px),
     linear-gradient(90deg, var(--color-blueprint-major) 1px, transparent 1px),
