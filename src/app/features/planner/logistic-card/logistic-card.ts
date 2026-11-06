@@ -18,8 +18,8 @@ interface Row {
 }
 
 /**
- * Conveyor merger (3 inputs → 1 output in the middle row) or splitter (input in the middle
- * row → 3 outputs). Same 32px rows as building cards so port positions line up with the store.
+ * Merger (3 inputs → 1 output in the middle row) or splitter (input in the middle row →
+ * 3 outputs), on belts or as a pipeline junction for fluids. Same 32px rows as building cards so port positions line up with the store.
  */
 @Component({
   selector: 'app-logistic-card',
@@ -36,6 +36,8 @@ interface Row {
   templateUrl: './logistic-card.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
+    // Lets the canvas context menu and shortcuts know which card they act on.
+    '[attr.data-node-id]': 'node().id',
     // Width must match CANVAS.logistic.width (224px = w-56) in planner.model.ts.
     class:
       'group/card absolute top-0 left-0 box-border w-56 rounded-lg border border-t-4 border-line ' +
@@ -50,16 +52,18 @@ export class LogisticCard {
 
   readonly node = input.required<LogisticNodeView>();
 
-  protected readonly title = computed(() =>
-    this.node().building.role === 'merger' ? 'Unificador' : 'Divisor',
+  protected readonly title = computed(() => this.node().label);
+  /** Unit of what flows through: m³/min on a pipeline junction. */
+  protected readonly unit = computed(() =>
+    this.node().building.transport === 'pipe' ? 'm³/min' : '/min',
   );
 
   protected readonly rows = computed<Row[]>(() => {
-    const { inputs, outputs, building } = this.node();
+    const { inputs, outputs, role } = this.node();
     const at = (ports: PortView[], index: number) =>
       ports[index] ? { port: ports[index], index } : null;
     return [0, 1, 2].map((row) =>
-      building.role === 'merger'
+      role === 'merger'
         ? { input: at(inputs, row), output: row === 1 ? at(outputs, 0) : null }
         : { input: row === 1 ? at(inputs, 0) : null, output: at(outputs, row) },
     );

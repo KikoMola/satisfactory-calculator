@@ -115,11 +115,18 @@ const GENERATORS = [
   'FGBuildableGeneratorGeoThermal',
 ];
 const PRESSURIZERS = ['FGBuildableFrackingActivator'];
-/** Basic belt logistics. Smart/programmable splitters and priority mergers come later. */
+/**
+ * Basic logistics. Smart/programmable splitters and priority mergers come later.
+ * The pipeline junction has 4 two-way connections: the planner uses it either as a fluid
+ * splitter (1 → 3) or a fluid merger (3 → 1).
+ */
 const LOGISTICS = {
-  FGBuildableAttachmentMerger: { role: 'merger', inputs: 3, outputs: 1 },
-  FGBuildableAttachmentSplitter: { role: 'splitter', inputs: 1, outputs: 3 },
+  FGBuildableAttachmentMerger: { role: 'merger', transport: 'belt', inputs: 3, outputs: 1 },
+  FGBuildableAttachmentSplitter: { role: 'splitter', transport: 'belt', inputs: 1, outputs: 3 },
+  FGBuildablePipelineJunction: { role: 'junction', transport: 'pipe', inputs: 3, outputs: 3 },
 };
+/** Only the 4-way junction: the T junction is the same thing with one connection less. */
+const SKIPPED_LOGISTICS = new Set(['Build_PipelineJunction_T_C']);
 
 /** Items referenced by buildings (fuels, extractable resources) are kept in items.json. */
 const referencedItems = new Set();
@@ -204,7 +211,7 @@ for (const cls of es.values()) {
           }
         : null,
     });
-  } else if (LOGISTICS[native]) {
+  } else if (LOGISTICS[native] && !SKIPPED_LOGISTICS.has(cls.ClassName)) {
     buildings.push({ ...buildingBase(cls), kind: 'logistic', ...LOGISTICS[native] });
   } else if (PRESSURIZERS.includes(native)) {
     buildings.push({

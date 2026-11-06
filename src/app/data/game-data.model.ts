@@ -127,10 +127,15 @@ export interface PressurizerBuilding extends BuildingBase {
   allowedResources: string[];
 }
 
-/** Conveyor merger (3 in → 1 out) or splitter (1 in → 3 out). Belts only, any item. */
+/**
+ * Conveyor merger (3 in → 1 out) or splitter (1 in → 3 out), belts only, any solid; or the
+ * pipeline junction (4 two-way connections), fluids only, used as a fluid merger or splitter.
+ */
 export interface LogisticBuilding extends BuildingBase {
   kind: 'logistic';
-  role: 'merger' | 'splitter';
+  role: 'merger' | 'splitter' | 'junction';
+  /** What connects to it: conveyor belts (solids) or pipelines (liquids and gases). */
+  transport: 'belt' | 'pipe';
   inputs: number;
   outputs: number;
 }

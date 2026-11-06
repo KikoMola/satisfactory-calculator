@@ -51,12 +51,19 @@ export interface BuildingNode {
   position: Point;
 }
 
-/** A conveyor merger (3 inputs → 1 output) or splitter (1 input → 3 outputs). */
+export type LogisticRole = 'merger' | 'splitter';
+
+/**
+ * A merger (3 inputs → 1 output) or splitter (1 input → 3 outputs): conveyor ones for
+ * solids, or a pipeline junction used as either for fluids.
+ */
 export interface LogisticNode {
   kind: 'logistic';
   id: string;
-  /** Build_ConveyorAttachmentMerger_C or Build_ConveyorAttachmentSplitter_C. */
+  /** Build_ConveyorAttachmentMerger_C, Build_ConveyorAttachmentSplitter_C or Build_PipelineJunction_Cross_C. */
   buildingId: string;
+  /** Fixed by the building for belts; chosen when placing a pipeline junction. */
+  role: LogisticRole;
   position: Point;
 }
 
@@ -120,4 +127,6 @@ export const CANVAS = {
   snapRadius: 48,
   /** Keyboard nudge step in px (Shift multiplies by 4). */
   nudge: 16,
+  /** How far a pasted or duplicated card lands from the original, in px. */
+  pasteOffset: 32,
 } as const;

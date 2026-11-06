@@ -36,6 +36,8 @@ import { OutputPort } from '../ports/output-port';
   templateUrl: './resource-node-card.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
+    // Lets the canvas context menu and shortcuts know which card they act on.
+    '[attr.data-node-id]': 'node().id',
     // Width must match CANVAS.resource.width (288px = w-72) in planner.model.ts.
     class:
       'group/card absolute top-0 left-0 box-border w-72 rounded-lg border border-t-4 border-line ' +

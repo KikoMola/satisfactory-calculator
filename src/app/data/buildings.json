@@ -98,6 +98,7 @@
     "iconPath": "/Game/FactoryGame/Buildable/Factory/CA_Merger/UI/IconDesc_ConveyorMerger_512",
     "kind": "logistic",
     "role": "merger",
+    "transport": "belt",
     "inputs": 3,
     "outputs": 1
   },
@@ -117,6 +118,7 @@
     "iconPath": "/Game/FactoryGame/Buildable/Factory/CA_Splitter/UI/IconDesc_ConveyorSplitter_512",
     "kind": "logistic",
     "role": "splitter",
+    "transport": "belt",
     "inputs": 1,
     "outputs": 3
   },
@@ -543,6 +545,26 @@
     "somersloopMultiplier": 1,
     "boostPowerExponent": 2,
     "variablePower": null
+  },
+  {
+    "id": "Build_PipelineJunction_Cross_C",
+    "name": {
+      "es": "Unión de tuberías",
+      "en": "Pipeline Junction"
+    },
+    "description": {
+      "es": "Se conecta a una tubería, lo que permite dividirla en hasta 4 direcciones.",
+      "en": "Attaches to a Pipeline, allowing it to be split up to 4 ways."
+    },
+    "powerMW": 0,
+    "powerExponent": 1.6,
+    "canOverclock": false,
+    "iconPath": "/Game/FactoryGame/Buildable/Factory/PipeJunction/UI/PipelineJunction_512",
+    "kind": "logistic",
+    "role": "junction",
+    "transport": "pipe",
+    "inputs": 3,
+    "outputs": 3
   },
   {
     "id": "Build_QuantumEncoder_C",

@@ -1,7 +1,8 @@
 <h1 class="sr-only">Planificador de fábrica</h1>
 <p id="canvas-help" class="sr-only">
   Haz clic derecho, o pulsa Mayúsculas+F10 con el lienzo enfocado, para añadir nodos de recurso,
-  edificios, generadores, divisores y unificadores.
+  edificios, generadores, divisores y unificadores. Sobre una tarjeta, el mismo menú permite
+  copiarla, duplicarla o eliminarla; también con Ctrl+C, Ctrl+D, Ctrl+V y Supr.
 </p>
 
 <div
@@ -13,7 +14,7 @@
     tabindex="0"
     aria-label="Lienzo de la fábrica"
     aria-describedby="canvas-help"
-    [ngpContextMenuTrigger]="addMenu"
+    [ngpContextMenuTrigger]="canvasMenu"
     (contextmenu)="onContextMenu($event)"
   >
     <div

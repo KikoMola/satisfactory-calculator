@@ -11,7 +11,7 @@
     <app-item-icon [src]="n.icon" [color]="n.color" [size]="28" />
     <span class="truncate">{{ title() }}</span>
     <span class="text-xs font-normal text-muted">
-      {{ n.building.role === 'merger' ? '3 → 1' : '1 → 3' }}
+      {{ n.role === 'merger' ? '3 → 1' : '1 → 3' }}
     </span>
   </button>
   <button
@@ -43,7 +43,7 @@
         />
         <span [class.text-muted]="!input.port.connected">
           <span class="sr-only">Entrada {{ input.index + 1 }}: </span>
-          {{ input.port.connected ? (input.port.actual | number: '1.0-2') + '/min' : '—' }}
+          {{ input.port.connected ? (input.port.actual | number: '1.0-2') + ' ' + unit() : '—' }}
         </span>
       } @else {
         <span></span>
@@ -52,7 +52,7 @@
       @if (row.output; as output) {
         <span class="font-semibold" [class.text-muted]="!output.port.connected">
           <span class="sr-only">Salida {{ output.index + 1 }}: </span>
-          {{ output.port.connected ? (output.port.actual | number: '1.0-2') + '/min' : '—' }}
+          {{ output.port.connected ? (output.port.actual | number: '1.0-2') + ' ' + unit() : '—' }}
         </span>
         <app-output-port
           class="top-1 -right-[13px]"
@@ -73,8 +73,12 @@
   <app-item-icon [src]="n.itemIcon" [color]="n.color" />
   @if (n.item; as item) {
     <span class="min-w-0 flex-1 truncate">{{ item.name.es }}</span>
-    <span class="font-semibold tabular-nums">{{ n.throughput | number: '1.0-2' }}/min</span>
+    <span class="font-semibold tabular-nums"
+      >{{ n.throughput | number: '1.0-2' }} {{ unit() }}</span
+    >
   } @else {
-    <span class="text-muted">Vacío: conecta una cinta</span>
+    <span class="text-muted"
+      >Vacío: conecta {{ n.building.transport === 'pipe' ? 'una tubería' : 'una cinta' }}</span
+    >
   }
 </p>
