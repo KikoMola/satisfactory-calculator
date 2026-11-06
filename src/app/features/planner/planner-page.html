@@ -9,10 +9,11 @@
 <div
   class="grid h-full min-h-0 grid-cols-1 grid-rows-[1fr_auto] md:grid-cols-[1fr_300px] md:grid-rows-1"
 >
-  <div class="relative min-h-0">
+  <!-- min-w-0: without it the grid column would grow to the canvas width and push the summary out. -->
+  <div class="relative min-h-0 min-w-0">
     <main
       #viewport
-      class="h-full overflow-auto bg-blueprint-deep"
+      class="h-full overflow-auto blueprint-grid"
       tabindex="0"
       aria-label="Lienzo de la fábrica"
       aria-describedby="canvas-help"
@@ -23,20 +24,21 @@
       <!-- Sized to the zoomed canvas so the scrollbars match what is visible. -->
       <div
         class="relative"
-        [style.width.px]="canvas.width * interactions.zoom()"
-        [style.height.px]="canvas.height * interactions.zoom()"
+        [style.width.px]="surfaceSize().width * interactions.zoom()"
+        [style.height.px]="surfaceSize().height * interactions.zoom()"
       >
+        <!-- Transparent: the blueprint grid belongs to the viewport so it doesn't scale. -->
         <div
           #surface
-          class="planner-surface absolute top-0 left-0 origin-top-left blueprint-grid select-none"
-          [style.width.px]="canvas.width"
-          [style.height.px]="canvas.height"
+          class="planner-surface absolute top-0 left-0 origin-top-left select-none"
+          [style.width.px]="surfaceSize().width"
+          [style.height.px]="surfaceSize().height"
           [style.transform]="'scale(' + interactions.zoom() + ')'"
         >
           <svg
             class="pointer-events-none absolute inset-0"
-            [attr.width]="canvas.width"
-            [attr.height]="canvas.height"
+            [attr.width]="surfaceSize().width"
+            [attr.height]="surfaceSize().height"
             aria-hidden="true"
           >
             @for (belt of store.beltViews(); track belt.id) {
