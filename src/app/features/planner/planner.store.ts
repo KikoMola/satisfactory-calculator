@@ -33,6 +33,7 @@ import {
   type BuildingNode,
   type GeneratorNode,
   type LogisticNode,
+  type LogisticRole,
   type PlannerNode,
   type Point,
   type PortRef,
@@ -83,6 +84,8 @@ export interface PortView {
 }
 
 interface NodeViewBase {
+  /** Human name of the card, e.g. "Nodo de Carbón", "Divisor de fluidos". */
+  label: string;
   inputs: PortView[];
   outputs: PortView[];
   /** Power at the current clock speed and Somersloops (MW). */
@@ -184,7 +187,15 @@ export interface ProductTotal {
 }
 
 export type ConnectResult =
-  'ok' | 'item-mismatch' | 'occupied' | 'same-node' | 'fluid-logistics' | 'invalid';
+  | 'ok'
+  | 'item-mismatch'
+  | 'occupied'
+  | 'same-node'
+  /** A fluid into a conveyor merger/splitter. */
+  | 'fluid-logistics'
+  /** A solid into a pipeline junction. */
+  | 'solid-pipe'
+  | 'invalid';
 
 /** Static port info: item (null for logistics until connected), nominal rate and row. */
 interface PortInfo {
@@ -217,6 +228,11 @@ export class PlannerStore {
   readonly connectingFrom = signal<PortRef | null>(null);
   /** Input the dragged belt is currently snapped to. */
   readonly snapTarget = signal<PortRef | null>(null);
+
+  /** Snapshot of the last copied node (settings only: its belts are not copied). */
+  readonly clipboard = signal<PlannerNode | null>(null);
+  /** How many times the clipboard was pasted without a position, to cascade the copies. */
+  private pasteCount = 0;
 
   /**
    * Positions of cards currently being dragged. Kept apart from the model so that the CDK's
@@ -371,10 +387,9 @@ export class PlannerStore {
         };
       }
       case 'logistic': {
-        const building = this.data.building(node.buildingId) as LogisticBuilding;
         const port = (row: number): PortInfo => ({ item: null, rate: 0, row });
         // Merger: 3 inputs, output on the middle row. Splitter: input on the middle row, 3 outputs.
-        return building.role === 'merger'
+        return node.role === 'merger'
           ? { node, width: CANVAS.logistic.width, inputs: [0, 1, 2].map(port), outputs: [port(1)] }
           : { node, width: CANVAS.logistic.width, inputs: [port(1)], outputs: [0, 1, 2].map(port) };
       }
@@ -467,8 +482,7 @@ export class PlannerStore {
     const beltTo = new Map(belts.map((b) => [portKey(b.to), b]));
     const capacity = (belt: Belt) => this.data.transport(belt.transportId).ratePerMinute;
     const isMerger = (info: NodeInfo) =>
-      info.node.kind === 'logistic' &&
-      (this.data.building(info.node.buildingId) as LogisticBuilding).role === 'merger';
+      info.node.kind === 'logistic' && info.node.role === 'merger';
     /** Buildings and generators consume what reaches them, limited by their scarcest input. */
     const isConsumer = (info: NodeInfo | undefined) =>
       info?.node.kind === 'building' || info?.node.kind === 'generator';
@@ -637,6 +651,7 @@ export class PlannerStore {
             ...node,
             resource,
             miner,
+            label: this.labelOf(node),
             color: this.colorOf(resource),
             icon: this.data.icon(resource.id),
             unit: rateUnit(resource),
@@ -662,6 +677,7 @@ export class PlannerStore {
             ...node,
             building,
             recipe,
+            label: building.name.es,
             icon: this.data.icon(building.id),
             productivity: productivity.get(node.id) ?? 0,
             inputs,
@@ -680,9 +696,11 @@ export class PlannerStore {
         }
         case 'logistic': {
           const item = this.logisticItems().get(node.id) ?? null;
+          const building = this.data.building(node.buildingId) as LogisticBuilding;
           return {
             ...node,
-            building: this.data.building(node.buildingId) as LogisticBuilding,
+            building,
+            label: this.labelOf(node),
             icon: this.data.icon(node.buildingId),
             item,
             itemIcon: this.data.icon(item?.id),
@@ -700,6 +718,7 @@ export class PlannerStore {
           return {
             ...node,
             building,
+            label: building.name.es,
             icon: this.data.icon(building.id),
             fuel: node.fuelId ? this.data.item(node.fuelId) : null,
             geothermal: building.variablePowerProduction !== null,
@@ -841,17 +860,24 @@ export class PlannerStore {
   /**
    * Adds a production building running `recipeId` (or its default recipe), a power generator
    * burning its first fuel, or a merger/splitter, depending on what `buildingId` is.
+   * A pipeline junction is placed as a splitter unless `role` says otherwise.
    */
   addBuilding(
     buildingId: string,
     position?: Point | null,
-    recipeId?: string,
+    options: { recipeId?: string; role?: LogisticRole } = {},
   ): BuildingNode | LogisticNode | GeneratorNode {
     const id = `building-${this.nextId++}`;
     const building = this.data.building(buildingId);
     let node: BuildingNode | LogisticNode | GeneratorNode;
     if (building.kind === 'logistic') {
-      node = { kind: 'logistic', id, buildingId, position: this.placeAt('logistic', position) };
+      node = {
+        kind: 'logistic',
+        id,
+        buildingId,
+        role: building.role === 'junction' ? (options.role ?? 'splitter') : building.role,
+        position: this.placeAt('logistic', position),
+      };
     } else if (building.kind === 'generator') {
       node = {
         kind: 'generator',
@@ -868,7 +894,7 @@ export class PlannerStore {
         kind: 'building',
         id,
         buildingId,
-        recipeId: recipeId ?? this.defaultRecipe(buildingId).id,
+        recipeId: options.recipeId ?? this.defaultRecipe(buildingId).id,
         clock: 1,
         shards: 0,
         somersloops: 0,
@@ -973,6 +999,69 @@ export class PlannerStore {
     if (this.snapTarget()?.nodeId === id) this.snapTarget.set(null);
   }
 
+  // ---- Copy & paste -----------------------------------------------------------
+
+  /** Human name of a node, e.g. "Nodo de Carbón" or "Divisor de fluidos". */
+  labelOf(node: PlannerNode): string {
+    switch (node.kind) {
+      case 'resource':
+        return `Nodo de ${this.data.item(node.resourceId).name.es}`;
+      case 'logistic': {
+        const building = this.data.building(node.buildingId) as LogisticBuilding;
+        const title = node.role === 'merger' ? 'Unificador' : 'Divisor';
+        return building.transport === 'pipe' ? `${title} de fluidos` : title;
+      }
+      default:
+        return this.data.building(node.buildingId).name.es;
+    }
+  }
+
+  /** Copies a node's settings (recipe, clock, shards, fuel...) to the clipboard. */
+  copyNode(id: string): PlannerNode | null {
+    const node = this.nodes().find((n) => n.id === id) ?? null;
+    if (node) {
+      this.clipboard.set(node);
+      this.pasteCount = 0;
+    }
+    return node;
+  }
+
+  /**
+   * Adds a copy of the clipboard at `position` (top-left of the card) or, without one,
+   * cascaded down-right from the original so repeated pastes don't stack.
+   */
+  pasteNode(position?: Point | null): PlannerNode | null {
+    const source = this.clipboard();
+    if (!source) return null;
+    if (position) return this.insertCopy(source, position);
+    const offset = CANVAS.pasteOffset * ++this.pasteCount;
+    return this.insertCopy(source, {
+      x: source.position.x + offset,
+      y: source.position.y + offset,
+    });
+  }
+
+  /** Copy of a node next to it, without touching the clipboard. */
+  duplicateNode(id: string): PlannerNode | null {
+    const node = this.nodes().find((n) => n.id === id);
+    if (!node) return null;
+    return this.insertCopy(node, {
+      x: node.position.x + CANVAS.pasteOffset,
+      y: node.position.y + CANVAS.pasteOffset,
+    });
+  }
+
+  private insertCopy(source: PlannerNode, position: Point): PlannerNode {
+    const prefix = source.kind === 'resource' ? 'node' : 'building';
+    const node = {
+      ...source,
+      id: `${prefix}-${this.nextId++}`,
+      position: this.placeAt(source.kind, position),
+    } as PlannerNode;
+    this.nodes.update((nodes) => [...nodes, node]);
+    return node;
+  }
+
   // ---- Belts --------------------------------------------------------------
 
   /** Output port centre in canvas coordinates (uses the model position). */
@@ -1013,9 +1102,17 @@ export class PlannerStore {
     }
     const sourceItem = this.outputItemOf(from);
     const targetItem = this.inputItemOf(to);
-    const touchesLogistics = source.node.kind === 'logistic' || target.node.kind === 'logistic';
     const item = sourceItem ?? targetItem;
-    if (touchesLogistics && item && item.form !== 'solid') return 'fluid-logistics';
+    // Conveyor mergers/splitters take solids only; pipeline junctions take fluids only.
+    const sourcePipe = this.logisticTransport(source.node);
+    const targetPipe = this.logisticTransport(target.node);
+    for (const transport of [sourcePipe, targetPipe]) {
+      if (transport === 'belt' && item && item.form !== 'solid') return 'fluid-logistics';
+      if (transport === 'pipe' && item && item.form === 'solid') return 'solid-pipe';
+    }
+    if (sourcePipe && targetPipe && sourcePipe !== targetPipe) {
+      return targetPipe === 'pipe' ? 'solid-pipe' : 'fluid-logistics';
+    }
     if (sourceItem && targetItem && sourceItem.id !== targetItem.id) return 'item-mismatch';
     return 'ok';
   }
@@ -1025,7 +1122,12 @@ export class PlannerStore {
     const result = this.checkConnection(from, to);
     if (result !== 'ok') return result;
     const item = this.outputItemOf(from) ?? this.inputItemOf(to);
-    const transport = item && item.form !== 'solid' ? this.data.pipes[0] : this.data.belts[0];
+    const infos = this.nodeInfos();
+    // An empty pipeline junction does not know its fluid yet, but it only takes pipes.
+    const fluid = item
+      ? item.form !== 'solid'
+      : [from, to].some((p) => this.logisticTransport(infos.get(p.nodeId)?.node) === 'pipe');
+    const transport = fluid ? this.data.pipes[0] : this.data.belts[0];
     this.belts.update((belts) => [
       ...belts,
       { id: `belt-${this.nextId++}`, from, to, transportId: transport.id },
@@ -1104,6 +1206,12 @@ export class PlannerStore {
       x: side === 'in' ? position.x : position.x + info.width,
       y: position.y + CANVAS.rows.top + row * CANVAS.rows.height + CANVAS.rows.height / 2,
     };
+  }
+
+  /** Belt or pipe for mergers/splitters/junctions, `null` for any other node. */
+  private logisticTransport(node: PlannerNode | undefined): 'belt' | 'pipe' | null {
+    if (node?.kind !== 'logistic') return null;
+    return (this.data.building(node.buildingId) as LogisticBuilding).transport;
   }
 
   /** Logistics and the geothermal generator have no clock speed. */

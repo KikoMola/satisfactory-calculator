@@ -1,15 +1,24 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { beltRoute } from './planner.calc';
-import type { Point, PortRef } from './planner.model';
+import type { PlannerNode, Point, PortRef } from './planner.model';
 import { PlannerStore, type ConnectResult } from './planner.store';
 
 const REJECTIONS: Record<Exclude<ConnectResult, 'ok'>, string> = {
   'item-mismatch': 'Esa entrada necesita otro material.',
   occupied: 'Esa entrada ya tiene una cinta conectada.',
   'same-node': 'No puedes conectar un edificio consigo mismo.',
-  'fluid-logistics': 'Los divisores y unificadores solo admiten cintas, no fluidos.',
+  'fluid-logistics':
+    'Los divisores y unificadores de cinta no admiten fluidos: usa una unión de tuberías.',
+  'solid-pipe': 'Las uniones de tuberías solo admiten fluidos.',
   invalid: 'Conexión no válida.',
 };
+
+/** ID of the card an element belongs to (cards carry `data-node-id` on their host). */
+function nodeIdAt(element: EventTarget | null): string | null {
+  return element instanceof Element
+    ? (element.closest('[data-node-id]')?.getAttribute('data-node-id') ?? null)
+    : null;
+}
 
 /**
  * Pointer/keyboard interactions for connecting ports on the canvas. Provided by the planner
@@ -24,8 +33,10 @@ export class PlannerInteractions {
   readonly previewPath = signal<string | null>(null);
   /** True when the preview is snapped onto a compatible input. */
   readonly previewSnapped = signal(false);
-  /** Canvas point where the add menu was opened; new cards are placed there. */
+  /** Canvas point where the context menu was opened; new or pasted cards are placed there. */
   readonly menuPosition = signal<Point | null>(null);
+  /** Card the context menu was opened on (`null` over the empty canvas). */
+  readonly menuTarget = signal<string | null>(null);
   /** Message for the screen-reader live region. */
   readonly announcement = signal('');
 
@@ -56,6 +67,67 @@ export class PlannerInteractions {
       ? { x: event.clientX, y: event.clientY }
       : { x: visible.left + 48, y: visible.top + 48 };
     this.menuPosition.set(this.toSurface(client));
+    this.menuTarget.set(nodeIdAt(event.target));
+  }
+
+  // ---- Card actions (context menu and shortcuts) ---------------------------------
+
+  /** Human name of a node, for menus and announcements. */
+  describe(node: PlannerNode): string {
+    return this.store.labelOf(node);
+  }
+
+  copy(nodeId: string) {
+    const node = this.store.copyNode(nodeId);
+    if (node) this.announce(`${this.describe(node)} copiado. Pulsa Ctrl+V para pegarlo.`);
+  }
+
+  /** Pastes at `position` (top-left of the card), or next to the original. */
+  paste(position?: Point | null) {
+    const node = this.store.pasteNode(position);
+    this.announce(node ? `${this.describe(node)} pegado.` : 'No hay nada copiado.');
+  }
+
+  duplicate(nodeId: string) {
+    const node = this.store.duplicateNode(nodeId);
+    if (node) this.announce(`${this.describe(node)} duplicado.`);
+  }
+
+  remove(nodeId: string) {
+    const node = this.store.nodes().find((n) => n.id === nodeId);
+    if (!node) return;
+    this.store.removeNode(nodeId);
+    this.announce(`${this.describe(node)} eliminado.`);
+  }
+
+  /**
+   * Ctrl/⌘+C, Ctrl/⌘+D and Supr act on the card that has focus; Ctrl/⌘+V pastes anywhere.
+   * Ignored while typing in a field. Supr only works from the card's title (its drag handle)
+   * so it can't fire from a select or button inside the card.
+   * Returns 'removed' when the focused card was deleted, so the caller can move focus.
+   */
+  shortcut(event: KeyboardEvent): 'handled' | 'removed' | null {
+    const target = event.target as Element | null;
+    if (target?.closest('input, textarea, [contenteditable="true"]')) return null;
+    const nodeId = nodeIdAt(target);
+    const mod = event.ctrlKey || event.metaKey;
+    const key = event.key.toLowerCase();
+
+    if (mod && key === 'c' && nodeId) {
+      this.copy(nodeId);
+    } else if (mod && key === 'd' && nodeId) {
+      this.duplicate(nodeId);
+    } else if (mod && key === 'v') {
+      this.paste();
+    } else if (key === 'delete' && nodeId && target?.closest('.cdk-drag-handle')) {
+      event.preventDefault();
+      this.remove(nodeId);
+      return 'removed';
+    } else {
+      return null;
+    }
+    event.preventDefault();
+    return 'handled';
   }
 
   // ---- Drag a belt out of an output port -------------------------------------

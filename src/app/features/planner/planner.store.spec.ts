@@ -16,6 +16,7 @@ const IRON_INGOT = 'Recipe_IngotIron_C';
 const COAL_GENERATOR = 'Build_GeneratorCoal_C';
 const NUCLEAR = 'Build_GeneratorNuclear_C';
 const GEOTHERMAL = 'Build_GeneratorGeoThermal_C';
+const JUNCTION = 'Build_PipelineJunction_Cross_C';
 
 const out = (nodeId: string, index = 0): PortRef => ({ nodeId, index });
 const inp = (nodeId: string, index = 0): PortRef => ({ nodeId, index });
@@ -317,6 +318,81 @@ describe('PlannerStore', () => {
       expect(generator(geo).generatedMW).toBe(400);
       store.setShards(geo, 3);
       expect(generator(geo).shards).toBe(0);
+    });
+  });
+
+  describe('pipeline junction', () => {
+    it('splits water between two coal generators', () => {
+      const water = store.addResourceNode('Desc_Water_C').id; // 120 m³/min
+      const junction = store.addBuilding(JUNCTION, null, { role: 'splitter' }).id;
+      const a = store.addBuilding(COAL_GENERATOR).id;
+      const b = store.addBuilding(COAL_GENERATOR).id;
+      expect(store.connect(out(water), inp(junction))).toBe('ok');
+      expect(store.connect(out(junction, 0), inp(a, 1))).toBe('ok');
+      expect(store.connect(out(junction, 1), inp(b, 1))).toBe('ok');
+      // Without coal a generator doesn't run, so it wouldn't take any water.
+      store.connect(out(store.addResourceNode('Desc_Coal_C').id), inp(a, 0));
+      store.connect(out(store.addResourceNode('Desc_Coal_C').id), inp(b, 0));
+
+      const touchingJunction = store
+        .beltViews()
+        .filter((belt) => belt.from.nodeId === junction || belt.to.nodeId === junction);
+      expect(touchingJunction.map((belt) => belt.transport.kind)).toEqual(['pipe', 'pipe', 'pipe']);
+      expect(flowInto(a, 1)).toBe(45);
+      expect(flowInto(b, 1)).toBe(45);
+      expect(logistic(junction).label).toBe('Divisor de fluidos');
+      expect(logistic(junction).item?.id).toBe('Desc_Water_C');
+    });
+
+    it('merges fluids when placed as a merger', () => {
+      const junction = store.addBuilding(JUNCTION, null, { role: 'merger' }).id;
+      expect(logistic(junction).inputs).toHaveLength(3);
+      expect(logistic(junction).outputs).toHaveLength(1);
+      expect(logistic(junction).label).toBe('Unificador de fluidos');
+    });
+
+    it('rejects solids, and fluids on conveyor splitters', () => {
+      const junction = store.addBuilding(JUNCTION).id;
+      expect(store.connect(out(ironNode()), inp(junction))).toBe('solid-pipe');
+      const splitter = store.addBuilding(SPLITTER).id;
+      const water = store.addResourceNode('Desc_Water_C').id;
+      expect(store.connect(out(water), inp(splitter))).toBe('fluid-logistics');
+      expect(store.connect(out(splitter), inp(junction))).toBe('solid-pipe');
+    });
+  });
+
+  describe('copy and paste', () => {
+    it('pastes a copy with the same settings, cascading from the original', () => {
+      const coal = store.addBuilding(COAL_GENERATOR, { x: 100, y: 100 }).id;
+      store.setFuel(coal, 'Desc_CompactedCoal_C');
+      store.setShards(coal, 2);
+      store.copyNode(coal);
+
+      const first = store.pasteNode()!;
+      const second = store.pasteNode()!;
+      expect(first.id).not.toBe(coal);
+      expect(first.position).toEqual({ x: 132, y: 132 });
+      expect(second.position).toEqual({ x: 164, y: 164 });
+      expect(generator(first.id).fuelId).toBe('Desc_CompactedCoal_C');
+      expect(generator(first.id).clock).toBe(2);
+    });
+
+    it('pastes at a given position and does not copy belts', () => {
+      const smelter = ironSmelter();
+      store.connect(out(ironNode()), inp(smelter));
+      store.copyNode(smelter);
+      const copy = store.pasteNode({ x: 400, y: 300 })!;
+      expect(copy.position).toEqual({ x: 400, y: 300 });
+      expect(building(copy.id).recipeId).toBe(IRON_INGOT);
+      expect(store.belts()).toHaveLength(1);
+    });
+
+    it('duplicates without touching the clipboard', () => {
+      const junction = store.addBuilding(JUNCTION, null, { role: 'merger' }).id;
+      const copy = store.duplicateNode(junction)!;
+      expect(logistic(copy.id).role).toBe('merger');
+      expect(store.clipboard()).toBeNull();
+      expect(store.pasteNode()).toBeNull();
     });
   });
 });

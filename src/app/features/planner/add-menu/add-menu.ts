@@ -1,15 +1,17 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { NgpContextMenuSubmenuTrigger } from 'ng-primitives/context-menu';
 import { GameDataService } from '../../../core/game-data.service';
 import { ItemIcon } from '../../../ui/item-icon/item-icon';
 import { ContextMenu, MenuItem } from '../../../ui/menu/menu';
 import { PlannerInteractions } from '../planner-interactions';
+import type { LogisticRole } from '../planner.model';
 import { PlannerStore } from '../planner.store';
 
 /**
- * Right-click menu of the canvas: add a resource node (ores, water, oil, nitrogen), a
- * production building (its recipe is picked on the card), a power generator or a
- * merger/splitter at the point where the menu was opened.
+ * Right-click menu of the empty canvas: paste the copied card, or add a resource node (ores,
+ * water, oil, nitrogen), a production building (its recipe is picked on the card), a power
+ * generator, a conveyor merger/splitter or a pipeline junction at the point where the menu
+ * was opened.
  */
 @Component({
   selector: 'app-add-menu',
@@ -17,6 +19,13 @@ import { PlannerStore } from '../planner.store';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <app-context-menu aria-label="Añadir al lienzo">
+      @if (store.clipboard()) {
+        <button appMenuItem (click)="interactions.paste(interactions.menuPosition())">
+          <span class="flex-1">Pegar {{ clipboardLabel() }}</span>
+          <kbd class="font-sans text-xs text-muted">Ctrl+V</kbd>
+        </button>
+        <hr class="my-1 border-line" aria-hidden="true" />
+      }
       <button appMenuItem [ngpContextMenuSubmenuTrigger]="resourcesMenu">
         <span class="flex-1">Nodo de recurso</span>
         <span class="text-muted" aria-hidden="true">›</span>
@@ -29,13 +38,26 @@ import { PlannerStore } from '../planner.store';
         <span class="flex-1">Generador</span>
         <span class="text-muted" aria-hidden="true">›</span>
       </button>
-      @for (logistic of data.logistics; track logistic.id) {
+      <hr class="my-1 border-line" aria-hidden="true" />
+      @for (logistic of beltLogistics; track logistic.id) {
         <button appMenuItem (click)="add(logistic.id)">
           <app-item-icon [src]="data.icon(logistic.id)" />
           <span class="flex-1">{{ logistic.role === 'merger' ? 'Unificador' : 'Divisor' }}</span>
           <span class="text-xs text-muted">{{
             logistic.role === 'merger' ? '3 → 1' : '1 → 3'
           }}</span>
+        </button>
+      }
+      @if (junction; as junction) {
+        <button appMenuItem (click)="addJunction(junction.id, 'merger')">
+          <app-item-icon [src]="data.icon(junction.id)" color="var(--color-focus)" />
+          <span class="flex-1">Unificador de fluidos</span>
+          <span class="text-xs text-muted">3 → 1</span>
+        </button>
+        <button appMenuItem (click)="addJunction(junction.id, 'splitter')">
+          <app-item-icon [src]="data.icon(junction.id)" color="var(--color-focus)" />
+          <span class="flex-1">Divisor de fluidos</span>
+          <span class="text-xs text-muted">1 → 3</span>
         </button>
       }
     </app-context-menu>
@@ -80,7 +102,16 @@ import { PlannerStore } from '../planner.store';
 export class AddMenu {
   protected readonly data = inject(GameDataService);
   protected readonly store = inject(PlannerStore);
-  private readonly interactions = inject(PlannerInteractions);
+  protected readonly interactions = inject(PlannerInteractions);
+
+  protected readonly beltLogistics = this.data.logistics.filter((l) => l.transport === 'belt');
+  protected readonly junction = this.data.logistics.find((l) => l.transport === 'pipe') ?? null;
+
+  /** What "Pegar" will paste, e.g. "Generador de carbón". */
+  protected readonly clipboardLabel = computed(() => {
+    const node = this.store.clipboard();
+    return node ? this.interactions.describe(node) : '';
+  });
 
   protected addResource(resourceId: string) {
     const node = this.store.addResourceNode(resourceId, this.interactions.menuPosition());
@@ -90,5 +121,12 @@ export class AddMenu {
   protected add(buildingId: string) {
     this.store.addBuilding(buildingId, this.interactions.menuPosition());
     this.interactions.announce(`${this.data.building(buildingId).name.es} añadido.`);
+  }
+
+  protected addJunction(buildingId: string, role: LogisticRole) {
+    this.store.addBuilding(buildingId, this.interactions.menuPosition(), { role });
+    this.interactions.announce(
+      `${role === 'merger' ? 'Unificador' : 'Divisor'} de fluidos añadido.`,
+    );
   }
 }

@@ -15,8 +15,8 @@ import { Button } from '../../ui/button/button';
 import { IconClose } from '../../ui/icons';
 import { ItemIcon } from '../../ui/item-icon/item-icon';
 import { Select } from '../../ui/select/select';
-import { AddMenu } from './add-menu/add-menu';
 import { BuildingCard } from './building-card/building-card';
+import { CanvasMenu } from './canvas-menu/canvas-menu';
 import { GeneratorCard } from './generator-card/generator-card';
 import { LogisticCard } from './logistic-card/logistic-card';
 import { PlannerInteractions } from './planner-interactions';
@@ -48,6 +48,7 @@ import { ResourceNodeCard } from './resource-node-card/resource-node-card';
   host: {
     class: 'block h-dvh',
     '(document:keydown.escape)': 'interactions.cancel()',
+    '(keydown)': 'onKeydown($event)',
   },
 })
 export class PlannerPage {
@@ -59,14 +60,21 @@ export class PlannerPage {
   private readonly surface = viewChild.required<ElementRef<HTMLElement>>('surface');
   private readonly viewport = viewChild.required<ElementRef<HTMLElement>>('viewport');
 
-  /** Component shown by the right-click menu of the canvas. */
-  protected readonly addMenu = AddMenu;
+  /** Component shown by the right-click menu of the canvas (card actions or add menu). */
+  protected readonly canvasMenu = CanvasMenu;
 
   constructor() {
     afterNextRender(() => this.interactions.registerSurface(this.surface().nativeElement));
   }
 
-  /** Remember where the menu opened so new cards appear there. */
+  /** Copy / duplicate / paste / delete shortcuts. Focus goes back to the canvas on delete. */
+  protected onKeydown(event: KeyboardEvent): void {
+    if (this.interactions.shortcut(event) === 'removed') {
+      this.viewport().nativeElement.focus();
+    }
+  }
+
+  /** Remember where the menu opened, and over which card, so it shows the right actions. */
   protected onContextMenu(event: MouseEvent): void {
     this.interactions.menuOpenedAt(event, this.viewport().nativeElement);
   }
