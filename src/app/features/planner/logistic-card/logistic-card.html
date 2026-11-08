@@ -26,13 +26,14 @@
   type="button"
   ngpButton
   cdkDragHandle
-  class="absolute inset-x-10 inset-y-8 flex min-w-0 cursor-grab flex-col items-center justify-center gap-0.5 rounded-md text-center group-[.cdk-drag-dragging]/card:cursor-grabbing"
+  class="absolute inset-x-8 inset-y-8 flex min-w-0 cursor-grab flex-col items-center justify-center gap-0.5 rounded-md text-center group-[.cdk-drag-dragging]/card:cursor-grabbing"
   [attr.aria-describedby]="n.id + '-move-help'"
-  [title]="emptyHint()"
+  [title]="title() + (emptyHint() ? '. ' + emptyHint() : '')"
   (keydown)="onHandleKeydown($event)"
 >
-  <app-item-icon [src]="n.icon" [color]="n.color" [size]="28" />
-  <span class="line-clamp-2 text-xs leading-tight font-semibold">{{ title() }}</span>
+  <!-- The building icon fills most of the card: it's what tells the logistics apart. -->
+  <app-item-icon [src]="n.icon" [color]="n.color" [size]="56" />
+  <span class="max-w-full truncate text-[11px] leading-tight font-semibold">{{ title() }}</span>
   @if (n.item; as item) {
     <span class="flex items-center gap-1 text-xs tabular-nums">
       <app-item-icon [src]="n.itemIcon" [color]="n.color" [size]="14" />

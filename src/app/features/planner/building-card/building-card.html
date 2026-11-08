@@ -71,13 +71,13 @@
   }
 </ul>
 
-<div ngpFormField class="grid gap-1 px-3 pt-3">
-  <span ngpLabel class="text-xs text-muted">Receta</span>
-  <app-select
-    class="w-full"
+<div class="grid gap-1 px-3 pt-3">
+  <span class="text-xs text-muted" aria-hidden="true">Receta</span>
+  <app-combobox
+    label="Receta"
+    placeholder="Buscar receta…"
     [options]="recipeOptions()"
     [value]="n.recipeId"
-    [showHint]="true"
     (valueChange)="setRecipe($event)"
   />
 </div>

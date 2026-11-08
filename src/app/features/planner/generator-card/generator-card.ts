@@ -95,6 +95,6 @@ export class GeneratorCard {
     const delta = arrowKeyDelta(event);
     if (!delta) return;
     event.preventDefault();
-    this.store.nudgeNode(this.node().id, delta);
+    this.interactions.nudge(this.node().id, delta);
   }
 }

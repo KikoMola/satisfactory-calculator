@@ -244,7 +244,9 @@ export class PlannerStore {
   readonly snapTarget = signal<PortRef | null>(null);
 
   /** Snapshot of the last copied node (settings only: its belts are not copied). */
-  readonly clipboard = signal<PlannerNode | null>(null);
+  readonly clipboard = signal<readonly PlannerNode[]>([]);
+  /** Cards selected with a click, Shift/Ctrl+click or a selection rectangle. */
+  readonly selection = signal<ReadonlySet<string>>(new Set());
   /** How many times the clipboard was pasted without a position, to cascade the copies. */
   private pasteCount = 0;
 
@@ -252,7 +254,7 @@ export class PlannerStore {
    * Positions of cards currently being dragged. Kept apart from the model so that the CDK's
    * free-drag position input does not change mid-drag; only the belt routes read it.
    */
-  private readonly livePositions = signal<Record<string, Point>>({});
+  readonly livePositions = signal<Record<string, Point>>({});
 
   // ---- Options for the selects --------------------------------------------
 
@@ -1029,8 +1031,32 @@ export class PlannerStore {
   }
 
   nudgeNode(id: string, delta: Point) {
-    const node = this.nodes().find((n) => n.id === id);
-    if (node) this.moveNode(id, { x: node.position.x + delta.x, y: node.position.y + delta.y });
+    this.nudgeNodes([id], delta);
+  }
+
+  /**
+   * Moves several cards by the same delta (also used to drop a dragged group). The delta is
+   * limited so the whole group stays inside the canvas and keeps its layout.
+   */
+  nudgeNodes(ids: Iterable<string>, delta: Point) {
+    const set = new Set(ids);
+    const group = this.nodes().filter((n) => set.has(n.id));
+    if (group.length === 0) return;
+    const limited = keepInside(group, delta);
+    this.nodes.update((nodes) =>
+      nodes.map((n) =>
+        set.has(n.id)
+          ? { ...n, position: { x: n.position.x + limited.x, y: n.position.y + limited.y } }
+          : n,
+      ),
+    );
+    this.clearLivePositions(set);
+  }
+
+  private clearLivePositions(ids: ReadonlySet<string>) {
+    this.livePositions.update((live) =>
+      Object.fromEntries(Object.entries(live).filter(([id]) => !ids.has(id))),
+    );
   }
 
   /**
@@ -1071,9 +1097,15 @@ export class PlannerStore {
 
   /** Turns a merger/splitter a quarter turn clockwise (`turns` = -1 for anticlockwise). */
   rotateNode(id: string, turns = 1) {
+    this.rotateNodes([id], turns);
+  }
+
+  /** Turns every merger/splitter among `ids`; other cards are left alone. */
+  rotateNodes(ids: Iterable<string>, turns = 1) {
+    const set = new Set(ids);
     this.nodes.update((nodes) =>
       nodes.map((n) =>
-        n.id === id && n.kind === 'logistic'
+        set.has(n.id) && n.kind === 'logistic'
           ? { ...n, rotation: ((((n.rotation + turns) % 4) + 4) % 4) as Rotation }
           : n,
       ),
@@ -1085,10 +1117,66 @@ export class PlannerStore {
   }
 
   removeNode(id: string) {
-    this.nodes.update((nodes) => nodes.filter((n) => n.id !== id));
-    this.belts.update((belts) => belts.filter((b) => b.from.nodeId !== id && b.to.nodeId !== id));
-    if (this.connectingFrom()?.nodeId === id) this.connectingFrom.set(null);
-    if (this.snapTarget()?.nodeId === id) this.snapTarget.set(null);
+    this.removeNodes([id]);
+  }
+
+  /** Deletes cards and every belt touching them. */
+  removeNodes(ids: Iterable<string>) {
+    const set = new Set(ids);
+    if (set.size === 0) return;
+    this.nodes.update((nodes) => nodes.filter((n) => !set.has(n.id)));
+    this.belts.update((belts) =>
+      belts.filter((b) => !set.has(b.from.nodeId) && !set.has(b.to.nodeId)),
+    );
+    this.selection.update((selected) => new Set([...selected].filter((id) => !set.has(id))));
+    this.clearLivePositions(set);
+    const connecting = this.connectingFrom();
+    if (connecting && set.has(connecting.nodeId)) this.connectingFrom.set(null);
+    const snap = this.snapTarget();
+    if (snap && set.has(snap.nodeId)) this.snapTarget.set(null);
+  }
+
+  // ---- Selection --------------------------------------------------------------
+
+  isSelected(id: string): boolean {
+    return this.selection().has(id);
+  }
+
+  /** `replace` selects only `ids`; `add` adds them; `toggle` flips each one. */
+  select(ids: Iterable<string>, mode: 'replace' | 'add' | 'toggle' = 'replace') {
+    const list = [...ids];
+    this.selection.update((current) => {
+      if (mode === 'replace') return new Set(list);
+      const next = new Set(current);
+      for (const id of list) {
+        if (mode === 'toggle' && next.has(id)) next.delete(id);
+        else next.add(id);
+      }
+      return next;
+    });
+  }
+
+  selectAll() {
+    this.selection.set(new Set(this.nodes().map((n) => n.id)));
+  }
+
+  clearSelection() {
+    if (this.selection().size > 0) this.selection.set(new Set());
+  }
+
+  /** Cards overlapping a rectangle (canvas coordinates), for the selection rectangle. */
+  nodesInRect(rect: { x: number; y: number; width: number; height: number }): string[] {
+    return this.nodes()
+      .filter((n) => {
+        const size = CANVAS[n.kind];
+        return (
+          n.position.x < rect.x + rect.width &&
+          n.position.x + size.width > rect.x &&
+          n.position.y < rect.y + rect.height &&
+          n.position.y + size.height > rect.y
+        );
+      })
+      .map((n) => n.id);
   }
 
   // ---- Copy & paste -----------------------------------------------------------
@@ -1109,50 +1197,72 @@ export class PlannerStore {
     }
   }
 
-  /** Copies a node's settings (recipe, clock, shards, fuel...) to the clipboard. */
-  copyNode(id: string): PlannerNode | null {
-    const node = this.nodes().find((n) => n.id === id) ?? null;
-    if (node) {
-      this.clipboard.set(node);
+  /**
+   * Copies cards' settings (recipe, clock, shards, fuel, rotation, filters...) to the
+   * clipboard. Belts are never copied.
+   */
+  copyNodes(ids: Iterable<string>): readonly PlannerNode[] {
+    const set = new Set(ids);
+    const nodes = this.nodes().filter((n) => set.has(n.id));
+    if (nodes.length > 0) {
+      this.clipboard.set(nodes);
       this.pasteCount = 0;
     }
-    return node;
+    return nodes;
+  }
+
+  copyNode(id: string): PlannerNode | null {
+    return this.copyNodes([id])[0] ?? null;
   }
 
   /**
-   * Adds a copy of the clipboard at `position` (top-left of the card) or, without one,
-   * cascaded down-right from the original so repeated pastes don't stack.
+   * Adds a copy of the clipboard keeping its layout: with its top-left corner at `position`,
+   * or, without one, cascaded down-right from the originals so repeated pastes don't stack.
+   * The copies become the selection.
    */
-  pasteNode(position?: Point | null): PlannerNode | null {
+  pasteNodes(position?: Point | null): PlannerNode[] {
     const source = this.clipboard();
-    if (!source) return null;
-    if (position) return this.insertCopy(source, position);
-    const offset = CANVAS.pasteOffset * ++this.pasteCount;
-    return this.insertCopy(source, {
-      x: source.position.x + offset,
-      y: source.position.y + offset,
-    });
+    if (source.length === 0) return [];
+    let delta: Point;
+    if (position) {
+      const origin = topLeft(source);
+      delta = { x: position.x - origin.x, y: position.y - origin.y };
+    } else {
+      const offset = CANVAS.pasteOffset * ++this.pasteCount;
+      delta = { x: offset, y: offset };
+    }
+    return this.insertCopies(source, delta);
   }
 
-  /** Copy of a node next to it, without touching the clipboard. */
+  pasteNode(position?: Point | null): PlannerNode | null {
+    return this.pasteNodes(position)[0] ?? null;
+  }
+
+  /** Copies of cards next to them, without touching the clipboard. They become the selection. */
+  duplicateNodes(ids: Iterable<string>): PlannerNode[] {
+    const set = new Set(ids);
+    const nodes = this.nodes().filter((n) => set.has(n.id));
+    return this.insertCopies(nodes, { x: CANVAS.pasteOffset, y: CANVAS.pasteOffset });
+  }
+
   duplicateNode(id: string): PlannerNode | null {
-    const node = this.nodes().find((n) => n.id === id);
-    if (!node) return null;
-    return this.insertCopy(node, {
-      x: node.position.x + CANVAS.pasteOffset,
-      y: node.position.y + CANVAS.pasteOffset,
-    });
+    return this.duplicateNodes([id])[0] ?? null;
   }
 
-  private insertCopy(source: PlannerNode, position: Point): PlannerNode {
-    const prefix = source.kind === 'resource' ? 'node' : 'building';
-    const node = {
-      ...source,
-      id: `${prefix}-${this.nextId++}`,
-      position: this.placeAt(source.kind, position),
-    } as PlannerNode;
-    this.nodes.update((nodes) => [...nodes, node]);
-    return node;
+  private insertCopies(sources: readonly PlannerNode[], delta: Point): PlannerNode[] {
+    if (sources.length === 0) return [];
+    const shift = keepInside(sources, delta);
+    const copies = sources.map(
+      (source) =>
+        ({
+          ...source,
+          id: `${source.kind === 'resource' ? 'node' : 'building'}-${this.nextId++}`,
+          position: { x: source.position.x + shift.x, y: source.position.y + shift.y },
+        }) as PlannerNode,
+    );
+    this.nodes.update((nodes) => [...nodes, ...copies]);
+    this.selection.set(new Set(copies.map((n) => n.id)));
+    return copies;
   }
 
   // ---- Belts --------------------------------------------------------------
@@ -1390,4 +1500,23 @@ export class PlannerStore {
       hint: `${t.ratePerMinute}${t.kind === 'pipe' ? ' m³' : ''}/min`,
     }));
   }
+}
+
+/** Top-left corner of a group of cards. */
+function topLeft(nodes: readonly PlannerNode[]): Point {
+  return {
+    x: Math.min(...nodes.map((n) => n.position.x)),
+    y: Math.min(...nodes.map((n) => n.position.y)),
+  };
+}
+
+/** `delta` reduced so every card of the group stays inside the canvas after moving by it. */
+function keepInside(nodes: readonly PlannerNode[], delta: Point): Point {
+  let { x, y } = delta;
+  for (const n of nodes) {
+    const size = CANVAS[n.kind];
+    x = Math.min(Math.max(x, -n.position.x), CANVAS.width - size.width - n.position.x);
+    y = Math.min(Math.max(y, -n.position.y), CANVAS.height - size.height - n.position.y);
+  }
+  return { x, y };
 }

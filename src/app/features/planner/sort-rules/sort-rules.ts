@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
 import { NgpListbox, NgpListboxOption } from 'ng-primitives/listbox';
 import { ItemIcon } from '../../../ui/item-icon/item-icon';
+import { matchesSearch } from '../../../ui/search';
 import type { SelectOption } from '../../../ui/select/select';
 import { SPECIAL_SORT_RULES, type SortRule } from '../planner.model';
 
@@ -94,9 +95,9 @@ export class SortRules {
 
   /** Special rules always stay; items are filtered by the search text. */
   protected readonly visibleOptions = computed(() => {
-    const query = normalize(this.query().trim());
+    const query = this.query().trim();
     return this.options().filter(
-      (o) => SPECIAL_IDS.has(o.value) || !query || normalize(o.label).includes(query),
+      (o) => SPECIAL_IDS.has(o.value) || !query || matchesSearch(o.label, query),
     );
   });
 
@@ -108,9 +109,4 @@ export class SortRules {
     this.rulesChange.emit(rules);
     if (!this.multiple()) this.done.emit();
   }
-}
-
-/** Lower case without accents, so "lingote" finds "Lingote de hierro" and "acero" "Acero". */
-function normalize(text: string): string {
-  return text.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 }

@@ -1,9 +1,13 @@
 <h1 class="sr-only">Planificador de fábrica</h1>
 <p id="canvas-help" class="sr-only">
   Haz clic derecho, o pulsa Mayúsculas+F10 con el lienzo enfocado, para añadir nodos de recurso,
-  edificios, generadores, divisores y unificadores. Sobre una tarjeta, el mismo menú permite
-  copiarla, duplicarla o eliminarla; también con Ctrl+C, Ctrl+D, Ctrl+V y Supr. Para el zoom, usa
-  Ctrl+rueda del ratón, los botones de zoom, o las teclas más, menos y 0 con el lienzo enfocado.
+  edificios, generadores, divisores y unificadores. Haz clic en una tarjeta para seleccionarla,
+  Mayúsculas o Ctrl+clic para añadir más, arrastra sobre el lienzo vacío para seleccionar una zona,
+  o pulsa Ctrl+A para seleccionarlas todas; al entrar con Tab en una tarjeta también se selecciona.
+  Sobre la selección: Ctrl+C copia, Ctrl+X corta, Ctrl+V pega, Ctrl+D duplica, Supr elimina, R gira
+  divisores y unificadores, las flechas la mueven y Escape la vacía. Las cintas no se copian. Para
+  el zoom, usa Ctrl+rueda del ratón, los botones de zoom, o las teclas más, menos y 0 con el lienzo
+  enfocado.
 </p>
 
 <div
@@ -20,6 +24,11 @@
       [ngpContextMenuTrigger]="canvasMenu"
       (contextmenu)="onContextMenu($event)"
       (wheel)="onWheel($event)"
+      (pointerdown)="onCanvasPointerDown($event)"
+      (pointermove)="onCanvasPointerMove($event)"
+      (pointerup)="onCanvasPointerUp()"
+      (pointercancel)="onCanvasPointerUp()"
+      (pointerleave)="interactions.pointerLeft()"
     >
       <!-- Sized to the zoomed canvas so the scrollbars match what is visible. -->
       <div
@@ -43,7 +52,9 @@
           >
             @for (belt of store.beltViews(); track belt.id) {
               <path
-                class="fill-none stroke-5 [stroke-linecap:round] [stroke-linejoin:round]"
+                class="fill-none [stroke-linecap:round] [stroke-linejoin:round] transition-[stroke-width]"
+                [class.stroke-5]="hoveredBelt() !== belt.id"
+                [class.stroke-7]="hoveredBelt() === belt.id"
                 [class.stroke-accent]="!belt.flow.bottleneck"
                 [class.stroke-danger]="belt.flow.bottleneck"
                 [attr.stroke-dasharray]="belt.flow.bottleneck ? '12 8' : null"
@@ -59,6 +70,20 @@
                   [attr.d]="belt.path"
                 />
               }
+            }
+            <!--
+              Wide invisible strokes around each route: hovering near a belt shows its label.
+              Drawn last so they sit above the visible lines; the cards still cover them.
+            -->
+            @for (belt of store.beltViews(); track belt.id) {
+              <path
+                style="pointer-events: stroke"
+                class="fill-none stroke-transparent [stroke-linecap:round] [stroke-linejoin:round]"
+                [attr.stroke-width]="beltHitWidth"
+                [attr.d]="belt.path"
+                (pointerenter)="showBeltLabel(belt.id)"
+                (pointerleave)="hideBeltLabel(belt.id)"
+              />
             }
             @if (interactions.previewPath(); as path) {
               <!-- Dashed while free, solid orange once snapped onto a compatible input. -->
@@ -80,6 +105,10 @@
                 [cdkDragScale]="interactions.zoom()"
                 [cdkDragFreeDragPosition]="dragPositions().get(node.id)!"
                 [node]="node"
+                [attr.data-selected]="store.isSelected(node.id) ? '' : null"
+                (pointerdown)="interactions.cardPointerDown(node.id, $event)"
+                (focusin)="interactions.cardFocused(node.id, $event)"
+                (cdkDragStarted)="onNodeStarted(node)"
                 (cdkDragMoved)="onNodeMoved(node, $event)"
                 (cdkDragEnded)="onNodeEnded(node, $event)"
               />
@@ -90,6 +119,10 @@
                 [cdkDragScale]="interactions.zoom()"
                 [cdkDragFreeDragPosition]="dragPositions().get(node.id)!"
                 [node]="node"
+                [attr.data-selected]="store.isSelected(node.id) ? '' : null"
+                (pointerdown)="interactions.cardPointerDown(node.id, $event)"
+                (focusin)="interactions.cardFocused(node.id, $event)"
+                (cdkDragStarted)="onNodeStarted(node)"
                 (cdkDragMoved)="onNodeMoved(node, $event)"
                 (cdkDragEnded)="onNodeEnded(node, $event)"
               />
@@ -100,6 +133,10 @@
                 [cdkDragScale]="interactions.zoom()"
                 [cdkDragFreeDragPosition]="dragPositions().get(node.id)!"
                 [node]="node"
+                [attr.data-selected]="store.isSelected(node.id) ? '' : null"
+                (pointerdown)="interactions.cardPointerDown(node.id, $event)"
+                (focusin)="interactions.cardFocused(node.id, $event)"
+                (cdkDragStarted)="onNodeStarted(node)"
                 (cdkDragMoved)="onNodeMoved(node, $event)"
                 (cdkDragEnded)="onNodeEnded(node, $event)"
               />
@@ -110,21 +147,34 @@
                 [cdkDragScale]="interactions.zoom()"
                 [cdkDragFreeDragPosition]="dragPositions().get(node.id)!"
                 [node]="node"
+                [attr.data-selected]="store.isSelected(node.id) ? '' : null"
+                (pointerdown)="interactions.cardPointerDown(node.id, $event)"
+                (focusin)="interactions.cardFocused(node.id, $event)"
+                (cdkDragStarted)="onNodeStarted(node)"
                 (cdkDragMoved)="onNodeMoved(node, $event)"
                 (cdkDragEnded)="onNodeEnded(node, $event)"
               />
             }
           }
 
-          <!-- Belt labels sit just above the middle of the route so the line stays visible. -->
+          <!--
+            Belt labels sit just above the middle of the route so the line stays visible. Shown
+            while the pointer is near the belt or on the label, while a control inside has
+            keyboard focus, or while its tier dropdown is open.
+          -->
           @for (belt of store.beltViews(); track belt.id) {
             <div
-              class="absolute z-[5] flex w-max max-w-72 -translate-x-1/2 -translate-y-[calc(100%+8px)] flex-wrap items-center gap-x-1.5 gap-y-1 rounded-md border bg-panel py-1 pr-1 pl-1 text-xs whitespace-nowrap shadow-lg shadow-black/35"
+              class="absolute z-[5] flex w-max transition-opacity duration-150 focus-within:pointer-events-auto focus-within:opacity-100 has-data-open:pointer-events-auto has-data-open:opacity-100 max-w-72 -translate-x-1/2 -translate-y-[calc(100%+8px)] flex-wrap items-center gap-x-1.5 gap-y-1 rounded-md border bg-panel py-1 pr-1 pl-1 text-xs whitespace-nowrap shadow-lg shadow-black/35 motion-reduce:transition-none"
+              [class.opacity-0]="hoveredBelt() !== belt.id"
+              [class.pointer-events-none]="hoveredBelt() !== belt.id"
+              (pointerenter)="showBeltLabel(belt.id)"
+              (pointerleave)="hideBeltLabel(belt.id)"
               [class.border-accent]="!belt.flow.bottleneck"
               [class.border-danger]="belt.flow.bottleneck"
               [style.left.px]="belt.mid.x"
               [style.top.px]="belt.mid.y"
               role="group"
+              data-belt-label
               [attr.aria-label]="
                 (belt.transport.kind === 'pipe' ? 'Tubería de ' : 'Cinta de ') +
                 (belt.item?.name?.es ?? 'material')
@@ -166,6 +216,17 @@
                 </span>
               }
             </div>
+          }
+
+          @if (marquee(); as rect) {
+            <div
+              class="pointer-events-none absolute z-20 border border-dashed border-focus bg-focus/10"
+              [style.left.px]="rect.x"
+              [style.top.px]="rect.y"
+              [style.width.px]="rect.width"
+              [style.height.px]="rect.height"
+              aria-hidden="true"
+            ></div>
           }
 
           @if (store.nodes().length === 0) {

@@ -69,17 +69,70 @@ export class PlannerPage {
 
   protected readonly zoomPercent = computed(() => Math.round(this.interactions.zoom() * 100));
 
+  /** Belt whose label is shown because the pointer is near its route or on the label. */
+  protected readonly hoveredBelt = signal<string | null>(null);
+  /** Width in canvas px of the invisible hover zone around each belt. */
+  protected readonly beltHitWidth = 32;
+  private hideLabelTimer: ReturnType<typeof setTimeout> | undefined;
+  private readonly clearLabelTimer = inject(DestroyRef).onDestroy(() =>
+    clearTimeout(this.hideLabelTimer),
+  );
+
+  protected showBeltLabel(id: string) {
+    clearTimeout(this.hideLabelTimer);
+    this.hoveredBelt.set(id);
+  }
+
+  /** Waits a moment so the pointer can cross the gap between the belt and its label. */
+  protected hideBeltLabel(id: string) {
+    clearTimeout(this.hideLabelTimer);
+    this.hideLabelTimer = setTimeout(() => {
+      if (this.hoveredBelt() === id) this.hoveredBelt.set(null);
+    }, 250);
+  }
+
   /**
    * Card positions for the CDK, which works in screen pixels inside a scaled container
    * (`cdkDragScale`): canvas position × zoom. Stable objects, so the input doesn't change
    * mid-drag.
    */
-  protected readonly dragPositions = computed(() => {
+  private readonly modelDragPositions = computed(() => {
     const zoom = this.interactions.zoom();
     return new Map(
       this.store.nodes().map((n) => [n.id, { x: n.position.x * zoom, y: n.position.y * zoom }]),
     );
   });
+
+  /**
+   * Same, but cards following a dragged selection are drawn at their live position. The card
+   * under the pointer keeps its model object: the CDK moves it itself.
+   */
+  protected readonly dragPositions = computed(() => {
+    const base = this.modelDragPositions();
+    const followers = this.followers();
+    if (followers.length === 0) return base;
+    const zoom = this.interactions.zoom();
+    const live = this.store.livePositions();
+    const positions = new Map(base);
+    for (const id of followers) {
+      const p = live[id];
+      if (p) positions.set(id, { x: p.x * zoom, y: p.y * zoom });
+    }
+    return positions;
+  });
+
+  /** Other selected cards moving along with the one being dragged. */
+  private readonly followers = signal<string[]>([]);
+
+  /** Selection rectangle being drawn, in canvas coordinates. */
+  protected readonly marquee = signal<{
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  } | null>(null);
+  private marqueeStart: { point: Point; additive: boolean; before: ReadonlySet<string> } | null =
+    null;
 
   private readonly surface = viewChild.required<ElementRef<HTMLElement>>('surface');
   private readonly viewport = viewChild.required<ElementRef<HTMLElement>>('viewport');
@@ -143,7 +196,7 @@ export class PlannerPage {
         return;
       }
     }
-    if (this.interactions.shortcut(event) === 'removed') {
+    if (this.interactions.shortcut(event, viewport) === 'removed') {
       viewport.focus();
     }
   }
@@ -230,17 +283,103 @@ export class PlannerPage {
     this.interactions.menuOpenedAt(event, this.viewport().nativeElement);
   }
 
+  // ---- Selection rectangle -----------------------------------------------------
+
+  /**
+   * Pressing on the empty canvas starts a selection rectangle (Shift/Ctrl/⌘ adds to the
+   * selection); a plain click there clears the selection.
+   */
+  protected onCanvasPointerDown(event: PointerEvent): void {
+    if (event.button !== 0) return;
+    const viewport = this.viewport().nativeElement;
+    const target = event.target as Element;
+    if (target.closest('[data-node-id], [data-belt-label]')) return;
+    // The scrollbars belong to the viewport too.
+    const rect = viewport.getBoundingClientRect();
+    if (
+      event.clientX - rect.left >= viewport.clientWidth ||
+      event.clientY - rect.top >= viewport.clientHeight
+    ) {
+      return;
+    }
+    const additive = event.shiftKey || event.ctrlKey || event.metaKey;
+    this.marqueeStart = {
+      point: this.interactions.toSurface({ x: event.clientX, y: event.clientY }),
+      additive,
+      before: this.store.selection(),
+    };
+    viewport.setPointerCapture(event.pointerId);
+    viewport.focus({ preventScroll: true });
+  }
+
+  protected onCanvasPointerMove(event: PointerEvent): void {
+    this.interactions.pointerMoved(event);
+    const start = this.marqueeStart;
+    if (!start) return;
+    const point = this.interactions.toSurface({ x: event.clientX, y: event.clientY });
+    const rect = {
+      x: Math.min(start.point.x, point.x),
+      y: Math.min(start.point.y, point.y),
+      width: Math.abs(point.x - start.point.x),
+      height: Math.abs(point.y - start.point.y),
+    };
+    // A few pixels of slack so a click that wobbles isn't a rectangle.
+    if (!this.marquee() && Math.hypot(rect.width, rect.height) * this.interactions.zoom() < 5) {
+      return;
+    }
+    this.marquee.set(rect);
+    const inside = this.store.nodesInRect(rect);
+    this.store.select(start.additive ? [...start.before, ...inside] : inside);
+  }
+
+  protected onCanvasPointerUp(): void {
+    const start = this.marqueeStart;
+    if (!start) return;
+    this.marqueeStart = null;
+    if (this.marquee()) {
+      this.marquee.set(null);
+      const count = this.store.selection().size;
+      this.interactions.announce(
+        `${count} ${count === 1 ? 'tarjeta seleccionada' : 'tarjetas seleccionadas'}.`,
+      );
+    } else if (!start.additive) {
+      this.store.clearSelection();
+    }
+  }
+
   // ---- Card dragging ---------------------------------------------------------
 
+  /** Dragging a selected card drags the rest of the selection along. */
+  protected onNodeStarted(node: NodeView) {
+    const selection = this.store.selection();
+    this.followers.set(selection.has(node.id) ? [...selection].filter((id) => id !== node.id) : []);
+  }
+
   protected onNodeMoved(node: NodeView, event: CdkDragMove) {
-    this.store.setLiveNodePosition(
-      node.id,
-      this.canvasPosition(event.source.getFreeDragPosition()),
-    );
+    const position = this.canvasPosition(event.source.getFreeDragPosition());
+    this.store.setLiveNodePosition(node.id, position);
+    const delta = { x: position.x - node.position.x, y: position.y - node.position.y };
+    for (const id of this.followers()) {
+      const follower = this.store.nodes().find((n) => n.id === id);
+      if (follower) {
+        this.store.setLiveNodePosition(id, {
+          x: follower.position.x + delta.x,
+          y: follower.position.y + delta.y,
+        });
+      }
+    }
   }
 
   protected onNodeEnded(node: NodeView, event: CdkDragEnd) {
-    this.store.moveNode(node.id, this.canvasPosition(event.source.getFreeDragPosition()));
+    const position = this.canvasPosition(event.source.getFreeDragPosition());
+    const followers = this.followers();
+    this.followers.set([]);
+    if (followers.length === 0) {
+      this.store.moveNode(node.id, position);
+      return;
+    }
+    const delta = { x: position.x - node.position.x, y: position.y - node.position.y };
+    this.store.nudgeNodes([node.id, ...followers], delta);
   }
 
   /** CDK free-drag position (screen pixels) → canvas position. */

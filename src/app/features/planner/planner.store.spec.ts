@@ -491,11 +491,68 @@ describe('PlannerStore', () => {
       expect(store.belts()).toHaveLength(1);
     });
 
+    it('copies and pastes a group keeping its layout, without belts', () => {
+      const node = ironNode();
+      const smelter = ironSmelter();
+      store.moveNode(node, { x: 100, y: 100 });
+      store.moveNode(smelter, { x: 500, y: 200 });
+      store.connect(out(node), inp(smelter));
+
+      store.copyNodes([node, smelter]);
+      const copies = store.pasteNodes({ x: 1000, y: 1000 });
+      expect(copies.map((n) => n.position)).toEqual([
+        { x: 1000, y: 1000 },
+        { x: 1400, y: 1100 },
+      ]);
+      expect(store.belts()).toHaveLength(1);
+      // The copies become the selection.
+      expect([...store.selection()]).toEqual(copies.map((n) => n.id));
+    });
+
+    it('keeps a pasted group inside the canvas', () => {
+      const smelter = ironSmelter();
+      store.copyNodes([smelter]);
+      const [copy] = store.pasteNodes({ x: CANVAS.width, y: -50 });
+      expect(copy.position.x).toBe(CANVAS.width - CANVAS.building.width);
+      expect(copy.position.y).toBe(0);
+    });
+
+    it('moves, turns and deletes the selection together', () => {
+      const a = ironSmelter();
+      const b = store.addBuilding(SPLITTER, { x: 400, y: 400 }).id;
+      store.moveNode(a, { x: 0, y: 0 });
+      store.select([a, b]);
+      store.nudgeNodes(store.selection(), { x: -32, y: 16 });
+      // Limited by the card already at the left edge: the group keeps its layout.
+      expect(building(a).position).toEqual({ x: 0, y: 16 });
+      expect(logistic(b).position).toEqual({ x: 400, y: 416 });
+
+      store.rotateNodes(store.selection());
+      expect(logistic(b).rotation).toBe(1);
+
+      store.connect(out(ironNode()), inp(a));
+      store.removeNodes(store.selection());
+      expect(store.nodes()).toHaveLength(1);
+      expect(store.belts()).toHaveLength(0);
+      expect(store.selection().size).toBe(0);
+    });
+
+    it('selects the cards a rectangle touches', () => {
+      const a = store.addBuilding(SPLITTER, { x: 0, y: 0 }).id;
+      store.addBuilding(SPLITTER, { x: 1000, y: 1000 });
+      expect(store.nodesInRect({ x: 100, y: 100, width: 50, height: 50 })).toEqual([a]);
+      store.select([a]);
+      store.select([a], 'toggle');
+      expect(store.selection().size).toBe(0);
+      store.selectAll();
+      expect(store.selection().size).toBe(2);
+    });
+
     it('duplicates without touching the clipboard', () => {
       const junction = store.addBuilding(JUNCTION, null, { role: 'merger' }).id;
       const copy = store.duplicateNode(junction)!;
       expect(logistic(copy.id).role).toBe('merger');
-      expect(store.clipboard()).toBeNull();
+      expect(store.clipboard()).toEqual([]);
       expect(store.pasteNode()).toBeNull();
     });
   });

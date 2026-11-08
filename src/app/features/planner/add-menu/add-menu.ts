@@ -19,7 +19,7 @@ import { PlannerStore } from '../planner.store';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <app-context-menu aria-label="Añadir al lienzo">
-      @if (store.clipboard()) {
+      @if (store.clipboard().length > 0) {
         <button appMenuItem (click)="interactions.paste(interactions.menuPosition())">
           <span class="flex-1">Pegar {{ clipboardLabel() }}</span>
           <kbd class="font-sans text-xs text-muted">Ctrl+V</kbd>
@@ -118,10 +118,10 @@ export class AddMenu {
     }));
   protected readonly junction = this.data.logistics.find((l) => l.transport === 'pipe') ?? null;
 
-  /** What "Pegar" will paste, e.g. "Generador de carbón". */
+  /** What "Pegar" will paste, e.g. "Generador de carbón" or "3 tarjetas". */
   protected readonly clipboardLabel = computed(() => {
-    const node = this.store.clipboard();
-    return node ? this.interactions.describe(node) : '';
+    const nodes = this.store.clipboard();
+    return nodes.length ? this.interactions.describeGroup(nodes) : '';
   });
 
   protected addResource(resourceId: string) {

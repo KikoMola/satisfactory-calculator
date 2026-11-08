@@ -2,11 +2,10 @@ import { CdkDragHandle } from '@angular/cdk/drag-drop';
 import { DecimalPipe, PercentPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { NgpButton } from 'ng-primitives/button';
-import { NgpFormField, NgpLabel } from 'ng-primitives/form-field';
 import { Button } from '../../../ui/button/button';
 import { IconClose } from '../../../ui/icons';
 import { ItemIcon } from '../../../ui/item-icon/item-icon';
-import { Select } from '../../../ui/select/select';
+import { Combobox } from '../../../ui/combobox/combobox';
 import { arrowKeyDelta } from '../keyboard';
 import { PlannerInteractions } from '../planner-interactions';
 import type { PortRef } from '../planner.model';
@@ -27,9 +26,7 @@ import { OutputPort } from '../ports/output-port';
     DecimalPipe,
     PercentPipe,
     NgpButton,
-    NgpFormField,
-    NgpLabel,
-    Select,
+    Combobox,
     Button,
     IconClose,
     ItemIcon,
@@ -94,6 +91,6 @@ export class BuildingCard {
     const delta = arrowKeyDelta(event);
     if (!delta) return;
     event.preventDefault();
-    this.store.nudgeNode(this.node().id, delta);
+    this.interactions.nudge(this.node().id, delta);
   }
 }
