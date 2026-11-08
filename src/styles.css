@@ -52,6 +52,12 @@
   }
 }
 
+/* Selected card on the canvas (click, Shift/Ctrl+click, selection rectangle or Ctrl+A). */
+[data-node-id][data-selected] {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
 /*
  * Blueprint paper: fine lines every 32px and stronger ones every 160px. Applied to the
  * scrolling viewport, not the scaled canvas, so it looks the same at any zoom; `local` makes

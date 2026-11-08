@@ -5,6 +5,8 @@
   "Build_ConstructorMk1_C",
   "Build_Converter_C",
   "Build_ConveyorAttachmentMerger_C",
+  "Build_ConveyorAttachmentSplitterProgrammable_C",
+  "Build_ConveyorAttachmentSplitterSmart_C",
   "Build_ConveyorAttachmentSplitter_C",
   "Build_FoundryMk1_C",
   "Build_FrackingExtractor_C",

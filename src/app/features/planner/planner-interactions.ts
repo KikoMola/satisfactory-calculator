@@ -1,6 +1,14 @@
 import { inject, Injectable, signal } from '@angular/core';
+import { arrowKeyDelta } from './keyboard';
 import { beltRoute } from './planner.calc';
-import type { PlannerNode, Point, PortRef } from './planner.model';
+import {
+  LOGISTIC_SIDES,
+  rotateSide,
+  type PlannerNode,
+  type Point,
+  type PortRef,
+  type Side,
+} from './planner.model';
 import { PlannerStore, type ConnectResult } from './planner.store';
 
 const REJECTIONS: Record<Exclude<ConnectResult, 'ok'>, string> = {
@@ -12,6 +20,22 @@ const REJECTIONS: Record<Exclude<ConnectResult, 'ok'>, string> = {
   'solid-pipe': 'Las uniones de tuberías solo admiten fluidos.',
   invalid: 'Conexión no válida.',
 };
+
+/** Where a port points, for announcements ("entrada a la izquierda"). */
+export const SIDE_NAMES: Record<Side, string> = {
+  left: 'a la izquierda',
+  top: 'arriba',
+  right: 'a la derecha',
+  bottom: 'abajo',
+};
+
+/**
+ * Where keys belong to the focused control, not to the canvas shortcuts: text fields, lists,
+ * menus and popovers (Escape, arrows and letters work there as usual).
+ */
+const TYPING_CONTEXTS =
+  'input, textarea, select, [contenteditable="true"], [role="listbox"], [role="option"], ' +
+  '[role="combobox"], [role="menu"], [role="menuitem"], [role="dialog"]';
 
 /** ID of the card an element belongs to (cards carry `data-node-id` on their host). */
 function nodeIdAt(element: EventTarget | null): string | null {
@@ -79,57 +103,203 @@ export class PlannerInteractions {
     return this.store.labelOf(node);
   }
 
-  copy(nodeId: string) {
-    const node = this.store.copyNode(nodeId);
-    if (node) this.announce(`${this.describe(node)} copiado. Pulsa Ctrl+V para pegarlo.`);
-  }
-
-  /** Pastes at `position` (top-left of the card), or next to the original. */
-  paste(position?: Point | null) {
-    const node = this.store.pasteNode(position);
-    this.announce(node ? `${this.describe(node)} pegado.` : 'No hay nada copiado.');
-  }
-
-  duplicate(nodeId: string) {
-    const node = this.store.duplicateNode(nodeId);
-    if (node) this.announce(`${this.describe(node)} duplicado.`);
-  }
-
-  remove(nodeId: string) {
-    const node = this.store.nodes().find((n) => n.id === nodeId);
-    if (!node) return;
-    this.store.removeNode(nodeId);
-    this.announce(`${this.describe(node)} eliminado.`);
+  /** "Horno" for one card, "3 tarjetas" for several. */
+  describeGroup(nodes: readonly PlannerNode[]): string {
+    return nodes.length === 1 ? this.describe(nodes[0]) : `${nodes.length} tarjetas`;
   }
 
   /**
-   * Ctrl/⌘+C, Ctrl/⌘+D and Supr act on the card that has focus; Ctrl/⌘+V pastes anywhere.
-   * Ignored while typing in a field. Supr only works from the card's title (its drag handle)
-   * so it can't fire from a select or button inside the card.
-   * Returns 'removed' when the focused card was deleted, so the caller can move focus.
+   * Cards an action applies to: the selection when `nodeId` is part of it (or not given),
+   * otherwise just that card.
    */
-  shortcut(event: KeyboardEvent): 'handled' | 'removed' | null {
+  targets(nodeId?: string | null): string[] {
+    const selection = this.store.selection();
+    if (nodeId && !selection.has(nodeId)) return [nodeId];
+    return [...selection];
+  }
+
+  private nodesOf(ids: readonly string[]): PlannerNode[] {
+    const set = new Set(ids);
+    return this.store.nodes().filter((n) => set.has(n.id));
+  }
+
+  copy(nodeId?: string | null) {
+    const nodes = this.store.copyNodes(this.targets(nodeId));
+    if (nodes.length === 0) return;
+    const what = this.describeGroup(nodes);
+    this.announce(
+      `${what} ${nodes.length === 1 ? 'copiado' : 'copiadas'}. Pulsa Ctrl+V para pegar.`,
+    );
+  }
+
+  /** Copies, then deletes (the belts touching them go with them). */
+  cut(nodeId?: string | null) {
+    const ids = this.targets(nodeId);
+    const nodes = this.store.copyNodes(ids);
+    if (nodes.length === 0) return;
+    this.store.removeNodes(ids);
+    this.announce(`${this.describeGroup(nodes)} ${nodes.length === 1 ? 'cortado' : 'cortadas'}.`);
+  }
+
+  /**
+   * Pastes the clipboard with its top-left corner at `position`, at the pointer when it is
+   * over the canvas, or next to the originals.
+   */
+  paste(position?: Point | null) {
+    const nodes = this.store.pasteNodes(position ?? this.pointer);
+    this.announce(
+      nodes.length
+        ? `${this.describeGroup(nodes)} ${nodes.length === 1 ? 'pegado' : 'pegadas'}.`
+        : 'No hay nada copiado.',
+    );
+  }
+
+  duplicate(nodeId?: string | null) {
+    const nodes = this.store.duplicateNodes(this.targets(nodeId));
+    if (nodes.length === 0) return;
+    this.announce(
+      `${this.describeGroup(nodes)} ${nodes.length === 1 ? 'duplicado' : 'duplicadas'}.`,
+    );
+  }
+
+  /** Whether turning `nodeId` (or the selection) would turn anything. */
+  canRotate(nodeId?: string | null): boolean {
+    return this.nodesOf(this.targets(nodeId)).some((n) => n.kind === 'logistic');
+  }
+
+  /**
+   * Turns mergers/splitters a quarter turn clockwise. For a single one, says where its single
+   * port faces.
+   */
+  rotate(nodeId?: string | null) {
+    const ids = this.targets(nodeId);
+    this.store.rotateNodes(ids);
+    const logistics = this.nodesOf(ids).filter((n) => n.kind === 'logistic');
+    if (logistics.length !== 1) {
+      if (logistics.length > 1)
+        this.announce(`${logistics.length} divisores y unificadores girados.`);
+      return;
+    }
+    const node = logistics[0];
+    const splitter = node.role === 'splitter';
+    const side = rotateSide(
+      LOGISTIC_SIDES[node.role][splitter ? 'inputs' : 'outputs'][0],
+      node.rotation,
+    );
+    this.announce(
+      `${this.describe(node)} girado: ${splitter ? 'entrada' : 'salida'} ${SIDE_NAMES[side]}.`,
+    );
+  }
+
+  remove(nodeId?: string | null) {
+    const ids = this.targets(nodeId);
+    const nodes = this.nodesOf(ids);
+    if (nodes.length === 0) return;
+    this.store.removeNodes(ids);
+    this.announce(
+      `${this.describeGroup(nodes)} ${nodes.length === 1 ? 'eliminado' : 'eliminadas'}.`,
+    );
+  }
+
+  /** Arrow keys: moves the card, or the whole selection when the card is part of it. */
+  nudge(nodeId: string | null, delta: Point) {
+    this.store.nudgeNodes(this.targets(nodeId), delta);
+  }
+
+  selectAll() {
+    this.store.selectAll();
+    const count = this.store.selection().size;
+    this.announce(
+      count ? `${count} ${count === 1 ? 'tarjeta seleccionada' : 'tarjetas seleccionadas'}.` : '',
+    );
+  }
+
+  // ---- Selection with the pointer and keyboard focus ---------------------------------
+
+  /**
+   * Pointer down on a card: Shift/Ctrl/⌘ toggles it; otherwise it becomes the selection unless
+   * it already is part of it (so a selected group can be dragged together).
+   */
+  cardPointerDown(nodeId: string, event: PointerEvent) {
+    if (event.button === 0 && (event.shiftKey || event.ctrlKey || event.metaKey)) {
+      this.store.select([nodeId], 'toggle');
+    } else if (!this.store.isSelected(nodeId)) {
+      this.store.select([nodeId]);
+    }
+  }
+
+  /** Tabbing into a card selects it, so the keyboard shortcuts act on it. */
+  cardFocused(nodeId: string, event: FocusEvent) {
     const target = event.target as Element | null;
-    if (target?.closest('input, textarea, [contenteditable="true"]')) return null;
+    if (target?.matches(':focus-visible') && !this.store.isSelected(nodeId)) {
+      this.store.select([nodeId]);
+    }
+  }
+
+  /** Last pointer position over the canvas (canvas coordinates), where Ctrl+V pastes. */
+  private pointer: Point | null = null;
+
+  pointerMoved(event: PointerEvent) {
+    this.pointer = this.toSurface({ x: event.clientX, y: event.clientY });
+  }
+
+  pointerLeft() {
+    this.pointer = null;
+  }
+
+  // ---- Keyboard shortcuts ------------------------------------------------------------
+
+  /**
+   * Shortcuts, acting on the selection (or the focused card when it isn't selected):
+   * Ctrl/⌘+C copy, +X cut, +V paste, +D duplicate, +A select all, Supr/Retroceso delete,
+   * R turn mergers/splitters, arrows move (canvas focused), Escape clear the selection.
+   * Ignored while typing or inside a list, menu or popover, so those keep their own keys,
+   * and Ctrl+C keeps copying text when some is selected.
+   * Returns 'removed' when cards were deleted, so the caller can move focus.
+   */
+  shortcut(event: KeyboardEvent, canvas: HTMLElement): 'handled' | 'removed' | null {
+    const target = event.target as Element | null;
+    if (!target || target.closest(TYPING_CONTEXTS)) return null;
+    const onCanvas = canvas.contains(target);
     const nodeId = nodeIdAt(target);
     const mod = event.ctrlKey || event.metaKey;
     const key = event.key.toLowerCase();
+    const hasText = !!document.getSelection()?.toString();
 
-    if (mod && key === 'c' && nodeId) {
-      this.copy(nodeId);
-    } else if (mod && key === 'd' && nodeId) {
-      this.duplicate(nodeId);
-    } else if (mod && key === 'v') {
-      this.paste();
-    } else if (key === 'delete' && nodeId && target?.closest('.cdk-drag-handle')) {
+    if (mod && !event.altKey) {
+      if (key === 'v') this.paste();
+      else if (!onCanvas) return null;
+      else if (key === 'c' && !hasText) this.copy(nodeId);
+      else if (key === 'x' && !hasText) {
+        this.cut(nodeId);
+        event.preventDefault();
+        return 'removed';
+      } else if (key === 'd') this.duplicate(nodeId);
+      else if (key === 'a') this.selectAll();
+      else return null;
+    } else if (!onCanvas || event.altKey) {
+      return null;
+    } else if (key === 'delete' || key === 'backspace') {
+      if (this.targets(nodeId).length === 0) return null;
       event.preventDefault();
       this.remove(nodeId);
       return 'removed';
+    } else if (key === 'r' && !event.shiftKey && this.canRotate(nodeId)) {
+      this.rotate(nodeId);
+    } else if (key === 'escape' && !this.store.connectingFrom() && this.store.selection().size) {
+      this.store.clearSelection();
+      this.announce('Selección vacía.');
+    } else if (target === canvas && arrowKeyDelta(event)) {
+      this.nudge(null, arrowKeyDelta(event)!);
     } else {
       return null;
     }
     event.preventDefault();
     return 'handled';
+  }
+
+  isLogistic(nodeId: string): boolean {
+    return this.store.nodes().some((n) => n.id === nodeId && n.kind === 'logistic');
   }
 
   // ---- Drag a belt out of an output port -------------------------------------
@@ -147,7 +317,15 @@ export class PlannerInteractions {
     this.store.snapTarget.set(snap);
     this.previewSnapped.set(!!snap);
     const end = (snap && this.store.inputPortOf(snap)) ?? point;
-    this.previewPath.set(beltRoute(start, end).path);
+    const fromSide = this.store.sideOf(from, 'out');
+    this.previewPath.set(
+      beltRoute(
+        start,
+        end,
+        fromSide,
+        snap ? this.store.sideOf(snap, 'in') : freeEnd(fromSide, start, end),
+      ).path,
+    );
   }
 
   portDragEnded(from: PortRef, drop: Point) {
@@ -208,10 +386,19 @@ export class PlannerInteractions {
   }
 
   /** Viewport coordinates → canvas surface coordinates (accounts for scroll and zoom). */
-  private toSurface(point: Point): Point {
+  toSurface(point: Point): Point {
     const rect = this.surface?.getBoundingClientRect();
     if (!rect) return point;
     const zoom = this.zoom();
     return { x: (point.x - rect.left) / zoom, y: (point.y - rect.top) / zoom };
   }
+}
+
+/**
+ * Side a belt not snapped to anything enters the pointer from: straight on in the direction it
+ * left its port, so the preview doesn't double back on itself.
+ */
+function freeEnd(fromSide: Side, start: Point, end: Point): Side {
+  if (fromSide === 'left' || fromSide === 'right') return end.x >= start.x ? 'left' : 'right';
+  return end.y >= start.y ? 'top' : 'bottom';
 }

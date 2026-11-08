@@ -22,6 +22,8 @@ import {
   powerUsage,
   recipeRate,
   somersloopBoost,
+  sortedSplit,
+  sortOutputs,
   supplementalRate,
   waterfill,
   type BeltFlow,
@@ -34,11 +36,17 @@ import {
   type GeneratorNode,
   type LogisticNode,
   type LogisticRole,
+  LOGISTIC_SIDES,
   type PlannerNode,
   type Point,
   type PortRef,
   type Purity,
   type ResourceNode,
+  rotateSide,
+  type Rotation,
+  type Side,
+  type SortRule,
+  SPECIAL_SORT_RULES,
 } from './planner.model';
 
 /** The Water Extractor is placed on any body of water: there is no node, so no purity. */
@@ -81,6 +89,8 @@ export interface PortView {
   /** Items/min actually flowing given the current connections. */
   actual: number;
   connected: boolean;
+  /** Side of the card the port sits on. */
+  side: Side;
 }
 
 interface NodeViewBase {
@@ -138,6 +148,8 @@ export interface LogisticNodeView extends LogisticNode, NodeViewBase {
   color: string;
   /** Items/min passing through. */
   throughput: number;
+  /** Sort rules per output: 1 on a smart splitter, more on a programmable one, else 0. */
+  rulesPerOutput: number;
 }
 
 export interface GeneratorNodeView extends GeneratorNode, NodeViewBase, ClockView {
@@ -201,8 +213,10 @@ export type ConnectResult =
 interface PortInfo {
   item: Item | null;
   rate: number;
-  /** Row on the card (port vertical position). Unused for resource nodes. */
+  /** Row on the card (port vertical position). Unused for resource nodes and logistics. */
   row: number;
+  /** Side of the card; inputs default to the left and outputs to the right. */
+  side?: Side;
 }
 
 /** Static per-node info, independent of the belts. */
@@ -230,7 +244,9 @@ export class PlannerStore {
   readonly snapTarget = signal<PortRef | null>(null);
 
   /** Snapshot of the last copied node (settings only: its belts are not copied). */
-  readonly clipboard = signal<PlannerNode | null>(null);
+  readonly clipboard = signal<readonly PlannerNode[]>([]);
+  /** Cards selected with a click, Shift/Ctrl+click or a selection rectangle. */
+  readonly selection = signal<ReadonlySet<string>>(new Set());
   /** How many times the clipboard was pasted without a position, to cascade the copies. */
   private pasteCount = 0;
 
@@ -238,7 +254,7 @@ export class PlannerStore {
    * Positions of cards currently being dragged. Kept apart from the model so that the CDK's
    * free-drag position input does not change mid-drag; only the belt routes read it.
    */
-  private readonly livePositions = signal<Record<string, Point>>({});
+  readonly livePositions = signal<Record<string, Point>>({});
 
   // ---- Options for the selects --------------------------------------------
 
@@ -387,11 +403,20 @@ export class PlannerStore {
         };
       }
       case 'logistic': {
-        const port = (row: number): PortInfo => ({ item: null, rate: 0, row });
-        // Merger: 3 inputs, output on the middle row. Splitter: input on the middle row, 3 outputs.
-        return node.role === 'merger'
-          ? { node, width: CANVAS.logistic.width, inputs: [0, 1, 2].map(port), outputs: [port(1)] }
-          : { node, width: CANVAS.logistic.width, inputs: [port(1)], outputs: [0, 1, 2].map(port) };
+        // One port per side, turned with the card.
+        const sides = LOGISTIC_SIDES[node.role];
+        const port = (side: Side): PortInfo => ({
+          item: null,
+          rate: 0,
+          row: 0,
+          side: rotateSide(side, node.rotation),
+        });
+        return {
+          node,
+          width: CANVAS.logistic.width,
+          inputs: sides.inputs.map(port),
+          outputs: sides.outputs.map(port),
+        };
       }
     }
   }
@@ -483,6 +508,12 @@ export class PlannerStore {
     const capacity = (belt: Belt) => this.data.transport(belt.transportId).ratePerMinute;
     const isMerger = (info: NodeInfo) =>
       info.node.kind === 'logistic' && info.node.role === 'merger';
+    const items = this.logisticItems();
+    /** Outputs a smart/programmable splitter lets the item through; `null` for the rest. */
+    const sorting = (info: NodeInfo) =>
+      info.node.kind === 'logistic' && info.node.sortRules
+        ? sortOutputs(info.node.sortRules, items.get(info.node.id)?.id ?? null)
+        : null;
     /** Buildings and generators consume what reaches them, limited by their scarcest input. */
     const isConsumer = (info: NodeInfo | undefined) =>
       info?.node.kind === 'building' || info?.node.kind === 'generator';
@@ -499,7 +530,9 @@ export class PlannerStore {
         value = info!.inputs[to.index]?.rate ?? 0;
       } else if (info?.node.kind === 'logistic') {
         const next = new Set(seen).add(to.nodeId);
+        const sorted = sorting(info);
         value = info.outputs.reduce((sum, _, index) => {
+          if (sorted && !sorted.primary[index] && !sorted.overflow[index]) return sum;
           const out = beltFrom.get(portKey({ nodeId: to.nodeId, index }));
           return out ? sum + Math.min(capacity(out), accept(out.to, next)) : sum;
         }, 0);
@@ -534,10 +567,15 @@ export class PlannerStore {
         case 'building':
         case 'generator':
           return (productivity.get(from.nodeId) ?? 0) * output.rate;
-        case 'logistic':
-          return isMerger(info)
-            ? inflow(from.nodeId, info)
-            : waterfill(inflow(from.nodeId, info), splitterLimits(from.nodeId, info))[from.index];
+        case 'logistic': {
+          if (isMerger(info)) return inflow(from.nodeId, info);
+          const total = inflow(from.nodeId, info);
+          const limits = splitterLimits(from.nodeId, info);
+          const sorted = sorting(info);
+          return (sorted ? sortedSplit(total, limits, sorted) : waterfill(total, limits))[
+            from.index
+          ];
+        }
       }
     };
     const supply = (belt: Belt) => Math.min(offered(belt.from), capacity(belt));
@@ -619,6 +657,7 @@ export class PlannerStore {
           unit: rateUnit(item),
           actual: belt ? (beltFlows.get(belt.id)?.flow ?? 0) : 0,
           connected: !!belt,
+          side: input.side ?? 'left',
         };
       });
       const outputs = info.outputs.map((output, index): PortView => {
@@ -640,6 +679,7 @@ export class PlannerStore {
           unit: rateUnit(item),
           actual,
           connected: !!belt,
+          side: output.side ?? 'right',
         };
       });
 
@@ -706,6 +746,7 @@ export class PlannerStore {
             itemIcon: this.data.icon(item?.id),
             color: this.colorOf(item),
             throughput: inputs.reduce((sum, input) => sum + input.actual, 0),
+            rulesPerOutput: this.rulesPerOutput(node),
             inputs,
             outputs,
             powerMW: 0,
@@ -758,6 +799,8 @@ export class PlannerStore {
           ...beltRoute(
             this.portPoint(source, 'out', belt.from.index, live[source.node.id]),
             this.portPoint(target, 'in', belt.to.index, live[target.node.id]),
+            this.portSide(source, 'out', belt.from.index),
+            this.portSide(target, 'in', belt.to.index),
           ),
         },
       ];
@@ -876,6 +919,10 @@ export class PlannerStore {
         id,
         buildingId,
         role: building.role === 'junction' ? (options.role ?? 'splitter') : building.role,
+        rotation: 0,
+        ...(building.sortRules > 0 && {
+          sortRules: Array.from({ length: building.outputs }, (): SortRule[] => ['any']),
+        }),
         position: this.placeAt('logistic', position),
       };
     } else if (building.kind === 'generator') {
@@ -984,8 +1031,85 @@ export class PlannerStore {
   }
 
   nudgeNode(id: string, delta: Point) {
-    const node = this.nodes().find((n) => n.id === id);
-    if (node) this.moveNode(id, { x: node.position.x + delta.x, y: node.position.y + delta.y });
+    this.nudgeNodes([id], delta);
+  }
+
+  /**
+   * Moves several cards by the same delta (also used to drop a dragged group). The delta is
+   * limited so the whole group stays inside the canvas and keeps its layout.
+   */
+  nudgeNodes(ids: Iterable<string>, delta: Point) {
+    const set = new Set(ids);
+    const group = this.nodes().filter((n) => set.has(n.id));
+    if (group.length === 0) return;
+    const limited = keepInside(group, delta);
+    this.nodes.update((nodes) =>
+      nodes.map((n) =>
+        set.has(n.id)
+          ? { ...n, position: { x: n.position.x + limited.x, y: n.position.y + limited.y } }
+          : n,
+      ),
+    );
+    this.clearLivePositions(set);
+  }
+
+  private clearLivePositions(ids: ReadonlySet<string>) {
+    this.livePositions.update((live) =>
+      Object.fromEntries(Object.entries(live).filter(([id]) => !ids.has(id))),
+    );
+  }
+
+  /**
+   * Replaces the sort rules of one output of a smart/programmable splitter. A smart splitter
+   * keeps only the last rule (one per output); an empty list means 'none'.
+   */
+  setSortRules(id: string, output: number, rules: SortRule[]) {
+    this.nodes.update((nodes) =>
+      nodes.map((n) => {
+        if (n.id !== id || n.kind !== 'logistic' || !n.sortRules) return n;
+        const max = this.rulesPerOutput(n);
+        const unique = [...new Set(rules)];
+        const next = unique.length ? unique.slice(-max) : ['none'];
+        return { ...n, sortRules: n.sortRules.map((r, i) => (i === output ? next : r)) };
+      }),
+    );
+  }
+
+  /** Rules each output of a smart (1) or programmable (many) splitter takes; 0 otherwise. */
+  rulesPerOutput(node: LogisticNode): number {
+    const building = this.data.building(node.buildingId) as LogisticBuilding;
+    return building.sortRules > building.outputs
+      ? building.sortRules
+      : building.sortRules > 0
+        ? 1
+        : 0;
+  }
+
+  /** Options of a sort rule: the special rules, then every solid item. */
+  readonly sortRuleOptions: readonly SelectOption[] = [
+    ...SPECIAL_SORT_RULES.map((r) => ({ value: r.id, label: r.label })),
+    ...this.data.solidItems.map((item) => ({
+      value: item.id,
+      label: item.name.es,
+      icon: this.data.icon(item.id),
+    })),
+  ];
+
+  /** Turns a merger/splitter a quarter turn clockwise (`turns` = -1 for anticlockwise). */
+  rotateNode(id: string, turns = 1) {
+    this.rotateNodes([id], turns);
+  }
+
+  /** Turns every merger/splitter among `ids`; other cards are left alone. */
+  rotateNodes(ids: Iterable<string>, turns = 1) {
+    const set = new Set(ids);
+    this.nodes.update((nodes) =>
+      nodes.map((n) =>
+        set.has(n.id) && n.kind === 'logistic'
+          ? { ...n, rotation: ((((n.rotation + turns) % 4) + 4) % 4) as Rotation }
+          : n,
+      ),
+    );
   }
 
   setLiveNodePosition(id: string, position: Point) {
@@ -993,10 +1117,66 @@ export class PlannerStore {
   }
 
   removeNode(id: string) {
-    this.nodes.update((nodes) => nodes.filter((n) => n.id !== id));
-    this.belts.update((belts) => belts.filter((b) => b.from.nodeId !== id && b.to.nodeId !== id));
-    if (this.connectingFrom()?.nodeId === id) this.connectingFrom.set(null);
-    if (this.snapTarget()?.nodeId === id) this.snapTarget.set(null);
+    this.removeNodes([id]);
+  }
+
+  /** Deletes cards and every belt touching them. */
+  removeNodes(ids: Iterable<string>) {
+    const set = new Set(ids);
+    if (set.size === 0) return;
+    this.nodes.update((nodes) => nodes.filter((n) => !set.has(n.id)));
+    this.belts.update((belts) =>
+      belts.filter((b) => !set.has(b.from.nodeId) && !set.has(b.to.nodeId)),
+    );
+    this.selection.update((selected) => new Set([...selected].filter((id) => !set.has(id))));
+    this.clearLivePositions(set);
+    const connecting = this.connectingFrom();
+    if (connecting && set.has(connecting.nodeId)) this.connectingFrom.set(null);
+    const snap = this.snapTarget();
+    if (snap && set.has(snap.nodeId)) this.snapTarget.set(null);
+  }
+
+  // ---- Selection --------------------------------------------------------------
+
+  isSelected(id: string): boolean {
+    return this.selection().has(id);
+  }
+
+  /** `replace` selects only `ids`; `add` adds them; `toggle` flips each one. */
+  select(ids: Iterable<string>, mode: 'replace' | 'add' | 'toggle' = 'replace') {
+    const list = [...ids];
+    this.selection.update((current) => {
+      if (mode === 'replace') return new Set(list);
+      const next = new Set(current);
+      for (const id of list) {
+        if (mode === 'toggle' && next.has(id)) next.delete(id);
+        else next.add(id);
+      }
+      return next;
+    });
+  }
+
+  selectAll() {
+    this.selection.set(new Set(this.nodes().map((n) => n.id)));
+  }
+
+  clearSelection() {
+    if (this.selection().size > 0) this.selection.set(new Set());
+  }
+
+  /** Cards overlapping a rectangle (canvas coordinates), for the selection rectangle. */
+  nodesInRect(rect: { x: number; y: number; width: number; height: number }): string[] {
+    return this.nodes()
+      .filter((n) => {
+        const size = CANVAS[n.kind];
+        return (
+          n.position.x < rect.x + rect.width &&
+          n.position.x + size.width > rect.x &&
+          n.position.y < rect.y + rect.height &&
+          n.position.y + size.height > rect.y
+        );
+      })
+      .map((n) => n.id);
   }
 
   // ---- Copy & paste -----------------------------------------------------------
@@ -1008,6 +1188,7 @@ export class PlannerStore {
         return `Nodo de ${this.data.item(node.resourceId).name.es}`;
       case 'logistic': {
         const building = this.data.building(node.buildingId) as LogisticBuilding;
+        if (building.sortRules > 0) return building.name.es;
         const title = node.role === 'merger' ? 'Unificador' : 'Divisor';
         return building.transport === 'pipe' ? `${title} de fluidos` : title;
       }
@@ -1016,50 +1197,72 @@ export class PlannerStore {
     }
   }
 
-  /** Copies a node's settings (recipe, clock, shards, fuel...) to the clipboard. */
-  copyNode(id: string): PlannerNode | null {
-    const node = this.nodes().find((n) => n.id === id) ?? null;
-    if (node) {
-      this.clipboard.set(node);
+  /**
+   * Copies cards' settings (recipe, clock, shards, fuel, rotation, filters...) to the
+   * clipboard. Belts are never copied.
+   */
+  copyNodes(ids: Iterable<string>): readonly PlannerNode[] {
+    const set = new Set(ids);
+    const nodes = this.nodes().filter((n) => set.has(n.id));
+    if (nodes.length > 0) {
+      this.clipboard.set(nodes);
       this.pasteCount = 0;
     }
-    return node;
+    return nodes;
+  }
+
+  copyNode(id: string): PlannerNode | null {
+    return this.copyNodes([id])[0] ?? null;
   }
 
   /**
-   * Adds a copy of the clipboard at `position` (top-left of the card) or, without one,
-   * cascaded down-right from the original so repeated pastes don't stack.
+   * Adds a copy of the clipboard keeping its layout: with its top-left corner at `position`,
+   * or, without one, cascaded down-right from the originals so repeated pastes don't stack.
+   * The copies become the selection.
    */
-  pasteNode(position?: Point | null): PlannerNode | null {
+  pasteNodes(position?: Point | null): PlannerNode[] {
     const source = this.clipboard();
-    if (!source) return null;
-    if (position) return this.insertCopy(source, position);
-    const offset = CANVAS.pasteOffset * ++this.pasteCount;
-    return this.insertCopy(source, {
-      x: source.position.x + offset,
-      y: source.position.y + offset,
-    });
+    if (source.length === 0) return [];
+    let delta: Point;
+    if (position) {
+      const origin = topLeft(source);
+      delta = { x: position.x - origin.x, y: position.y - origin.y };
+    } else {
+      const offset = CANVAS.pasteOffset * ++this.pasteCount;
+      delta = { x: offset, y: offset };
+    }
+    return this.insertCopies(source, delta);
   }
 
-  /** Copy of a node next to it, without touching the clipboard. */
+  pasteNode(position?: Point | null): PlannerNode | null {
+    return this.pasteNodes(position)[0] ?? null;
+  }
+
+  /** Copies of cards next to them, without touching the clipboard. They become the selection. */
+  duplicateNodes(ids: Iterable<string>): PlannerNode[] {
+    const set = new Set(ids);
+    const nodes = this.nodes().filter((n) => set.has(n.id));
+    return this.insertCopies(nodes, { x: CANVAS.pasteOffset, y: CANVAS.pasteOffset });
+  }
+
   duplicateNode(id: string): PlannerNode | null {
-    const node = this.nodes().find((n) => n.id === id);
-    if (!node) return null;
-    return this.insertCopy(node, {
-      x: node.position.x + CANVAS.pasteOffset,
-      y: node.position.y + CANVAS.pasteOffset,
-    });
+    return this.duplicateNodes([id])[0] ?? null;
   }
 
-  private insertCopy(source: PlannerNode, position: Point): PlannerNode {
-    const prefix = source.kind === 'resource' ? 'node' : 'building';
-    const node = {
-      ...source,
-      id: `${prefix}-${this.nextId++}`,
-      position: this.placeAt(source.kind, position),
-    } as PlannerNode;
-    this.nodes.update((nodes) => [...nodes, node]);
-    return node;
+  private insertCopies(sources: readonly PlannerNode[], delta: Point): PlannerNode[] {
+    if (sources.length === 0) return [];
+    const shift = keepInside(sources, delta);
+    const copies = sources.map(
+      (source) =>
+        ({
+          ...source,
+          id: `${source.kind === 'resource' ? 'node' : 'building'}-${this.nextId++}`,
+          position: { x: source.position.x + shift.x, y: source.position.y + shift.y },
+        }) as PlannerNode,
+    );
+    this.nodes.update((nodes) => [...nodes, ...copies]);
+    this.selection.set(new Set(copies.map((n) => n.id)));
+    return copies;
   }
 
   // ---- Belts --------------------------------------------------------------
@@ -1068,6 +1271,16 @@ export class PlannerStore {
   outputPortOf(from: PortRef): Point | null {
     const info = this.nodeInfos().get(from.nodeId);
     return info ? this.portPoint(info, 'out', from.index) : null;
+  }
+
+  /** Side of the card an output (`'out'`) or input (`'in'`) port sits on. */
+  sideOf(port: PortRef, direction: 'in' | 'out'): Side {
+    const info = this.nodeInfos().get(port.nodeId);
+    return info
+      ? this.portSide(info, direction, port.index)
+      : direction === 'in'
+        ? 'left'
+        : 'right';
   }
 
   /** Input port centre in canvas coordinates (uses the model position). */
@@ -1201,11 +1414,27 @@ export class PlannerStore {
     if (info.node.kind === 'resource') {
       return { x: position.x + CANVAS.resource.width, y: position.y + CANVAS.resource.outputY };
     }
-    const row = (side === 'in' ? info.inputs : info.outputs)[index]?.row ?? 0;
+    const port = (side === 'in' ? info.inputs : info.outputs)[index];
+    if (info.node.kind === 'logistic') {
+      const { width, height } = CANVAS.logistic;
+      const offset = {
+        left: { x: 0, y: height / 2 },
+        right: { x: width, y: height / 2 },
+        top: { x: width / 2, y: 0 },
+        bottom: { x: width / 2, y: height },
+      }[port?.side ?? 'left'];
+      return { x: position.x + offset.x, y: position.y + offset.y };
+    }
+    const row = port?.row ?? 0;
     return {
       x: side === 'in' ? position.x : position.x + info.width,
       y: position.y + CANVAS.rows.top + row * CANVAS.rows.height + CANVAS.rows.height / 2,
     };
+  }
+
+  private portSide(info: NodeInfo, direction: 'in' | 'out', index: number): Side {
+    const port = (direction === 'in' ? info.inputs : info.outputs)[index];
+    return port?.side ?? (direction === 'in' ? 'left' : 'right');
   }
 
   /** Belt or pipe for mergers/splitters/junctions, `null` for any other node. */
@@ -1271,4 +1500,23 @@ export class PlannerStore {
       hint: `${t.ratePerMinute}${t.kind === 'pipe' ? ' m³' : ''}/min`,
     }));
   }
+}
+
+/** Top-left corner of a group of cards. */
+function topLeft(nodes: readonly PlannerNode[]): Point {
+  return {
+    x: Math.min(...nodes.map((n) => n.position.x)),
+    y: Math.min(...nodes.map((n) => n.position.y)),
+  };
+}
+
+/** `delta` reduced so every card of the group stays inside the canvas after moving by it. */
+function keepInside(nodes: readonly PlannerNode[], delta: Point): Point {
+  let { x, y } = delta;
+  for (const n of nodes) {
+    const size = CANVAS[n.kind];
+    x = Math.min(Math.max(x, -n.position.x), CANVAS.width - size.width - n.position.x);
+    y = Math.min(Math.max(y, -n.position.y), CANVAS.height - size.height - n.position.y);
+  }
+  return { x, y };
 }

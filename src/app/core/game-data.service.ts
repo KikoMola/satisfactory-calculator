@@ -66,6 +66,11 @@ export class GameDataService {
   ).sort((a, b) => Number(a.form !== 'solid') - Number(b.form !== 'solid') || byName(a, b));
 
   /** Production buildings that can run recipes (smelter, constructor...). */
+  /** Items that travel on conveyor belts, by Spanish name (smart splitter filters). */
+  readonly solidItems: Item[] = ITEMS.filter((item) => item.form === 'solid').sort((a, b) =>
+    a.name.es.localeCompare(b.name.es, 'es'),
+  );
+
   readonly manufacturers: ManufacturerBuilding[] = BUILDINGS.filter(
     (b): b is ManufacturerBuilding => b.kind === 'manufacturer',
   ).sort((a, b) => MANUFACTURER_ORDER.indexOf(a.id) - MANUFACTURER_ORDER.indexOf(b.id));

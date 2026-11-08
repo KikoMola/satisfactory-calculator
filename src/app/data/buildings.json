@@ -100,7 +100,8 @@
     "role": "merger",
     "transport": "belt",
     "inputs": 3,
-    "outputs": 1
+    "outputs": 1,
+    "sortRules": 0
   },
   {
     "id": "Build_ConveyorAttachmentSplitter_C",
@@ -120,7 +121,50 @@
     "role": "splitter",
     "transport": "belt",
     "inputs": 1,
-    "outputs": 3
+    "outputs": 3,
+    "sortRules": 0
+  },
+  {
+    "id": "Build_ConveyorAttachmentSplitterProgrammable_C",
+    "name": {
+      "es": "Divisor programable",
+      "en": "Programmable Splitter"
+    },
+    "description": {
+      "es": "Divide una cinta transportadora en dos o tres. \nSe pueden configurar varios filtros para cada salida para permitir el paso de piezas específicas.",
+      "en": "Splits one Conveyor Belt into two or three. \r\nMultiple filters can be set for each output to allow specific parts to pass through."
+    },
+    "powerMW": 0,
+    "powerExponent": 0,
+    "canOverclock": false,
+    "iconPath": "/Game/FactoryGame/Buildable/Factory/CA_SplitterProgrammable/UI/IconDesc_ProgrammableSplitter_512",
+    "kind": "logistic",
+    "role": "splitter",
+    "transport": "belt",
+    "inputs": 1,
+    "outputs": 3,
+    "sortRules": 64
+  },
+  {
+    "id": "Build_ConveyorAttachmentSplitterSmart_C",
+    "name": {
+      "es": "Divisor inteligente",
+      "en": "Smart Splitter"
+    },
+    "description": {
+      "es": "Divide una cinta transportadora en dos o tres. \nSe puede configurar un filtro para cada salida para permitir el paso de una pieza específica.",
+      "en": "Splits one Conveyor Belt into two or three.\r\nA filter can be set for each output to allow a specific part to pass through."
+    },
+    "powerMW": 0,
+    "powerExponent": 0,
+    "canOverclock": false,
+    "iconPath": "/Game/FactoryGame/Buildable/Factory/CA_SplitterSmart/UI/IconDesc_SmartSplitter_512",
+    "kind": "logistic",
+    "role": "splitter",
+    "transport": "belt",
+    "inputs": 1,
+    "outputs": 3,
+    "sortRules": 3
   },
   {
     "id": "Build_FoundryMk1_C",
@@ -564,7 +608,8 @@
     "role": "junction",
     "transport": "pipe",
     "inputs": 3,
-    "outputs": 3
+    "outputs": 3,
+    "sortRules": 0
   },
   {
     "id": "Build_QuantumEncoder_C",

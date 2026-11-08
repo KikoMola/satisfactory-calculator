@@ -12,6 +12,8 @@ const SMELTER = 'Build_SmelterMk1_C';
 const CONSTRUCTOR = 'Build_ConstructorMk1_C';
 const MERGER = 'Build_ConveyorAttachmentMerger_C';
 const SPLITTER = 'Build_ConveyorAttachmentSplitter_C';
+const SMART = 'Build_ConveyorAttachmentSplitterSmart_C';
+const PROGRAMMABLE = 'Build_ConveyorAttachmentSplitterProgrammable_C';
 const IRON_INGOT = 'Recipe_IngotIron_C';
 const COAL_GENERATOR = 'Build_GeneratorCoal_C';
 const NUCLEAR = 'Build_GeneratorNuclear_C';
@@ -321,6 +323,108 @@ describe('PlannerStore', () => {
     });
   });
 
+  describe('smart and programmable splitters', () => {
+    /** Iron node (60/min) → splitter → three smelters (30/min each). */
+    const sorter = (buildingId: string) => {
+      const splitter = store.addBuilding(buildingId).id;
+      store.connect(out(ironNode()), inp(splitter));
+      const smelters = [0, 1, 2].map((index) => {
+        const smelter = ironSmelter();
+        store.connect(out(splitter, index), inp(smelter));
+        return smelter;
+      });
+      return { splitter, smelters };
+    };
+
+    it('start letting anything through every output, like a plain splitter', () => {
+      const { splitter, smelters } = sorter(SMART);
+      expect(logistic(splitter).sortRules).toEqual([['any'], ['any'], ['any']]);
+      expect(logistic(splitter).rulesPerOutput).toBe(1);
+      expect(logistic(splitter).label).toBe('Divisor inteligente');
+      expect(smelters.map((s) => flowInto(s))).toEqual([20, 20, 20]);
+    });
+
+    it('send items only where the rules allow, overflow last', () => {
+      const { splitter, smelters } = sorter(SMART);
+      store.setSortRules(splitter, 0, ['Desc_OreIron_C']);
+      store.setSortRules(splitter, 1, ['none']);
+      store.setSortRules(splitter, 2, ['overflow']);
+      // Output 0 takes all it can (30), the overflow gets the other 30.
+      expect(smelters.map((s) => flowInto(s))).toEqual([30, 0, 30]);
+
+      store.setSortRules(splitter, 0, ['Desc_Coal_C']);
+      // Nothing asks for iron: it all goes to the overflow.
+      expect(smelters.map((s) => flowInto(s))).toEqual([0, 0, 30]);
+    });
+
+    it('route "any undefined" only when no output names the item', () => {
+      const { splitter, smelters } = sorter(SMART);
+      store.setSortRules(splitter, 0, ['any-undefined']);
+      store.setSortRules(splitter, 1, ['none']);
+      store.setSortRules(splitter, 2, ['none']);
+      expect(flowInto(smelters[0])).toBe(30);
+      store.setSortRules(splitter, 2, ['Desc_OreIron_C']);
+      expect(smelters.map((s) => flowInto(s))).toEqual([0, 0, 30]);
+    });
+
+    it('keep one rule per output on a smart splitter, several on a programmable one', () => {
+      const smart = store.addBuilding(SMART).id;
+      store.setSortRules(smart, 0, ['Desc_OreIron_C', 'Desc_Coal_C']);
+      expect(logistic(smart).sortRules![0]).toEqual(['Desc_Coal_C']);
+
+      const programmable = store.addBuilding(PROGRAMMABLE).id;
+      expect(logistic(programmable).rulesPerOutput).toBeGreaterThan(1);
+      store.setSortRules(programmable, 0, ['Desc_OreIron_C', 'Desc_Coal_C']);
+      expect(logistic(programmable).sortRules![0]).toEqual(['Desc_OreIron_C', 'Desc_Coal_C']);
+      store.setSortRules(programmable, 0, []);
+      expect(logistic(programmable).sortRules![0]).toEqual(['none']);
+    });
+
+    it('leave plain splitters without rules', () => {
+      expect(logistic(store.addBuilding(SPLITTER).id).sortRules).toBeUndefined();
+    });
+  });
+
+  describe('turning mergers and splitters', () => {
+    it('puts one port on each side, turning them clockwise', () => {
+      const splitter = store.addBuilding(SPLITTER).id;
+      expect(logistic(splitter).inputs.map((p) => p.side)).toEqual(['left']);
+      expect(logistic(splitter).outputs.map((p) => p.side)).toEqual(['top', 'right', 'bottom']);
+
+      store.rotateNode(splitter);
+      expect(logistic(splitter).inputs[0].side).toBe('top');
+      expect(logistic(splitter).outputs.map((p) => p.side)).toEqual(['right', 'bottom', 'left']);
+
+      store.rotateNode(splitter, -2);
+      expect(logistic(splitter).rotation).toBe(3);
+      expect(logistic(splitter).inputs[0].side).toBe('bottom');
+    });
+
+    it('anchors ports in the middle of each edge and keeps belts connected', () => {
+      const node = ironNode();
+      const splitter = store.addBuilding(SPLITTER, { x: 400, y: 400 });
+      store.connect(out(node), inp(splitter.id));
+      const { width, height } = CANVAS.logistic;
+      expect(store.inputPortOf(inp(splitter.id))).toEqual({ x: 400, y: 400 + height / 2 });
+      expect(store.outputPortOf(out(splitter.id, 2))).toEqual({
+        x: 400 + width / 2,
+        y: 400 + height,
+      });
+
+      store.rotateNode(splitter.id);
+      expect(store.inputPortOf(inp(splitter.id))).toEqual({ x: 400 + width / 2, y: 400 });
+      expect(store.sideOf(inp(splitter.id), 'in')).toBe('top');
+      expect(store.belts()).toHaveLength(1);
+    });
+
+    it('only turns logistics', () => {
+      const smelter = ironSmelter();
+      store.rotateNode(smelter);
+      expect(building(smelter).inputs[0].side).toBe('left');
+      expect(building(smelter).outputs[0].side).toBe('right');
+    });
+  });
+
   describe('pipeline junction', () => {
     it('splits water between two coal generators', () => {
       const water = store.addResourceNode('Desc_Water_C').id; // 120 m³/min
@@ -387,11 +491,68 @@ describe('PlannerStore', () => {
       expect(store.belts()).toHaveLength(1);
     });
 
+    it('copies and pastes a group keeping its layout, without belts', () => {
+      const node = ironNode();
+      const smelter = ironSmelter();
+      store.moveNode(node, { x: 100, y: 100 });
+      store.moveNode(smelter, { x: 500, y: 200 });
+      store.connect(out(node), inp(smelter));
+
+      store.copyNodes([node, smelter]);
+      const copies = store.pasteNodes({ x: 1000, y: 1000 });
+      expect(copies.map((n) => n.position)).toEqual([
+        { x: 1000, y: 1000 },
+        { x: 1400, y: 1100 },
+      ]);
+      expect(store.belts()).toHaveLength(1);
+      // The copies become the selection.
+      expect([...store.selection()]).toEqual(copies.map((n) => n.id));
+    });
+
+    it('keeps a pasted group inside the canvas', () => {
+      const smelter = ironSmelter();
+      store.copyNodes([smelter]);
+      const [copy] = store.pasteNodes({ x: CANVAS.width, y: -50 });
+      expect(copy.position.x).toBe(CANVAS.width - CANVAS.building.width);
+      expect(copy.position.y).toBe(0);
+    });
+
+    it('moves, turns and deletes the selection together', () => {
+      const a = ironSmelter();
+      const b = store.addBuilding(SPLITTER, { x: 400, y: 400 }).id;
+      store.moveNode(a, { x: 0, y: 0 });
+      store.select([a, b]);
+      store.nudgeNodes(store.selection(), { x: -32, y: 16 });
+      // Limited by the card already at the left edge: the group keeps its layout.
+      expect(building(a).position).toEqual({ x: 0, y: 16 });
+      expect(logistic(b).position).toEqual({ x: 400, y: 416 });
+
+      store.rotateNodes(store.selection());
+      expect(logistic(b).rotation).toBe(1);
+
+      store.connect(out(ironNode()), inp(a));
+      store.removeNodes(store.selection());
+      expect(store.nodes()).toHaveLength(1);
+      expect(store.belts()).toHaveLength(0);
+      expect(store.selection().size).toBe(0);
+    });
+
+    it('selects the cards a rectangle touches', () => {
+      const a = store.addBuilding(SPLITTER, { x: 0, y: 0 }).id;
+      store.addBuilding(SPLITTER, { x: 1000, y: 1000 });
+      expect(store.nodesInRect({ x: 100, y: 100, width: 50, height: 50 })).toEqual([a]);
+      store.select([a]);
+      store.select([a], 'toggle');
+      expect(store.selection().size).toBe(0);
+      store.selectAll();
+      expect(store.selection().size).toBe(2);
+    });
+
     it('duplicates without touching the clipboard', () => {
       const junction = store.addBuilding(JUNCTION, null, { role: 'merger' }).id;
       const copy = store.duplicateNode(junction)!;
       expect(logistic(copy.id).role).toBe('merger');
-      expect(store.clipboard()).toBeNull();
+      expect(store.clipboard()).toEqual([]);
       expect(store.pasteNode()).toBeNull();
     });
   });
