@@ -138,6 +138,8 @@ export interface LogisticBuilding extends BuildingBase {
   transport: 'belt' | 'pipe';
   inputs: number;
   outputs: number;
+  /** Sort rules it takes in total: 0 = plain, 3 = smart (one per output), 64 = programmable. */
+  sortRules: number;
 }
 
 export interface Transport {

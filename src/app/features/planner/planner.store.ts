@@ -22,6 +22,8 @@ import {
   powerUsage,
   recipeRate,
   somersloopBoost,
+  sortedSplit,
+  sortOutputs,
   supplementalRate,
   waterfill,
   type BeltFlow,
@@ -34,11 +36,17 @@ import {
   type GeneratorNode,
   type LogisticNode,
   type LogisticRole,
+  LOGISTIC_SIDES,
   type PlannerNode,
   type Point,
   type PortRef,
   type Purity,
   type ResourceNode,
+  rotateSide,
+  type Rotation,
+  type Side,
+  type SortRule,
+  SPECIAL_SORT_RULES,
 } from './planner.model';
 
 /** The Water Extractor is placed on any body of water: there is no node, so no purity. */
@@ -81,6 +89,8 @@ export interface PortView {
   /** Items/min actually flowing given the current connections. */
   actual: number;
   connected: boolean;
+  /** Side of the card the port sits on. */
+  side: Side;
 }
 
 interface NodeViewBase {
@@ -138,6 +148,8 @@ export interface LogisticNodeView extends LogisticNode, NodeViewBase {
   color: string;
   /** Items/min passing through. */
   throughput: number;
+  /** Sort rules per output: 1 on a smart splitter, more on a programmable one, else 0. */
+  rulesPerOutput: number;
 }
 
 export interface GeneratorNodeView extends GeneratorNode, NodeViewBase, ClockView {
@@ -201,8 +213,10 @@ export type ConnectResult =
 interface PortInfo {
   item: Item | null;
   rate: number;
-  /** Row on the card (port vertical position). Unused for resource nodes. */
+  /** Row on the card (port vertical position). Unused for resource nodes and logistics. */
   row: number;
+  /** Side of the card; inputs default to the left and outputs to the right. */
+  side?: Side;
 }
 
 /** Static per-node info, independent of the belts. */
@@ -387,11 +401,20 @@ export class PlannerStore {
         };
       }
       case 'logistic': {
-        const port = (row: number): PortInfo => ({ item: null, rate: 0, row });
-        // Merger: 3 inputs, output on the middle row. Splitter: input on the middle row, 3 outputs.
-        return node.role === 'merger'
-          ? { node, width: CANVAS.logistic.width, inputs: [0, 1, 2].map(port), outputs: [port(1)] }
-          : { node, width: CANVAS.logistic.width, inputs: [port(1)], outputs: [0, 1, 2].map(port) };
+        // One port per side, turned with the card.
+        const sides = LOGISTIC_SIDES[node.role];
+        const port = (side: Side): PortInfo => ({
+          item: null,
+          rate: 0,
+          row: 0,
+          side: rotateSide(side, node.rotation),
+        });
+        return {
+          node,
+          width: CANVAS.logistic.width,
+          inputs: sides.inputs.map(port),
+          outputs: sides.outputs.map(port),
+        };
       }
     }
   }
@@ -483,6 +506,12 @@ export class PlannerStore {
     const capacity = (belt: Belt) => this.data.transport(belt.transportId).ratePerMinute;
     const isMerger = (info: NodeInfo) =>
       info.node.kind === 'logistic' && info.node.role === 'merger';
+    const items = this.logisticItems();
+    /** Outputs a smart/programmable splitter lets the item through; `null` for the rest. */
+    const sorting = (info: NodeInfo) =>
+      info.node.kind === 'logistic' && info.node.sortRules
+        ? sortOutputs(info.node.sortRules, items.get(info.node.id)?.id ?? null)
+        : null;
     /** Buildings and generators consume what reaches them, limited by their scarcest input. */
     const isConsumer = (info: NodeInfo | undefined) =>
       info?.node.kind === 'building' || info?.node.kind === 'generator';
@@ -499,7 +528,9 @@ export class PlannerStore {
         value = info!.inputs[to.index]?.rate ?? 0;
       } else if (info?.node.kind === 'logistic') {
         const next = new Set(seen).add(to.nodeId);
+        const sorted = sorting(info);
         value = info.outputs.reduce((sum, _, index) => {
+          if (sorted && !sorted.primary[index] && !sorted.overflow[index]) return sum;
           const out = beltFrom.get(portKey({ nodeId: to.nodeId, index }));
           return out ? sum + Math.min(capacity(out), accept(out.to, next)) : sum;
         }, 0);
@@ -534,10 +565,15 @@ export class PlannerStore {
         case 'building':
         case 'generator':
           return (productivity.get(from.nodeId) ?? 0) * output.rate;
-        case 'logistic':
-          return isMerger(info)
-            ? inflow(from.nodeId, info)
-            : waterfill(inflow(from.nodeId, info), splitterLimits(from.nodeId, info))[from.index];
+        case 'logistic': {
+          if (isMerger(info)) return inflow(from.nodeId, info);
+          const total = inflow(from.nodeId, info);
+          const limits = splitterLimits(from.nodeId, info);
+          const sorted = sorting(info);
+          return (sorted ? sortedSplit(total, limits, sorted) : waterfill(total, limits))[
+            from.index
+          ];
+        }
       }
     };
     const supply = (belt: Belt) => Math.min(offered(belt.from), capacity(belt));
@@ -619,6 +655,7 @@ export class PlannerStore {
           unit: rateUnit(item),
           actual: belt ? (beltFlows.get(belt.id)?.flow ?? 0) : 0,
           connected: !!belt,
+          side: input.side ?? 'left',
         };
       });
       const outputs = info.outputs.map((output, index): PortView => {
@@ -640,6 +677,7 @@ export class PlannerStore {
           unit: rateUnit(item),
           actual,
           connected: !!belt,
+          side: output.side ?? 'right',
         };
       });
 
@@ -706,6 +744,7 @@ export class PlannerStore {
             itemIcon: this.data.icon(item?.id),
             color: this.colorOf(item),
             throughput: inputs.reduce((sum, input) => sum + input.actual, 0),
+            rulesPerOutput: this.rulesPerOutput(node),
             inputs,
             outputs,
             powerMW: 0,
@@ -758,6 +797,8 @@ export class PlannerStore {
           ...beltRoute(
             this.portPoint(source, 'out', belt.from.index, live[source.node.id]),
             this.portPoint(target, 'in', belt.to.index, live[target.node.id]),
+            this.portSide(source, 'out', belt.from.index),
+            this.portSide(target, 'in', belt.to.index),
           ),
         },
       ];
@@ -876,6 +917,10 @@ export class PlannerStore {
         id,
         buildingId,
         role: building.role === 'junction' ? (options.role ?? 'splitter') : building.role,
+        rotation: 0,
+        ...(building.sortRules > 0 && {
+          sortRules: Array.from({ length: building.outputs }, (): SortRule[] => ['any']),
+        }),
         position: this.placeAt('logistic', position),
       };
     } else if (building.kind === 'generator') {
@@ -988,6 +1033,53 @@ export class PlannerStore {
     if (node) this.moveNode(id, { x: node.position.x + delta.x, y: node.position.y + delta.y });
   }
 
+  /**
+   * Replaces the sort rules of one output of a smart/programmable splitter. A smart splitter
+   * keeps only the last rule (one per output); an empty list means 'none'.
+   */
+  setSortRules(id: string, output: number, rules: SortRule[]) {
+    this.nodes.update((nodes) =>
+      nodes.map((n) => {
+        if (n.id !== id || n.kind !== 'logistic' || !n.sortRules) return n;
+        const max = this.rulesPerOutput(n);
+        const unique = [...new Set(rules)];
+        const next = unique.length ? unique.slice(-max) : ['none'];
+        return { ...n, sortRules: n.sortRules.map((r, i) => (i === output ? next : r)) };
+      }),
+    );
+  }
+
+  /** Rules each output of a smart (1) or programmable (many) splitter takes; 0 otherwise. */
+  rulesPerOutput(node: LogisticNode): number {
+    const building = this.data.building(node.buildingId) as LogisticBuilding;
+    return building.sortRules > building.outputs
+      ? building.sortRules
+      : building.sortRules > 0
+        ? 1
+        : 0;
+  }
+
+  /** Options of a sort rule: the special rules, then every solid item. */
+  readonly sortRuleOptions: readonly SelectOption[] = [
+    ...SPECIAL_SORT_RULES.map((r) => ({ value: r.id, label: r.label })),
+    ...this.data.solidItems.map((item) => ({
+      value: item.id,
+      label: item.name.es,
+      icon: this.data.icon(item.id),
+    })),
+  ];
+
+  /** Turns a merger/splitter a quarter turn clockwise (`turns` = -1 for anticlockwise). */
+  rotateNode(id: string, turns = 1) {
+    this.nodes.update((nodes) =>
+      nodes.map((n) =>
+        n.id === id && n.kind === 'logistic'
+          ? { ...n, rotation: ((((n.rotation + turns) % 4) + 4) % 4) as Rotation }
+          : n,
+      ),
+    );
+  }
+
   setLiveNodePosition(id: string, position: Point) {
     this.livePositions.update((live) => ({ ...live, [id]: position }));
   }
@@ -1008,6 +1100,7 @@ export class PlannerStore {
         return `Nodo de ${this.data.item(node.resourceId).name.es}`;
       case 'logistic': {
         const building = this.data.building(node.buildingId) as LogisticBuilding;
+        if (building.sortRules > 0) return building.name.es;
         const title = node.role === 'merger' ? 'Unificador' : 'Divisor';
         return building.transport === 'pipe' ? `${title} de fluidos` : title;
       }
@@ -1068,6 +1161,16 @@ export class PlannerStore {
   outputPortOf(from: PortRef): Point | null {
     const info = this.nodeInfos().get(from.nodeId);
     return info ? this.portPoint(info, 'out', from.index) : null;
+  }
+
+  /** Side of the card an output (`'out'`) or input (`'in'`) port sits on. */
+  sideOf(port: PortRef, direction: 'in' | 'out'): Side {
+    const info = this.nodeInfos().get(port.nodeId);
+    return info
+      ? this.portSide(info, direction, port.index)
+      : direction === 'in'
+        ? 'left'
+        : 'right';
   }
 
   /** Input port centre in canvas coordinates (uses the model position). */
@@ -1201,11 +1304,27 @@ export class PlannerStore {
     if (info.node.kind === 'resource') {
       return { x: position.x + CANVAS.resource.width, y: position.y + CANVAS.resource.outputY };
     }
-    const row = (side === 'in' ? info.inputs : info.outputs)[index]?.row ?? 0;
+    const port = (side === 'in' ? info.inputs : info.outputs)[index];
+    if (info.node.kind === 'logistic') {
+      const { width, height } = CANVAS.logistic;
+      const offset = {
+        left: { x: 0, y: height / 2 },
+        right: { x: width, y: height / 2 },
+        top: { x: width / 2, y: 0 },
+        bottom: { x: width / 2, y: height },
+      }[port?.side ?? 'left'];
+      return { x: position.x + offset.x, y: position.y + offset.y };
+    }
+    const row = port?.row ?? 0;
     return {
       x: side === 'in' ? position.x : position.x + info.width,
       y: position.y + CANVAS.rows.top + row * CANVAS.rows.height + CANVAS.rows.height / 2,
     };
+  }
+
+  private portSide(info: NodeInfo, direction: 'in' | 'out', index: number): Side {
+    const port = (direction === 'in' ? info.inputs : info.outputs)[index];
+    return port?.side ?? (direction === 'in' ? 'left' : 'right');
   }
 
   /** Belt or pipe for mergers/splitters/junctions, `null` for any other node. */

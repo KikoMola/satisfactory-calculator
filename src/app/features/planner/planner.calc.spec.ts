@@ -99,6 +99,57 @@ describe('orthogonalPoints', () => {
   });
 });
 
+describe('orthogonalPoints with port sides', () => {
+  const isOrthogonal = (points: { x: number; y: number }[]) =>
+    points.slice(1).every((p, i) => p.x === points[i].x || p.y === points[i].y);
+
+  it('turns once from a bottom output into a left input ahead', () => {
+    // Manifold: splitter's bottom output down to a building further right and below.
+    const points = orthogonalPoints({ x: 0, y: 0 }, { x: 200, y: 200 }, 24, 'bottom', 'left');
+    expect(points).toEqual([
+      { x: 0, y: 0 },
+      { x: 0, y: 200 },
+      { x: 200, y: 200 },
+    ]);
+  });
+
+  it('goes straight between facing side ports', () => {
+    const points = orthogonalPoints({ x: 0, y: 0 }, { x: 0, y: 300 }, 24, 'bottom', 'top');
+    expect(points).toEqual([
+      { x: 0, y: 0 },
+      { x: 0, y: 300 },
+    ]);
+  });
+
+  it('leaves and enters each port straight, whatever the layout', () => {
+    const sides = ['left', 'top', 'right', 'bottom'] as const;
+    const targets = [
+      { x: 300, y: 40 },
+      { x: -300, y: -40 },
+      { x: 10, y: 400 },
+      { x: -10, y: -400 },
+    ];
+    for (const fromSide of sides) {
+      for (const toSide of sides) {
+        for (const to of targets) {
+          const points = orthogonalPoints({ x: 0, y: 0 }, to, 24, fromSide, toSide);
+          expect(isOrthogonal(points)).toBe(true);
+          expect(points[0]).toEqual({ x: 0, y: 0 });
+          expect(points.at(-1)).toEqual(to);
+          // First segment heads out of the output, last one into the input.
+          const first = { x: points[1].x - points[0].x, y: points[1].y - points[0].y };
+          const last = { x: to.x - points.at(-2)!.x, y: to.y - points.at(-2)!.y };
+          const outward = { left: [-1, 0], right: [1, 0], top: [0, -1], bottom: [0, 1] };
+          const [ox, oy] = outward[fromSide];
+          const [ix, iy] = outward[toSide];
+          expect(first.x * ox + first.y * oy).toBeGreaterThan(0);
+          expect(last.x * ix + last.y * iy).toBeLessThan(0);
+        }
+      }
+    }
+  });
+});
+
 describe('roundedPath / beltRoute', () => {
   it('starts and ends at the ports', () => {
     const path = roundedPath(orthogonalPoints({ x: 0, y: 0 }, { x: 200, y: 100 }));

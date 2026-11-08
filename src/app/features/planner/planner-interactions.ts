@@ -1,6 +1,13 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { beltRoute } from './planner.calc';
-import type { PlannerNode, Point, PortRef } from './planner.model';
+import {
+  LOGISTIC_SIDES,
+  rotateSide,
+  type PlannerNode,
+  type Point,
+  type PortRef,
+  type Side,
+} from './planner.model';
 import { PlannerStore, type ConnectResult } from './planner.store';
 
 const REJECTIONS: Record<Exclude<ConnectResult, 'ok'>, string> = {
@@ -11,6 +18,14 @@ const REJECTIONS: Record<Exclude<ConnectResult, 'ok'>, string> = {
     'Los divisores y unificadores de cinta no admiten fluidos: usa una unión de tuberías.',
   'solid-pipe': 'Las uniones de tuberías solo admiten fluidos.',
   invalid: 'Conexión no válida.',
+};
+
+/** Where a port points, for announcements ("entrada a la izquierda"). */
+export const SIDE_NAMES: Record<Side, string> = {
+  left: 'a la izquierda',
+  top: 'arriba',
+  right: 'a la derecha',
+  bottom: 'abajo',
 };
 
 /** ID of the card an element belongs to (cards carry `data-node-id` on their host). */
@@ -95,6 +110,21 @@ export class PlannerInteractions {
     if (node) this.announce(`${this.describe(node)} duplicado.`);
   }
 
+  /** Turns a merger/splitter a quarter turn clockwise and says where its single port faces. */
+  rotate(nodeId: string) {
+    this.store.rotateNode(nodeId);
+    const node = this.store.nodes().find((n) => n.id === nodeId);
+    if (node?.kind !== 'logistic') return;
+    const splitter = node.role === 'splitter';
+    const side = rotateSide(
+      LOGISTIC_SIDES[node.role][splitter ? 'inputs' : 'outputs'][0],
+      node.rotation,
+    );
+    this.announce(
+      `${this.describe(node)} girado: ${splitter ? 'entrada' : 'salida'} ${SIDE_NAMES[side]}.`,
+    );
+  }
+
   remove(nodeId: string) {
     const node = this.store.nodes().find((n) => n.id === nodeId);
     if (!node) return;
@@ -121,6 +151,8 @@ export class PlannerInteractions {
       this.duplicate(nodeId);
     } else if (mod && key === 'v') {
       this.paste();
+    } else if (!mod && key === 'r' && nodeId && this.isLogistic(nodeId)) {
+      this.rotate(nodeId);
     } else if (key === 'delete' && nodeId && target?.closest('.cdk-drag-handle')) {
       event.preventDefault();
       this.remove(nodeId);
@@ -130,6 +162,10 @@ export class PlannerInteractions {
     }
     event.preventDefault();
     return 'handled';
+  }
+
+  isLogistic(nodeId: string): boolean {
+    return this.store.nodes().some((n) => n.id === nodeId && n.kind === 'logistic');
   }
 
   // ---- Drag a belt out of an output port -------------------------------------
@@ -147,7 +183,15 @@ export class PlannerInteractions {
     this.store.snapTarget.set(snap);
     this.previewSnapped.set(!!snap);
     const end = (snap && this.store.inputPortOf(snap)) ?? point;
-    this.previewPath.set(beltRoute(start, end).path);
+    const fromSide = this.store.sideOf(from, 'out');
+    this.previewPath.set(
+      beltRoute(
+        start,
+        end,
+        fromSide,
+        snap ? this.store.sideOf(snap, 'in') : freeEnd(fromSide, start, end),
+      ).path,
+    );
   }
 
   portDragEnded(from: PortRef, drop: Point) {
@@ -214,4 +258,13 @@ export class PlannerInteractions {
     const zoom = this.zoom();
     return { x: (point.x - rect.left) / zoom, y: (point.y - rect.top) / zoom };
   }
+}
+
+/**
+ * Side a belt not snapped to anything enters the pointer from: straight on in the direction it
+ * left its port, so the preview doesn't double back on itself.
+ */
+function freeEnd(fromSide: Side, start: Point, end: Point): Side {
+  if (fromSide === 'left' || fromSide === 'right') return end.x >= start.x ? 'left' : 'right';
+  return end.y >= start.y ? 'top' : 'bottom';
 }

@@ -116,13 +116,16 @@ const GENERATORS = [
 ];
 const PRESSURIZERS = ['FGBuildableFrackingActivator'];
 /**
- * Basic logistics. Smart/programmable splitters and priority mergers come later.
+ * Logistics. Priority mergers come later.
+ * Smart and programmable splitters share a class: they differ in how many sort rules they take
+ * (`mMaxNumSortRules`: 3 = one per output, 64 = several per output).
  * The pipeline junction has 4 two-way connections: the planner uses it either as a fluid
  * splitter (1 → 3) or a fluid merger (3 → 1).
  */
 const LOGISTICS = {
   FGBuildableAttachmentMerger: { role: 'merger', transport: 'belt', inputs: 3, outputs: 1 },
   FGBuildableAttachmentSplitter: { role: 'splitter', transport: 'belt', inputs: 1, outputs: 3 },
+  FGBuildableSplitterSmart: { role: 'splitter', transport: 'belt', inputs: 1, outputs: 3 },
   FGBuildablePipelineJunction: { role: 'junction', transport: 'pipe', inputs: 3, outputs: 3 },
 };
 /** Only the 4-way junction: the T junction is the same thing with one connection less. */
@@ -212,7 +215,12 @@ for (const cls of es.values()) {
         : null,
     });
   } else if (LOGISTICS[native] && !SKIPPED_LOGISTICS.has(cls.ClassName)) {
-    buildings.push({ ...buildingBase(cls), kind: 'logistic', ...LOGISTICS[native] });
+    buildings.push({
+      ...buildingBase(cls),
+      kind: 'logistic',
+      ...LOGISTICS[native],
+      sortRules: num(cls.mMaxNumSortRules),
+    });
   } else if (PRESSURIZERS.includes(native)) {
     buildings.push({
       ...buildingBase(cls),

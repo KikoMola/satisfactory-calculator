@@ -42,7 +42,7 @@ import { PlannerStore } from '../planner.store';
       @for (logistic of beltLogistics; track logistic.id) {
         <button appMenuItem (click)="add(logistic.id)">
           <app-item-icon [src]="data.icon(logistic.id)" [size]="24" />
-          <span class="flex-1">{{ logistic.role === 'merger' ? 'Unificador' : 'Divisor' }}</span>
+          <span class="flex-1">{{ logistic.label }}</span>
           <span class="text-xs text-muted">{{
             logistic.role === 'merger' ? '3 → 1' : '1 → 3'
           }}</span>
@@ -104,7 +104,18 @@ export class AddMenu {
   protected readonly store = inject(PlannerStore);
   protected readonly interactions = inject(PlannerInteractions);
 
-  protected readonly beltLogistics = this.data.logistics.filter((l) => l.transport === 'belt');
+  /** Merger, splitter, then smart and programmable splitters (fewest sort rules first). */
+  protected readonly beltLogistics = this.data.logistics
+    .filter((l) => l.transport === 'belt')
+    .sort(
+      (a, b) =>
+        (a.role === 'merger' ? -1 : 0) - (b.role === 'merger' ? -1 : 0) ||
+        a.sortRules - b.sortRules,
+    )
+    .map((l) => ({
+      ...l,
+      label: l.sortRules > 0 ? l.name.es : l.role === 'merger' ? 'Unificador' : 'Divisor',
+    }));
   protected readonly junction = this.data.logistics.find((l) => l.transport === 'pipe') ?? null;
 
   /** What "Pegar" will paste, e.g. "Generador de carbón". */

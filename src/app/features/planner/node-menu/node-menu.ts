@@ -3,7 +3,10 @@ import { ContextMenu, MenuItem, MenuLabel } from '../../../ui/menu/menu';
 import { PlannerInteractions } from '../planner-interactions';
 import { PlannerStore } from '../planner.store';
 
-/** Right-click menu of a card: copy, duplicate, paste a copy next to it, or delete it. */
+/**
+ * Right-click menu of a card: copy, duplicate, paste a copy next to it, turn it (mergers and
+ * splitters) or delete it.
+ */
 @Component({
   selector: 'app-node-menu',
   imports: [ContextMenu, MenuItem, MenuLabel],
@@ -27,6 +30,12 @@ import { PlannerStore } from '../planner.store';
         <span class="flex-1">Pegar aquí</span>
         <kbd class="font-sans text-xs text-muted">Ctrl+V</kbd>
       </button>
+      @if (interactions.isLogistic(nodeId())) {
+        <button appMenuItem (click)="interactions.rotate(nodeId())">
+          <span class="flex-1">Girar</span>
+          <kbd class="font-sans text-xs text-muted">R</kbd>
+        </button>
+      }
       <hr class="my-1 border-line" aria-hidden="true" />
       <button appMenuItem class="text-danger" (click)="interactions.remove(nodeId())">
         <span class="flex-1">Eliminar</span>
