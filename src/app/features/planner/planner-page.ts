@@ -17,13 +17,16 @@ import { NgpFormField, NgpLabel } from 'ng-primitives/form-field';
 import { GameDataService } from '../../core/game-data.service';
 import { Button } from '../../ui/button/button';
 import { IconClose } from '../../ui/icons';
-import { ItemIcon } from '../../ui/item-icon/item-icon';
 import { Select } from '../../ui/select/select';
 import { BuildingCard } from './building-card/building-card';
 import { CanvasMenu } from './canvas-menu/canvas-menu';
 import { GeneratorCard } from './generator-card/generator-card';
 import { LogisticCard } from './logistic-card/logistic-card';
 import { PlannerInteractions } from './planner-interactions';
+import { PlannerSummary } from './planner-summary/planner-summary';
+import { PlannerToolbar } from './planner-toolbar/planner-toolbar';
+import { PlannerHistory } from './planner.history';
+import { PlannerStorage } from './planner.storage';
 import { CANVAS, clampZoom, ZOOM, type Point } from './planner.model';
 import { PlannerStore, type BeltView, type NodeView } from './planner.store';
 import { ResourceNodeCard } from './resource-node-card/resource-node-card';
@@ -43,23 +46,27 @@ const PIPE_DASH_PERIOD = 24;
     NgpLabel,
     Button,
     IconClose,
-    ItemIcon,
     Select,
     BuildingCard,
     GeneratorCard,
     LogisticCard,
+    PlannerSummary,
+    PlannerToolbar,
     ResourceNodeCard,
   ],
-  providers: [PlannerStore, PlannerInteractions],
+  providers: [PlannerStore, PlannerStorage, PlannerHistory, PlannerInteractions],
   templateUrl: './planner-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'block h-dvh',
+    class: 'flex h-dvh flex-col',
     '(document:keydown.escape)': 'interactions.cancel()',
-    '(keydown)': 'onKeydown($event)',
+    // On the document so undo and paste also work with nothing focused.
+    '(document:keydown)': 'onKeydown($event)',
   },
 })
 export class PlannerPage {
+  /** First on purpose: it loads the saved factory, which the undo history must start from. */
+  private readonly storage = inject(PlannerStorage);
   protected readonly data = inject(GameDataService);
   protected readonly store = inject(PlannerStore);
   protected readonly interactions = inject(PlannerInteractions);
@@ -167,14 +174,32 @@ export class PlannerPage {
   constructor() {
     const destroyRef = inject(DestroyRef);
     afterNextRender(() => {
-      this.interactions.registerSurface(this.surface().nativeElement);
       const viewport = this.viewport().nativeElement;
+      this.interactions.registerSurface(this.surface().nativeElement, viewport);
+      if (this.store.nodes().length > 0) this.fitToContent();
+      void this.openSharedPlan();
       const observer = new ResizeObserver(() =>
         this.viewportSize.set({ width: viewport.clientWidth, height: viewport.clientHeight }),
       );
       observer.observe(viewport);
       destroyRef.onDestroy(() => observer.disconnect());
     });
+  }
+
+  /** Opens the factory of a share link, when the page was opened with one. */
+  private async openSharedPlan(): Promise<void> {
+    const hadPlan = this.store.nodes().length > 0;
+    const result = await this.storage.loadFromLink();
+    if (result === 'invalid') {
+      this.interactions.notify('El enlace compartido no se puede leer.');
+    } else if (result === 'loaded') {
+      this.interactions.notify(
+        hadPlan
+          ? 'Fábrica compartida abierta. Pulsa Ctrl+Z para volver a la tuya.'
+          : 'Fábrica compartida abierta.',
+      );
+      afterNextRender(() => this.fitToContent(), { injector: this.injector });
+    }
   }
 
   /**
@@ -285,13 +310,31 @@ export class PlannerPage {
 
   // ---- Selection rectangle -----------------------------------------------------
 
+  /** Scroll position and pointer where a middle-button pan started. */
+  private panStart: { pointer: Point; scroll: Point } | null = null;
+  protected readonly panning = signal(false);
+
+  /** Keeps the middle button for panning instead of the browser's autoscroll. */
+  protected onCanvasMouseDown(event: MouseEvent): void {
+    if (event.button === 1) event.preventDefault();
+  }
+
   /**
    * Pressing on the empty canvas starts a selection rectangle (Shift/Ctrl/⌘ adds to the
-   * selection); a plain click there clears the selection.
+   * selection); a plain click there clears the selection. The middle button pans from anywhere.
    */
   protected onCanvasPointerDown(event: PointerEvent): void {
-    if (event.button !== 0) return;
     const viewport = this.viewport().nativeElement;
+    if (event.button === 1) {
+      this.panStart = {
+        pointer: { x: event.clientX, y: event.clientY },
+        scroll: { x: viewport.scrollLeft, y: viewport.scrollTop },
+      };
+      this.panning.set(true);
+      viewport.setPointerCapture(event.pointerId);
+      return;
+    }
+    if (event.button !== 0) return;
     const target = event.target as Element;
     if (target.closest('[data-node-id], [data-belt-label]')) return;
     // The scrollbars belong to the viewport too.
@@ -314,6 +357,14 @@ export class PlannerPage {
 
   protected onCanvasPointerMove(event: PointerEvent): void {
     this.interactions.pointerMoved(event);
+    const pan = this.panStart;
+    if (pan) {
+      this.viewport().nativeElement.scrollTo({
+        left: pan.scroll.x - (event.clientX - pan.pointer.x),
+        top: pan.scroll.y - (event.clientY - pan.pointer.y),
+      });
+      return;
+    }
     const start = this.marqueeStart;
     if (!start) return;
     const point = this.interactions.toSurface({ x: event.clientX, y: event.clientY });
@@ -333,6 +384,11 @@ export class PlannerPage {
   }
 
   protected onCanvasPointerUp(): void {
+    if (this.panStart) {
+      this.panStart = null;
+      this.panning.set(false);
+      return;
+    }
     const start = this.marqueeStart;
     if (!start) return;
     this.marqueeStart = null;

@@ -1,7 +1,10 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { afterNextRender, DestroyRef, inject, Injectable, Injector, signal } from '@angular/core';
+import { GameDataService } from '../../core/game-data.service';
 import { arrowKeyDelta } from './keyboard';
 import { beltRoute } from './planner.calc';
+import { PlannerHistory } from './planner.history';
 import {
+  CANVAS,
   LOGISTIC_SIDES,
   rotateSide,
   type PlannerNode,
@@ -51,7 +54,11 @@ function nodeIdAt(element: EventTarget | null): string | null {
 @Injectable()
 export class PlannerInteractions {
   private readonly store = inject(PlannerStore);
+  private readonly history = inject(PlannerHistory);
+  private readonly data = inject(GameDataService);
+  private readonly injector = inject(Injector);
   private surface: HTMLElement | null = null;
+  private viewport: HTMLElement | null = null;
 
   /** Route preview while a belt is being dragged out of a port. */
   readonly previewPath = signal<string | null>(null);
@@ -66,12 +73,115 @@ export class PlannerInteractions {
   /** Message for the screen-reader live region. */
   readonly announcement = signal('');
 
-  registerSurface(element: HTMLElement) {
-    this.surface = element;
+  /** Short message shown on screen for a few seconds (the live region reads it too). */
+  readonly toast = signal<string | null>(null);
+  private toastTimer: ReturnType<typeof setTimeout> | undefined;
+  private readonly clearToastTimer = inject(DestroyRef).onDestroy(() =>
+    clearTimeout(this.toastTimer),
+  );
+
+  /** `surface` is the scaled canvas; `viewport` the scrolling element around it. */
+  registerSurface(surface: HTMLElement, viewport: HTMLElement) {
+    this.surface = surface;
+    this.viewport = viewport;
   }
 
+  /** Tells screen readers only: for routine feedback that is already visible on the canvas. */
   announce(message: string) {
     this.announcement.set(message);
+  }
+
+  /** Tells everyone: for results that can't be seen otherwise (copied, undone, rejected...). */
+  notify(message: string) {
+    this.announce(message);
+    this.toast.set(message);
+    clearTimeout(this.toastTimer);
+    this.toastTimer = setTimeout(() => this.toast.set(null), 4000);
+  }
+
+  // ---- Undo / redo ---------------------------------------------------------------
+
+  undo() {
+    this.notify(this.history.undo() ? 'Cambio deshecho.' : 'No hay nada que deshacer.');
+  }
+
+  redo() {
+    this.notify(this.history.redo() ? 'Cambio rehecho.' : 'No hay nada que rehacer.');
+  }
+
+  /** Empties the canvas. Undoable, so it doesn't ask first. */
+  clear() {
+    if (this.store.nodes().length === 0) return;
+    this.store.clear();
+    this.notify('Lienzo vaciado. Pulsa Ctrl+Z para recuperarlo.');
+  }
+
+  // ---- View ----------------------------------------------------------------------
+
+  /** Canvas point at the centre of what is visible. */
+  viewCentre(): Point {
+    const rect = this.viewport?.getBoundingClientRect();
+    if (!rect) return { x: 320, y: 240 };
+    return this.toSurface({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 });
+  }
+
+  /** Scrolls a card to the centre of the view, selects it and moves focus to it. */
+  reveal(nodeId: string) {
+    this.scrollTo(nodeId);
+    this.store.select([nodeId]);
+    this.viewport
+      ?.querySelector<HTMLElement>(`[data-node-id="${nodeId}"] button`)
+      ?.focus({ preventScroll: true });
+  }
+
+  private scrollTo(nodeId: string) {
+    const node = this.store.nodes().find((n) => n.id === nodeId);
+    const viewport = this.viewport;
+    if (!node || !viewport) return;
+    const size = CANVAS[node.kind];
+    const zoom = this.zoom();
+    const smooth = !viewport.ownerDocument.defaultView?.matchMedia(
+      '(prefers-reduced-motion: reduce)',
+    ).matches;
+    viewport.scrollTo({
+      left: (node.position.x + size.width / 2) * zoom - viewport.clientWidth / 2,
+      top: (node.position.y + size.height / 2) * zoom - viewport.clientHeight / 2,
+      behavior: smooth ? 'smooth' : 'auto',
+    });
+  }
+
+  /**
+   * Adds the building that runs `recipeId`, already set to it, in the middle of the view. If
+   * cards are in the way it goes to their right, leaving room for the belts, so picking
+   * several recipes in a row lays them out as a line.
+   */
+  addRecipe(recipeId: string) {
+    const recipe = this.data.recipe(recipeId);
+    const centre = this.viewCentre();
+    const { width, height } = CANVAS.building;
+    const gap = 96;
+    const position = {
+      x: Math.max(0, centre.x - width / 2),
+      y: Math.max(0, centre.y - height / 2),
+    };
+    const blocker = () =>
+      this.store.nodes().find((n) => {
+        const size = CANVAS[n.kind];
+        return (
+          n.position.x < position.x + width &&
+          n.position.x + size.width > position.x &&
+          n.position.y < position.y + height &&
+          n.position.y + size.height > position.y
+        );
+      });
+    for (let other = blocker(); other; other = blocker()) {
+      position.x = other.position.x + CANVAS[other.kind].width + gap;
+    }
+    const node = this.store.addBuilding(recipe.producedIn, position, { recipeId });
+    this.store.select([node.id]);
+    // Focus stays in the search box, to keep adding; the canvas has to grow before scrolling.
+    afterNextRender(() => this.scrollTo(node.id), { injector: this.injector });
+    this.announce(`${this.data.building(recipe.producedIn).name.es} de ${recipe.name.es} añadido.`);
   }
 
   // ---- Context menu ------------------------------------------------------------
@@ -127,9 +237,7 @@ export class PlannerInteractions {
     const nodes = this.store.copyNodes(this.targets(nodeId));
     if (nodes.length === 0) return;
     const what = this.describeGroup(nodes);
-    this.announce(
-      `${what} ${nodes.length === 1 ? 'copiado' : 'copiadas'}. Pulsa Ctrl+V para pegar.`,
-    );
+    this.notify(`${what} ${nodes.length === 1 ? 'copiado' : 'copiadas'}. Pulsa Ctrl+V para pegar.`);
   }
 
   /** Copies, then deletes (the belts touching them go with them). */
@@ -147,11 +255,11 @@ export class PlannerInteractions {
    */
   paste(position?: Point | null) {
     const nodes = this.store.pasteNodes(position ?? this.pointer);
-    this.announce(
-      nodes.length
-        ? `${this.describeGroup(nodes)} ${nodes.length === 1 ? 'pegado' : 'pegadas'}.`
-        : 'No hay nada copiado.',
-    );
+    if (nodes.length) {
+      this.announce(`${this.describeGroup(nodes)} ${nodes.length === 1 ? 'pegado' : 'pegadas'}.`);
+    } else {
+      this.notify('No hay nada copiado.');
+    }
   }
 
   duplicate(nodeId?: string | null) {
@@ -267,7 +375,9 @@ export class PlannerInteractions {
     const hasText = !!document.getSelection()?.toString();
 
     if (mod && !event.altKey) {
-      if (key === 'v') this.paste();
+      if (key === 'z' && !event.shiftKey) this.undo();
+      else if (key === 'y' || (key === 'z' && event.shiftKey)) this.redo();
+      else if (key === 'v') this.paste();
       else if (!onCanvas) return null;
       else if (key === 'c' && !hasText) this.copy(nodeId);
       else if (key === 'x' && !hasText) {
@@ -341,11 +451,13 @@ export class PlannerInteractions {
       return;
     }
     const near = this.store.inputPortAt(point);
-    this.announce(
-      near
-        ? REJECTIONS[this.store.checkConnection(from, near) as Exclude<ConnectResult, 'ok'>]
-        : 'Suelta la cinta sobre una entrada compatible.',
-    );
+    if (near) {
+      this.notify(
+        REJECTIONS[this.store.checkConnection(from, near) as Exclude<ConnectResult, 'ok'>],
+      );
+    } else {
+      this.announce('Suelta la cinta sobre una entrada compatible.');
+    }
   }
 
   // ---- Click / keyboard: pick the output, then the input -----------------------
@@ -359,10 +471,10 @@ export class PlannerInteractions {
     this.store.connectingFrom.set(from);
     const count = this.store.validTargets().size;
     const what = this.store.connectingItem()?.name.es ?? 'esta salida';
-    this.announce(
+    this.notify(
       count > 0
         ? `Elige una entrada para ${what}: ${count} disponible${count === 1 ? '' : 's'}. Escape para cancelar.`
-        : `No hay ninguna entrada compatible con ${what}.`,
+        : `No hay ninguna entrada libre compatible con ${what}.`,
     );
   }
 
@@ -377,12 +489,18 @@ export class PlannerInteractions {
     if (!this.store.connectingFrom()) return;
     this.store.connectingFrom.set(null);
     this.store.snapTarget.set(null);
-    this.announce('Conexión cancelada.');
+    this.notify('Conexión cancelada.');
   }
 
   private finishConnection(from: PortRef, to: PortRef) {
     const result = this.store.connect(from, to);
-    this.announce(result === 'ok' ? 'Cinta conectada.' : REJECTIONS[result]);
+    if (result === 'ok') {
+      this.announce('Cinta conectada.');
+      // Takes down the "pick an input" hint, if it is still up.
+      this.toast.set(null);
+    } else {
+      this.notify(REJECTIONS[result]);
+    }
   }
 
   /** Viewport coordinates → canvas surface coordinates (accounts for scroll and zoom). */

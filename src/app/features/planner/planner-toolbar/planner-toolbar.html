@@ -1,0 +1,175 @@
+<header class="flex h-12 items-center gap-3 border-b border-line bg-panel px-3">
+  <h1 class="m-0 flex shrink-0 items-center gap-2 text-sm font-semibold whitespace-nowrap">
+    <svg class="size-6 text-accent" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path
+        d="M10.3 2h3.4l.5 2.6 1.6.7 2.2-1.5 2.4 2.4-1.5 2.2.7 1.6 2.4.5v3.4l-2.6.5-.7 1.6 1.5 2.2-2.4 2.4-2.2-1.5-1.6.7-.5 2.4h-3.4l-.5-2.6-1.6-.7-2.2 1.5-2.4-2.4 1.5-2.2-.7-1.6L2 13.7v-3.4l2.6-.5.7-1.6-1.5-2.2 2.4-2.4 2.2 1.5 1.6-.7ZM12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"
+      />
+    </svg>
+    <span class="sr-only lg:not-sr-only">Planificador de fábrica</span>
+  </h1>
+
+  <app-recipe-search
+    class="w-72 max-w-full flex-1 sm:flex-none"
+    (picked)="interactions.addRecipe($event)"
+  />
+
+  <div role="toolbar" aria-label="Acciones del plan" class="ml-auto flex items-center gap-0.5">
+    <button
+      type="button"
+      appButton
+      variant="icon"
+      aria-label="Deshacer"
+      title="Deshacer (Ctrl+Z)"
+      [disabled]="!history.canUndo()"
+      (click)="interactions.undo()"
+    >
+      <app-icon-undo />
+    </button>
+    <button
+      type="button"
+      appButton
+      variant="icon"
+      aria-label="Rehacer"
+      title="Rehacer (Ctrl+Y)"
+      [disabled]="!history.canRedo()"
+      (click)="interactions.redo()"
+    >
+      <app-icon-redo />
+    </button>
+
+    <span class="mx-1 h-5 w-px bg-line" aria-hidden="true"></span>
+
+    <button
+      type="button"
+      appButton
+      variant="ghost"
+      aria-label="Importar un plan desde un archivo"
+      title="Abrir un plan guardado en un archivo JSON"
+      (click)="file.click()"
+    >
+      <app-icon-upload />
+      <span class="hidden xl:inline">Importar</span>
+    </button>
+    <button
+      type="button"
+      appButton
+      variant="ghost"
+      aria-label="Exportar el plan a un archivo"
+      title="Guardar el plan en un archivo JSON"
+      [disabled]="store.nodes().length === 0"
+      (click)="export()"
+    >
+      <app-icon-download />
+      <span class="hidden xl:inline">Exportar</span>
+    </button>
+    <button
+      type="button"
+      appButton
+      variant="ghost"
+      aria-label="Copiar un enlace para compartir el plan"
+      title="Copiar un enlace que abre esta fábrica"
+      [disabled]="store.nodes().length === 0"
+      (click)="share()"
+    >
+      <app-icon-link />
+      <span class="hidden xl:inline">Compartir</span>
+    </button>
+
+    <span class="mx-1 h-5 w-px bg-line" aria-hidden="true"></span>
+
+    <button
+      type="button"
+      appButton
+      variant="ghost"
+      aria-label="Vaciar el lienzo"
+      title="Vaciar el lienzo (se puede deshacer)"
+      [disabled]="store.nodes().length === 0"
+      (click)="interactions.clear()"
+    >
+      <app-icon-trash />
+      <span class="hidden xl:inline">Vaciar</span>
+    </button>
+    <button
+      type="button"
+      appButton
+      variant="ghost"
+      aria-label="Ayuda y atajos de teclado"
+      title="Ayuda y atajos de teclado"
+      [ngpDialogTrigger]="help"
+    >
+      <app-icon-help />
+      <span class="hidden xl:inline">Ayuda</span>
+    </button>
+  </div>
+
+  <input
+    #file
+    type="file"
+    class="hidden"
+    accept="application/json,.json"
+    tabindex="-1"
+    aria-hidden="true"
+    (change)="import(file)"
+  />
+</header>
+
+<ng-template #help let-close="close">
+  <div ngpDialogOverlay class="fixed inset-0 z-50 grid place-items-center bg-black/60 p-4">
+    <div
+      ngpDialog
+      class="max-h-[85dvh] w-full max-w-2xl overflow-y-auto rounded-lg border border-line bg-panel p-5 text-sm text-fg shadow-2xl shadow-black/60"
+    >
+      <div class="mb-3 flex items-center justify-between gap-3">
+        <h2 ngpDialogTitle class="m-0 text-lg font-semibold">Cómo se usa</h2>
+        <button
+          type="button"
+          appButton
+          variant="icon"
+          aria-label="Cerrar la ayuda"
+          (click)="close()"
+        >
+          <app-icon-close />
+        </button>
+      </div>
+
+      <ol class="m-0 mb-5 grid list-decimal gap-1.5 pl-5 leading-relaxed">
+        <li>
+          Busca lo que quieres fabricar en la barra superior, o haz
+          <strong>clic derecho</strong> en el lienzo para añadir nodos de recurso, edificios,
+          generadores, divisores y unificadores.
+        </li>
+        <li>
+          Arrastra el punto naranja de una salida hasta una entrada (se engancha sola), o haz clic
+          en la salida y después en la entrada.
+        </li>
+        <li>
+          Pasa el ratón por una cinta para cambiar su tier o eliminarla. Las cintas en rojo son
+          cuellos de botella.
+        </li>
+        <li>
+          Ajusta receta, reloj, esquirlas y Somersloops en cada tarjeta. El resumen de la derecha
+          suma extracción, productos, edificios y energía, y avisa de lo que falla.
+        </li>
+      </ol>
+
+      <h3 class="m-0 mb-2 text-xs font-semibold tracking-wide text-muted uppercase">Atajos</h3>
+      <dl class="m-0 mb-5 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5">
+        @for (shortcut of shortcuts; track shortcut.keys) {
+          <dt class="font-semibold whitespace-nowrap">{{ shortcut.keys }}</dt>
+          <dd class="m-0 text-muted">{{ shortcut.action }}</dd>
+        }
+      </dl>
+
+      <p class="m-0 leading-relaxed text-muted">
+        Tu fábrica se guarda sola en este navegador. Usa
+        <strong class="text-fg">Exportar</strong> para tener una copia en un archivo y
+        <strong class="text-fg">Compartir</strong> para enviarla con un enlace: todo viaja dentro
+        del propio enlace, nada se sube a ningún servidor.
+      </p>
+      <p class="mt-3 mb-0 text-xs leading-relaxed text-muted">
+        Proyecto de fans sin relación con Coffee Stain Studios. Satisfactory es una marca de Coffee
+        Stain Studios AB.
+      </p>
+    </div>
+  </div>
+</ng-template>

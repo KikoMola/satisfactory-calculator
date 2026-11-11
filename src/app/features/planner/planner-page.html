@@ -1,29 +1,34 @@
-<h1 class="sr-only">Planificador de fábrica</h1>
 <p id="canvas-help" class="sr-only">
-  Haz clic derecho, o pulsa Mayúsculas+F10 con el lienzo enfocado, para añadir nodos de recurso,
-  edificios, generadores, divisores y unificadores. Haz clic en una tarjeta para seleccionarla,
-  Mayúsculas o Ctrl+clic para añadir más, arrastra sobre el lienzo vacío para seleccionar una zona,
-  o pulsa Ctrl+A para seleccionarlas todas; al entrar con Tab en una tarjeta también se selecciona.
-  Sobre la selección: Ctrl+C copia, Ctrl+X corta, Ctrl+V pega, Ctrl+D duplica, Supr elimina, R gira
-  divisores y unificadores, las flechas la mueven y Escape la vacía. Las cintas no se copian. Para
-  el zoom, usa Ctrl+rueda del ratón, los botones de zoom, o las teclas más, menos y 0 con el lienzo
-  enfocado.
+  Busca una receta en la barra superior para añadir su edificio, o haz clic derecho (Mayúsculas+F10
+  con el lienzo enfocado) para añadir nodos de recurso, edificios, generadores, divisores y
+  unificadores. Haz clic en una tarjeta para seleccionarla, Mayúsculas o Ctrl+clic para añadir más,
+  arrastra sobre el lienzo vacío para seleccionar una zona, o pulsa Ctrl+A para seleccionarlas
+  todas; al entrar con Tab en una tarjeta también se selecciona. Sobre la selección: Ctrl+C copia,
+  Ctrl+X corta, Ctrl+V pega, Ctrl+D duplica, Supr elimina, R gira divisores y unificadores, las
+  flechas la mueven y Escape la vacía. Las cintas entre las tarjetas copiadas se copian con ellas.
+  Ctrl+Z deshace y Ctrl+Y rehace. Para el zoom, usa Ctrl+rueda del ratón, los botones de zoom, o las
+  teclas más, menos y 0 con el lienzo enfocado; arrastra con el botón central para desplazar el
+  lienzo. La fábrica se guarda sola en este navegador.
 </p>
 
+<app-planner-toolbar />
+
 <div
-  class="grid h-full min-h-0 grid-cols-1 grid-rows-[1fr_auto] md:grid-cols-[1fr_300px] md:grid-rows-1"
+  class="grid min-h-0 flex-1 grid-cols-1 grid-rows-[1fr_auto] md:grid-cols-[1fr_320px] md:grid-rows-1"
 >
   <!-- min-w-0: without it the grid column would grow to the canvas width and push the summary out. -->
   <div class="relative min-h-0 min-w-0">
     <main
       #viewport
       class="h-full overflow-auto blueprint-grid"
+      [class.cursor-grabbing]="panning()"
       tabindex="0"
       aria-label="Lienzo de la fábrica"
       aria-describedby="canvas-help"
       [ngpContextMenuTrigger]="canvasMenu"
       (contextmenu)="onContextMenu($event)"
       (wheel)="onWheel($event)"
+      (mousedown)="onCanvasMouseDown($event)"
       (pointerdown)="onCanvasPointerDown($event)"
       (pointermove)="onCanvasPointerMove($event)"
       (pointerup)="onCanvasPointerUp()"
@@ -234,7 +239,8 @@
               class="absolute top-12 left-12 m-0 max-w-md rounded-lg border border-dashed border-line bg-panel px-5 py-4 leading-relaxed text-muted"
             >
               <p class="m-0">
-                Haz <strong class="text-fg">clic derecho</strong> en el lienzo para añadir nodos de
+                Busca arriba <strong class="text-fg">qué quieres fabricar</strong>, o haz
+                <strong class="text-fg">clic derecho</strong> en el lienzo para añadir nodos de
                 recurso, edificios, generadores, divisores y unificadores.
               </p>
               <p class="mt-2 mb-0">
@@ -302,101 +308,17 @@
     class="max-h-[40dvh] overflow-auto border-t border-line bg-panel px-5 py-4 md:max-h-none md:border-t-0 md:border-l"
     aria-labelledby="summary-title"
   >
-    <h2 id="summary-title" class="m-0 mb-3 text-base font-semibold">Resumen</h2>
-    @if (store.nodes().length === 0) {
-      <p class="m-0 text-muted">Todavía no hay nada en el lienzo.</p>
-    } @else {
-      @if (store.resourceTotals().length > 0) {
-        <table class="mb-5 w-full border-collapse text-sm tabular-nums">
-          <caption class="mb-1 text-left text-xs font-semibold tracking-wide text-muted uppercase">
-            Extracción
-          </caption>
-          <thead>
-            <tr class="border-b border-line text-muted">
-              <th scope="col" class="px-1 py-1.5 text-left font-medium">Recurso</th>
-              <th scope="col" class="px-1 py-1.5 text-right font-medium">Extraído</th>
-              <th scope="col" class="px-1 py-1.5 text-right font-medium">Usado</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (total of store.resourceTotals(); track total.resource.id) {
-              <tr class="border-b border-line">
-                <th scope="row" class="px-1 py-1.5 text-left font-medium">
-                  <span class="flex items-center gap-1.5">
-                    <app-item-icon [src]="total.icon" [color]="total.color" />
-                    <span>
-                      {{ total.resource.name.es }}
-                      <span class="text-muted">({{ total.nodes }})</span>
-                    </span>
-                  </span>
-                </th>
-                <td class="px-1 py-1.5 text-right">
-                  {{ total.extracted | number: '1.0-2'
-                  }}<span class="text-xs text-muted">{{ total.unit }}</span>
-                </td>
-                <td class="px-1 py-1.5 text-right">
-                  {{ total.transported | number: '1.0-2'
-                  }}<span class="text-xs text-muted">{{ total.unit }}</span>
-                </td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      }
-
-      <table class="mb-5 w-full border-collapse text-sm tabular-nums">
-        <caption class="mb-1 text-left text-xs font-semibold tracking-wide text-muted uppercase">
-          Productos finales
-        </caption>
-        <tbody>
-          @for (product of store.productTotals(); track product.item.id) {
-            <tr class="border-b border-line">
-              <th scope="row" class="px-1 py-1.5 text-left font-medium">
-                <span class="flex items-center gap-1.5">
-                  <app-item-icon [src]="product.icon" [color]="product.color" />
-                  {{ product.item.name.es }}
-                </span>
-              </th>
-              <td class="px-1 py-1.5 text-right">
-                {{ product.rate | number: '1.0-2'
-                }}<span class="text-xs text-muted">{{ product.unit }}</span>
-              </td>
-            </tr>
-          } @empty {
-            <tr>
-              <td class="px-1 py-1.5 text-muted">
-                Las salidas de edificios sin conectar aparecerán aquí.
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
-
-      <dl class="m-0 grid grid-cols-[1fr_auto] gap-x-3 gap-y-1 text-sm tabular-nums">
-        <dt class="text-muted">Generación</dt>
-        <dd class="m-0 text-right font-semibold">
-          {{ store.totalGeneratedMW() | number: '1.0-2' }} MW
-        </dd>
-        <dt class="text-muted">Consumo</dt>
-        <dd class="m-0 text-right font-semibold">
-          {{ store.totalPowerMW() | number: '1.0-2' }} MW
-        </dd>
-        @let balance = store.totalGeneratedMW() - store.totalPowerMW();
-        <dt class="border-t border-line pt-1 text-muted">Balance</dt>
-        <dd
-          class="m-0 border-t border-line pt-1 text-right font-bold"
-          [class.text-danger]="balance < -1e-9"
-        >
-          {{ balance > 0 ? '+' : '' }}{{ balance | number: '1.0-2' }} MW
-        </dd>
-      </dl>
-      @if (store.totalGeneratedMW() - store.totalPowerMW() < -1e-9) {
-        <p class="mt-2 mb-0 text-xs text-danger">
-          Falta energía: la fábrica consume más de lo que generan sus generadores.
-        </p>
-      }
-    }
+    <app-planner-summary />
   </aside>
 </div>
 
 <p class="sr-only" aria-live="polite">{{ interactions.announcement() }}</p>
+<!-- Same text as the live region above, for sighted users. -->
+@if (interactions.toast(); as toast) {
+  <p
+    class="pointer-events-none fixed bottom-6 left-1/2 z-40 m-0 max-w-[min(90vw,32rem)] -translate-x-1/2 rounded-lg border border-line bg-panel px-4 py-2 text-center text-sm text-fg shadow-xl shadow-black/50"
+    aria-hidden="true"
+  >
+    {{ toast }}
+  </p>
+}

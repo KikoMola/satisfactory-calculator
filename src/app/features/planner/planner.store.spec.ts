@@ -1,5 +1,7 @@
 import { TestBed } from '@angular/core/testing';
+import { PlannerHistory } from './planner.history';
 import { CANVAS, type PortRef } from './planner.model';
+import { decodePlan, encodePlan, toPlanFile } from './planner.plan';
 import {
   PlannerStore,
   type BuildingNodeView,
@@ -481,7 +483,7 @@ describe('PlannerStore', () => {
       expect(generator(first.id).clock).toBe(2);
     });
 
-    it('pastes at a given position and does not copy belts', () => {
+    it('pastes at a given position, without the belts to cards left out', () => {
       const smelter = ironSmelter();
       store.connect(out(ironNode()), inp(smelter));
       store.copyNode(smelter);
@@ -491,7 +493,7 @@ describe('PlannerStore', () => {
       expect(store.belts()).toHaveLength(1);
     });
 
-    it('copies and pastes a group keeping its layout, without belts', () => {
+    it('copies and pastes a group keeping its layout and the belts inside it', () => {
       const node = ironNode();
       const smelter = ironSmelter();
       store.moveNode(node, { x: 100, y: 100 });
@@ -504,9 +506,26 @@ describe('PlannerStore', () => {
         { x: 1000, y: 1000 },
         { x: 1400, y: 1100 },
       ]);
-      expect(store.belts()).toHaveLength(1);
+      // The belt between the two copies came along, and carries the same flow.
+      expect(store.belts()).toHaveLength(2);
+      expect(flowInto(copies[1].id)).toBe(30);
+      expect(flowInto(smelter)).toBe(30);
       // The copies become the selection.
       expect([...store.selection()]).toEqual(copies.map((n) => n.id));
+    });
+
+    it('duplicates a group with its belts, but not the ones leaving it', () => {
+      const node = ironNode();
+      const smelter = ironSmelter();
+      const constructor = store.addBuilding(CONSTRUCTOR).id;
+      store.setRecipe(constructor, 'Recipe_IronPlate_C');
+      store.connect(out(node), inp(smelter));
+      store.connect(out(smelter), inp(constructor));
+
+      const copies = store.duplicateNodes([node, smelter]);
+      expect(store.belts()).toHaveLength(3);
+      expect(building(copies[1].id).productivity).toBe(1);
+      expect(building(copies[1].id).outputs[0].connected).toBe(false);
     });
 
     it('keeps a pasted group inside the canvas', () => {
@@ -555,5 +574,229 @@ describe('PlannerStore', () => {
       expect(store.clipboard()).toEqual([]);
       expect(store.pasteNode()).toBeNull();
     });
+  });
+
+  describe('saving and loading', () => {
+    const factory = () => {
+      const node = ironNode('pure');
+      const smelter = ironSmelter();
+      store.setShards(smelter, 2);
+      store.connect(out(node), inp(smelter));
+      return { node, smelter };
+    };
+    /** What a file or the browser storage hands back: plain JSON. */
+    const saved = () => JSON.parse(JSON.stringify(toPlanFile(store.plan())));
+
+    it('loads back exactly what was saved', () => {
+      const { smelter } = factory();
+      const file = saved();
+      store.clear();
+      expect(store.nodes()).toHaveLength(0);
+
+      expect(store.load(file)).toBe(true);
+      expect(store.nodes()).toEqual(file.nodes);
+      expect(store.belts()).toEqual(file.belts);
+      expect(building(smelter).clock).toBe(2);
+      expect(flowInto(smelter)).toBe(60);
+    });
+
+    it('never reuses the IDs of a loaded plan', () => {
+      factory();
+      store.load(saved());
+      const ids = new Set([...store.nodes(), ...store.belts()].map((x) => x.id));
+      const added = store.addBuilding(SMELTER).id;
+      expect(ids.has(added)).toBe(false);
+    });
+
+    it('rejects what is not a plan and keeps the current one', () => {
+      factory();
+      for (const bad of [null, 'plan', 42, [], {}, { nodes: 'x' }, { version: 99, nodes: [] }]) {
+        expect(store.load(bad)).toBe(false);
+      }
+      expect(store.nodes()).toHaveLength(2);
+    });
+
+    it('drops what the game data does not know and brings numbers into range', () => {
+      const { node, smelter } = factory();
+      const file = saved();
+      file.nodes.push(
+        { ...file.nodes[1], id: 'building-90', buildingId: 'Build_Nope_C' },
+        { ...file.nodes[1], id: 'building-91', recipeId: 'Recipe_Nope_C' },
+        // A recipe of another building.
+        { ...file.nodes[1], id: 'building-92', recipeId: 'Recipe_IronPlate_C' },
+        { ...file.nodes[0], id: 'node-93', minerId: 'Build_OilPump_C' },
+        { ...file.nodes[1], id: smelter },
+        { ...file.nodes[1], id: 'building-95', clock: 99, shards: 7, position: { x: -5, y: 1e9 } },
+        'junk',
+      );
+      file.belts.push(
+        { id: 'belt-96', from: out(node), to: inp('building-95'), transportId: 'Build_Nope_C' },
+        // The node's output already has a belt.
+        { ...file.belts[0], id: 'belt-97', to: inp('building-95') },
+        { ...file.belts[0], id: 'belt-98', from: out('ghost') },
+      );
+
+      expect(store.load(file)).toBe(true);
+      expect(store.nodes().map((n) => n.id)).toEqual([node, smelter, 'building-95']);
+      expect(store.belts()).toHaveLength(1);
+      const fixed = building('building-95');
+      expect(fixed.shards).toBe(3);
+      expect(fixed.clock).toBe(2.5);
+      expect(fixed.position).toEqual({ x: 0, y: CANVAS.height - CANVAS.building.height });
+    });
+
+    it('drops belts that point at ports or materials that do not fit', () => {
+      const { node } = factory();
+      const file = saved();
+      file.nodes.push({ ...file.nodes[1], id: 'building-80', recipeId: 'Recipe_IngotCopper_C' });
+      file.belts = [
+        {
+          id: 'belt-81',
+          from: out(node),
+          to: inp('building-80'),
+          transportId: file.belts[0].transportId,
+        },
+        {
+          id: 'belt-82',
+          from: out(node, 3),
+          to: inp('building-80'),
+          transportId: file.belts[0].transportId,
+        },
+      ];
+      expect(store.load(file)).toBe(true);
+      expect(store.belts()).toHaveLength(0);
+    });
+
+    it('survives a round trip through a share link', async () => {
+      const { smelter } = factory();
+      const packed = await encodePlan(store.plan());
+      expect(packed).toMatch(/^[zj][\w-]+$/);
+      store.clear();
+      expect(store.load(await decodePlan(packed))).toBe(true);
+      expect(flowInto(smelter)).toBe(60);
+    });
+  });
+
+  describe('summary', () => {
+    it('counts buildings, shards and Somersloops', () => {
+      ironNode();
+      ironNode();
+      const smelter = ironSmelter();
+      store.setShards(smelter, 2);
+      const constructor = store.addBuilding(CONSTRUCTOR).id;
+      store.setSomersloops(constructor, 1);
+      store.addBuilding(JUNCTION, null, { role: 'merger' });
+
+      const totals = store.buildingTotals();
+      expect(totals[0].count).toBe(2);
+      expect(totals.map((t) => t.name)).toContain('Unificador de fluidos');
+      expect(totals.reduce((sum, t) => sum + t.count, 0)).toBe(5);
+      expect(store.upgradeTotals()).toEqual({ shards: 2, somersloops: 1 });
+    });
+
+    it('reports starved buildings and saturated belts, and clears once fixed', () => {
+      const node = ironNode('pure');
+      const smelter = ironSmelter();
+      expect(store.issues().map((i) => i.detail)).toEqual(['Sin conectar: Mineral de hierro']);
+
+      store.setShards(smelter, 3);
+      store.connect(out(node), inp(smelter));
+      // 120/min offered, 75 wanted, 60 on a Mk.1 belt.
+      const issues = store.issues();
+      expect(issues.map((i) => i.nodeId)).toEqual([smelter, smelter]);
+      expect(issues[0].detail).toBe('Falta material: funciona al 80 %');
+      expect(issues[1].title).toBe('Cinta de Mineral de hierro saturada');
+
+      store.setBeltTier(store.belts()[0].id, 'Build_ConveyorBeltMk2_C');
+      expect(store.issues()).toEqual([]);
+    });
+
+    it('adds up the AWESOME Sink points of the final products', () => {
+      const node = ironNode();
+      const smelter = ironSmelter();
+      expect(store.sinkPointsPerMinute()).toBe(0);
+      store.connect(out(node), inp(smelter));
+      // 30 iron ingots per minute at 2 points each.
+      expect(store.sinkPointsPerMinute()).toBe(60);
+    });
+  });
+});
+
+describe('PlannerHistory', () => {
+  let store: PlannerStore;
+  let history: PlannerHistory;
+  /** Lets the history see the change, as the app does after every event. */
+  const settle = () => TestBed.tick();
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({ providers: [PlannerStore, PlannerHistory] });
+    store = TestBed.inject(PlannerStore);
+    history = TestBed.inject(PlannerHistory);
+    settle();
+  });
+
+  it('undoes and redoes adding, connecting and deleting', () => {
+    expect(history.canUndo()).toBe(false);
+    const node = store.addResourceNode('Desc_OreIron_C').id;
+    settle();
+    const smelter = store.addBuilding(SMELTER).id;
+    store.setRecipe(smelter, IRON_INGOT);
+    settle();
+    store.connect(out(node), inp(smelter));
+    settle();
+    store.removeNodes([smelter]);
+    settle();
+    expect(store.belts()).toHaveLength(0);
+
+    expect(history.undo()).toBe(true);
+    expect(store.nodes()).toHaveLength(2);
+    expect(store.belts()).toHaveLength(1);
+    history.undo();
+    expect(store.belts()).toHaveLength(0);
+    history.undo();
+    expect(store.nodes().map((n) => n.id)).toEqual([node]);
+    history.undo();
+    expect(store.nodes()).toHaveLength(0);
+    expect(history.undo()).toBe(false);
+
+    expect(history.canRedo()).toBe(true);
+    history.redo();
+    history.redo();
+    history.redo();
+    history.redo();
+    expect(store.nodes().map((n) => n.id)).toEqual([node]);
+    expect(history.redo()).toBe(false);
+  });
+
+  it('treats quick tweaks of the same cards as one step', () => {
+    const smelter = store.addBuilding(SMELTER).id;
+    settle();
+    for (const clock of [0.9, 0.8, 0.7]) {
+      store.setClock(smelter, clock);
+      settle();
+    }
+    history.undo();
+    expect(store.nodes()[0]).toMatchObject({ clock: 1 });
+    history.undo();
+    expect(store.nodes()).toHaveLength(0);
+  });
+
+  it('forgets what was undone once something new happens', () => {
+    store.addBuilding(SMELTER);
+    settle();
+    history.undo();
+    store.addBuilding(CONSTRUCTOR);
+    settle();
+    expect(history.canRedo()).toBe(false);
+    expect(history.redo()).toBe(false);
+    expect(store.nodes()).toHaveLength(1);
+  });
+
+  it('drops from the selection what an undo removes', () => {
+    const smelter = store.addBuilding(SMELTER).id;
+    store.select([smelter]);
+    settle();
+    history.undo();
+    expect(store.selection().size).toBe(0);
   });
 });

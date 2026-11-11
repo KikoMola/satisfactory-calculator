@@ -1,0 +1,181 @@
+<h2 id="summary-title" class="m-0 mb-3 text-base font-semibold">Resumen</h2>
+@if (store.nodes().length === 0) {
+  <p class="m-0 text-muted">Todavía no hay nada en el lienzo.</p>
+} @else {
+  <section class="mb-5" aria-labelledby="summary-issues">
+    <h3
+      id="summary-issues"
+      class="m-0 mb-1 text-xs font-semibold tracking-wide text-muted uppercase"
+    >
+      Avisos
+      @if (store.issues().length > 0) {
+        <span class="text-danger">({{ store.issues().length }})</span>
+      }
+    </h3>
+    @if (store.issues().length === 0) {
+      <p class="m-0 px-1 py-1.5 text-sm text-muted">Todo funciona al 100 %.</p>
+    } @else {
+      <ul class="m-0 grid list-none gap-1 p-0">
+        @for (issue of store.issues(); track issue.id) {
+          <li>
+            <button
+              type="button"
+              ngpButton
+              class="flex w-full cursor-pointer items-center gap-2 rounded-md border border-line px-2 py-1.5 text-left text-sm data-hover:bg-hover"
+              title="Mostrar en el lienzo"
+              (click)="interactions.reveal(issue.nodeId)"
+            >
+              <app-item-icon [src]="issue.icon" color="var(--color-danger)" [size]="24" />
+              <span class="min-w-0">
+                <span class="block truncate font-medium">{{ issue.title }}</span>
+                <span class="block text-xs text-danger">{{ issue.detail }}</span>
+              </span>
+            </button>
+          </li>
+        }
+      </ul>
+    }
+  </section>
+
+  @if (store.resourceTotals().length > 0) {
+    <table class="mb-5 w-full border-collapse text-sm tabular-nums">
+      <caption class="mb-1 text-left text-xs font-semibold tracking-wide text-muted uppercase">
+        Extracción
+      </caption>
+      <thead>
+        <tr class="border-b border-line text-muted">
+          <th scope="col" class="px-1 py-1.5 text-left font-medium">Recurso</th>
+          <th scope="col" class="px-1 py-1.5 text-right font-medium">Extraído</th>
+          <th scope="col" class="px-1 py-1.5 text-right font-medium">Usado</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (total of store.resourceTotals(); track total.resource.id) {
+          <tr class="border-b border-line">
+            <th scope="row" class="px-1 py-1.5 text-left font-medium">
+              <span class="flex items-center gap-1.5">
+                <app-item-icon [src]="total.icon" [color]="total.color" />
+                <span>
+                  {{ total.resource.name.es }}
+                  <span class="text-muted">({{ total.nodes }})</span>
+                </span>
+              </span>
+            </th>
+            <td class="px-1 py-1.5 text-right">
+              {{ total.extracted | number: '1.0-2'
+              }}<span class="text-xs text-muted">{{ total.unit }}</span>
+            </td>
+            <td class="px-1 py-1.5 text-right">
+              {{ total.transported | number: '1.0-2'
+              }}<span class="text-xs text-muted">{{ total.unit }}</span>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+
+  <table class="mb-5 w-full border-collapse text-sm tabular-nums">
+    <caption class="mb-1 text-left text-xs font-semibold tracking-wide text-muted uppercase">
+      Productos finales
+    </caption>
+    <tbody>
+      @for (product of store.productTotals(); track product.item.id) {
+        <tr class="border-b border-line">
+          <th scope="row" class="px-1 py-1.5 text-left font-medium">
+            <span class="flex items-center gap-1.5">
+              <app-item-icon [src]="product.icon" [color]="product.color" />
+              {{ product.item.name.es }}
+            </span>
+          </th>
+          <td class="px-1 py-1.5 text-right">
+            {{ product.rate | number: '1.0-2'
+            }}<span class="text-xs text-muted">{{ product.unit }}</span>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td class="px-1 py-1.5 text-muted">
+            Las salidas de edificios sin conectar aparecerán aquí.
+          </td>
+        </tr>
+      }
+    </tbody>
+    @if (store.sinkPointsPerMinute() > 0) {
+      <tfoot>
+        <tr>
+          <th scope="row" class="px-1 py-1.5 text-left font-normal text-muted">
+            Si van al AWESOME Sink
+          </th>
+          <td class="px-1 py-1.5 text-right font-semibold">
+            {{ store.sinkPointsPerMinute() | number: '1.0-0'
+            }}<span class="text-xs font-normal text-muted"> pts/min</span>
+          </td>
+        </tr>
+      </tfoot>
+    }
+  </table>
+
+  <table class="mb-5 w-full border-collapse text-sm tabular-nums">
+    <caption class="mb-1 text-left text-xs font-semibold tracking-wide text-muted uppercase">
+      Edificios
+      <span class="font-normal normal-case">({{ buildingCount() }})</span>
+    </caption>
+    <tbody>
+      @for (building of store.buildingTotals(); track building.id) {
+        <tr class="border-b border-line">
+          <th scope="row" class="px-1 py-1.5 text-left font-medium">
+            <span class="flex items-center gap-1.5">
+              <app-item-icon [src]="building.icon" color="var(--color-accent)" />
+              {{ building.name }}
+            </span>
+          </th>
+          <td class="px-1 py-1.5 text-right">× {{ building.count }}</td>
+        </tr>
+      }
+    </tbody>
+    @if (store.upgradeTotals(); as upgrades) {
+      @if (upgrades.shards + upgrades.somersloops > 0) {
+        <tfoot>
+          @if (upgrades.shards > 0) {
+            <tr>
+              <th scope="row" class="px-1 py-1.5 text-left font-normal text-muted">
+                Esquirlas de energía
+              </th>
+              <td class="px-1 py-1.5 text-right font-semibold text-shard">
+                × {{ upgrades.shards }}
+              </td>
+            </tr>
+          }
+          @if (upgrades.somersloops > 0) {
+            <tr>
+              <th scope="row" class="px-1 py-1.5 text-left font-normal text-muted">Somersloops</th>
+              <td class="px-1 py-1.5 text-right font-semibold text-sloop">
+                × {{ upgrades.somersloops }}
+              </td>
+            </tr>
+          }
+        </tfoot>
+      }
+    }
+  </table>
+
+  <h3 class="m-0 mb-1 text-xs font-semibold tracking-wide text-muted uppercase">Energía</h3>
+  <dl class="m-0 grid grid-cols-[1fr_auto] gap-x-3 gap-y-1 px-1 text-sm tabular-nums">
+    <dt class="text-muted">Generación</dt>
+    <dd class="m-0 text-right font-semibold">
+      {{ store.totalGeneratedMW() | number: '1.0-2' }} MW
+    </dd>
+    <dt class="text-muted">Consumo</dt>
+    <dd class="m-0 text-right font-semibold">{{ store.totalPowerMW() | number: '1.0-2' }} MW</dd>
+    <dt class="border-t border-line pt-1 text-muted">Balance</dt>
+    <dd class="m-0 border-t border-line pt-1 text-right font-bold" [class.text-danger]="deficit()">
+      {{ balance() > 0 ? '+' : '' }}{{ balance() | number: '1.0-2' }} MW
+    </dd>
+  </dl>
+  @if (deficit()) {
+    <p class="mt-2 mb-0 px-1 text-xs text-danger">
+      Falta energía: la fábrica consume más de lo que generan sus generadores.
+    </p>
+  }
+}

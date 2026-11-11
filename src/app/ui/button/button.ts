@@ -8,6 +8,7 @@ const BASE =
 
 const VARIANTS = {
   primary: 'h-8 px-3.5 text-sm font-semibold bg-accent text-on-accent data-hover:bg-accent-hover',
+  ghost: 'h-8 px-2 text-sm text-fg data-hover:bg-hover',
   icon: 'size-8 text-muted data-hover:bg-hover data-hover:text-fg',
   'icon-sm': 'size-6 rounded text-muted data-hover:bg-hover data-hover:text-fg',
 } as const;

@@ -28,6 +28,7 @@ import {
   waterfill,
   type BeltFlow,
 } from './planner.calc';
+import { sanitizePlan, type Plan } from './planner.plan';
 import {
   CANVAS,
   PURITIES,
@@ -198,6 +199,24 @@ export interface ProductTotal {
   rate: number;
 }
 
+/** How many of a building the factory needs (extractors, production, generators, logistics). */
+export interface BuildingTotal {
+  id: string;
+  name: string;
+  icon: string | null;
+  count: number;
+}
+
+/** Something that keeps the factory from running at 100 %, shown in the summary. */
+export interface Issue {
+  id: string;
+  /** Card to show when the issue is picked. */
+  nodeId: string;
+  icon: string | null;
+  title: string;
+  detail: string;
+}
+
 export type ConnectResult =
   | 'ok'
   | 'item-mismatch'
@@ -243,8 +262,10 @@ export class PlannerStore {
   /** Input the dragged belt is currently snapped to. */
   readonly snapTarget = signal<PortRef | null>(null);
 
-  /** Snapshot of the last copied node (settings only: its belts are not copied). */
+  /** Snapshot of the last copied cards. */
   readonly clipboard = signal<readonly PlannerNode[]>([]);
+  /** Belts between the copied cards, pasted along with them. */
+  private clipboardBelts: readonly Belt[] = [];
   /** Cards selected with a click, Shift/Ctrl+click or a selection rectangle. */
   readonly selection = signal<ReadonlySet<string>>(new Set());
   /** How many times the clipboard was pasted without a position, to cascade the copies. */
@@ -882,6 +903,115 @@ export class PlannerStore {
     this.nodeViews().reduce((sum, n) => sum + (n.kind === 'generator' ? n.generatedMW : 0), 0),
   );
 
+  /** Buildings to build, most numerous first. Extractors count by their own building. */
+  readonly buildingTotals = computed<BuildingTotal[]>(() => {
+    const totals = new Map<string, BuildingTotal>();
+    for (const node of this.nodes()) {
+      const id = node.kind === 'resource' ? node.minerId : node.buildingId;
+      const name = node.kind === 'logistic' ? this.labelOf(node) : this.data.building(id).name.es;
+      const key = `${id}:${name}`;
+      const total = totals.get(key) ?? { id: key, name, icon: this.data.icon(id), count: 0 };
+      total.count += 1;
+      totals.set(key, total);
+    }
+    return [...totals.values()].sort(
+      (a, b) => b.count - a.count || a.name.localeCompare(b.name, 'es'),
+    );
+  });
+
+  /** Power shards and Somersloops installed across the factory. */
+  readonly upgradeTotals = computed(() => {
+    let shards = 0;
+    let somersloops = 0;
+    for (const node of this.nodes()) {
+      if (node.kind === 'logistic') continue;
+      shards += node.shards;
+      if (node.kind === 'building') somersloops += node.somersloops;
+    }
+    return { shards, somersloops };
+  });
+
+  /** AWESOME Sink points per minute if every final product (solids only) were sunk. */
+  readonly sinkPointsPerMinute = computed(() =>
+    this.productTotals().reduce(
+      (sum, p) => sum + (p.item.form === 'solid' ? p.rate * p.item.sinkPoints : 0),
+      0,
+    ),
+  );
+
+  /** What keeps the factory from running at 100 %: starved buildings and saturated belts. */
+  readonly issues = computed<Issue[]>(() => {
+    const issues: Issue[] = [];
+    for (const node of this.nodeViews()) {
+      if (node.kind !== 'building' && node.kind !== 'generator') continue;
+      if (node.productivity >= 1 - 1e-9) continue;
+      const title =
+        node.kind === 'building'
+          ? `${node.building.name.es} · ${node.recipe.name.es.replace(/^Alternativa: /, '')}`
+          : node.building.name.es;
+      const open = node.inputs.filter((input) => !input.connected);
+      issues.push({
+        id: node.id,
+        nodeId: node.id,
+        icon: node.icon,
+        title,
+        detail: open.length
+          ? `Sin conectar: ${open.map((input) => input.item?.name.es).join(', ')}`
+          : `Falta material: funciona al ${Math.round(node.productivity * 1000) / 10} %`,
+      });
+    }
+    for (const belt of this.beltViews()) {
+      if (!belt.flow.bottleneck) continue;
+      const pipe = belt.transport.kind === 'pipe';
+      issues.push({
+        id: belt.id,
+        nodeId: belt.to.nodeId,
+        icon: this.data.icon(belt.item?.id),
+        title: `${pipe ? 'Tubería' : 'Cinta'} de ${belt.item?.name.es ?? 'material'} saturada`,
+        detail: `Mk.${belt.transport.tier} lleva ${belt.flow.capacity}${pipe ? ' m³' : ''}/min: sube el tier`,
+      });
+    }
+    return issues;
+  });
+
+  // ---- Whole plan: save, load, undo -----------------------------------------------
+
+  /** The factory as it is saved, exported and shared. */
+  readonly plan = computed<Plan>(() => ({ nodes: this.nodes(), belts: this.belts() }));
+
+  /**
+   * Replaces the factory with a plan read from untrusted JSON (file, link, browser storage).
+   * Unknown buildings/recipes and belts that don't fit are dropped. Returns false, leaving the
+   * factory as it was, when `raw` isn't a plan.
+   */
+  load(raw: unknown): boolean {
+    const plan = sanitizePlan(raw, this.data);
+    if (!plan) return false;
+    this.restore(plan);
+    this.pruneBelts();
+    return true;
+  }
+
+  /** Puts back a plan this store produced earlier (undo/redo): the arrays are kept as they are. */
+  restore(plan: Plan) {
+    const ids = new Set(plan.nodes.map((n) => n.id));
+    for (const { id } of [...plan.nodes, ...plan.belts]) {
+      const number = Number(/(\d+)$/.exec(id)?.[1] ?? 0);
+      if (number >= this.nextId) this.nextId = number + 1;
+    }
+    this.nodes.set(plan.nodes as PlannerNode[]);
+    this.belts.set(plan.belts as Belt[]);
+    this.selection.update((selected) => new Set([...selected].filter((id) => ids.has(id))));
+    this.livePositions.set({});
+    this.connectingFrom.set(null);
+    this.snapTarget.set(null);
+  }
+
+  /** Empties the canvas (the clipboard is kept). */
+  clear() {
+    this.restore({ nodes: [], belts: [] });
+  }
+
   // ---- Nodes --------------------------------------------------------------
 
   /** Adds a resource node at `position` (top-left of the card), or on the next free slot. */
@@ -1198,14 +1328,15 @@ export class PlannerStore {
   }
 
   /**
-   * Copies cards' settings (recipe, clock, shards, fuel, rotation, filters...) to the
-   * clipboard. Belts are never copied.
+   * Copies cards (recipe, clock, shards, fuel, rotation, filters...) to the clipboard, along
+   * with the belts that run between them. Belts to cards left out are not copied.
    */
   copyNodes(ids: Iterable<string>): readonly PlannerNode[] {
     const set = new Set(ids);
     const nodes = this.nodes().filter((n) => set.has(n.id));
     if (nodes.length > 0) {
       this.clipboard.set(nodes);
+      this.clipboardBelts = this.beltsWithin(set);
       this.pasteCount = 0;
     }
     return nodes;
@@ -1231,7 +1362,7 @@ export class PlannerStore {
       const offset = CANVAS.pasteOffset * ++this.pasteCount;
       delta = { x: offset, y: offset };
     }
-    return this.insertCopies(source, delta);
+    return this.insertCopies(source, delta, this.clipboardBelts);
   }
 
   pasteNode(position?: Point | null): PlannerNode | null {
@@ -1242,25 +1373,47 @@ export class PlannerStore {
   duplicateNodes(ids: Iterable<string>): PlannerNode[] {
     const set = new Set(ids);
     const nodes = this.nodes().filter((n) => set.has(n.id));
-    return this.insertCopies(nodes, { x: CANVAS.pasteOffset, y: CANVAS.pasteOffset });
+    return this.insertCopies(
+      nodes,
+      { x: CANVAS.pasteOffset, y: CANVAS.pasteOffset },
+      this.beltsWithin(set),
+    );
   }
 
   duplicateNode(id: string): PlannerNode | null {
     return this.duplicateNodes([id])[0] ?? null;
   }
 
-  private insertCopies(sources: readonly PlannerNode[], delta: Point): PlannerNode[] {
+  /** Belts whose two ends are among `ids`. */
+  private beltsWithin(ids: ReadonlySet<string>): Belt[] {
+    return this.belts().filter((b) => ids.has(b.from.nodeId) && ids.has(b.to.nodeId));
+  }
+
+  private insertCopies(
+    sources: readonly PlannerNode[],
+    delta: Point,
+    belts: readonly Belt[],
+  ): PlannerNode[] {
     if (sources.length === 0) return [];
     const shift = keepInside(sources, delta);
-    const copies = sources.map(
-      (source) =>
-        ({
-          ...source,
-          id: `${source.kind === 'resource' ? 'node' : 'building'}-${this.nextId++}`,
-          position: { x: source.position.x + shift.x, y: source.position.y + shift.y },
-        }) as PlannerNode,
-    );
+    const newIds = new Map<string, string>();
+    const copies = sources.map((source) => {
+      const id = `${source.kind === 'resource' ? 'node' : 'building'}-${this.nextId++}`;
+      newIds.set(source.id, id);
+      return {
+        ...source,
+        id,
+        position: { x: source.position.x + shift.x, y: source.position.y + shift.y },
+      } as PlannerNode;
+    });
+    const beltCopies = belts.map((belt) => ({
+      ...belt,
+      id: `belt-${this.nextId++}`,
+      from: { ...belt.from, nodeId: newIds.get(belt.from.nodeId)! },
+      to: { ...belt.to, nodeId: newIds.get(belt.to.nodeId)! },
+    }));
     this.nodes.update((nodes) => [...nodes, ...copies]);
+    if (beltCopies.length > 0) this.belts.update((all) => [...all, ...beltCopies]);
     this.selection.set(new Set(copies.map((n) => n.id)));
     return copies;
   }
